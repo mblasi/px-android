@@ -92,7 +92,7 @@
     <string name="mpsdk_exclusion_one_element">You can only pay with %1$s</string>
 
     <!-- Congrats -->
-    <string name="mpsdk_title_activity_congrats">Done, your payment was accredited!</string>
+    <string name="mpsdk_title_approved_payment">Done, your payment was accredited!</string>
     <string name="mpsdk_subtitle_action_activity_congrats">We will send you the data to\n%1$s</string>
     <string name="mpsdk_text_state_account_activity_congrats">On your statement you will see the charge as\n %s</string>
     <string name="mpsdk_payment_id_description">Ticket</string>
@@ -107,6 +107,7 @@
     <string name="mpsdk_text_select_other_payment_method">Choose another payment method</string>
 
     <!-- Pending -->
+    <string name="mpsdk_title_pending_payment">We are processing the payment</string>
     <string name="mpsdk_title_pending">We are processing\n the payment</string>
     <string name="mpsdk_subtitle_pending_contingency">In less than an hour we will send you the result by e-mail.</string>
 
@@ -131,7 +132,7 @@
     <string name="mpsdk_subtitle_rejection_high_risk">If you want to pay with the money from your account, contact Mercado Pago customer service. Or if you prefer, you can choose other payment method.</string>
     <string name="mpsdk_title_rejection_max_attempts">You reached the limit of attempts allowed</string>
     <string name="mpsdk_subtitle_rejection_max_attempts">Choose another card or another payment method.</string>
-    <string name="mpsdk_rejection_title">Something went wrong…</string>
+    <string name="mpsdk_rejection_label">Something went wrong…</string>
 
     <!-- Error messages -->
     <string name="mpsdk_error_message_invalid_amount">Invalid amount</string>
