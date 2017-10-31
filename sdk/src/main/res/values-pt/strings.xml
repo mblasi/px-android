@@ -93,7 +93,7 @@
 
 
     <!-- Congrats -->
-    <string name="mpsdk_title_activity_congrats">Pronto! O seu pagamento foi aprovado!</string>
+    <string name="mpsdk_title_approved_payment">Pronto! O seu pagamento foi aprovado!</string>
     <string name="mpsdk_subtitle_action_activity_congrats">Enviaremos os dados para\n%1$s</string>
     <string name="mpsdk_text_state_account_activity_congrats">Você verá o pagamento na fatura do seu cartão de crédito como\n %s</string>
     <string name="mpsdk_payment_id_description">Comprovante</string>
@@ -107,6 +107,7 @@
     <string name="mpsdk_text_select_other_payment_method">Escolha outro meio de pagamento</string>
 
     <!-- Pending -->
+    <string name="mpsdk_title_pending_payment">Estamos processando o pagamento</string>
     <string name="mpsdk_title_pending">Estamos processando\n o pagamento</string>
     <string name="mpsdk_subtitle_pending_contingency">Enviaremos o resultado por e-mail em menos de 1 hora.</string>
 
@@ -130,7 +131,7 @@
     <string name="mpsdk_subtitle_rejection_high_risk">Se você quiser pagar com o dinheiro da sua conta, entre em contato com Atenção ao Cliente do Mercado Pago. Ou, se preferir, escolha outro meio de pagamento.</string>
     <string name="mpsdk_title_rejection_max_attempts">Você chegou ao limite de tentativas permitidas com este cartão</string>
     <string name="mpsdk_subtitle_rejection_max_attempts">Use outro cartão ou outro meio de pagamento.</string>
-    <string name="mpsdk_rejection_title">Algo deu errado…</string>
+    <string name="mpsdk_rejection_label">Algo deu errado…</string>
 
     <!-- Error messages -->
     <string name="mpsdk_error_message_invalid_amount">Valor inválido</string>

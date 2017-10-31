@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mpsdkPaymentResultContainerHeader"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="50dp"
+    android:paddingEnd="24dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingStart="24dp"
+    tools:background="@color/mpsdk_green_MP">
+
+    <FrameLayout
+        android:id="@+id/iconContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"/>
+
+    <com.mercadopago.customviews.MPTextView
+        android:id="@+id/mpsdkHeaderLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/mpsdk_white"
+        android:textSize="16sp"
+        tools:text="Lorem ipsum dolor sit" />
+
+    <com.mercadopago.customviews.MPTextView
+        android:id="@+id/mpsdkHeaderTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/mpsdk_white"
+        android:textSize="26sp"
+        tools:text="¡Listo, se acreditó tu pago!" />
+
+</LinearLayout>

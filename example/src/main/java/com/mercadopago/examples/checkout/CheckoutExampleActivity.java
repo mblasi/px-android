@@ -26,8 +26,10 @@ import com.mercadopago.hooks.components.PaymentMethodConfirmRenderer;
 import com.mercadopago.hooks.components.PaymentTypeConfirm;
 import com.mercadopago.hooks.components.PaymentTypeConfirmRenderer;
 import com.mercadopago.model.Payment;
+import com.mercadopago.paymentresult.model.Badge;
 import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.preferences.DecorationPreference;
+import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 
@@ -88,9 +90,20 @@ public class CheckoutExampleActivity extends AppCompatActivity {
 
     private void startMercadoPagoCheckout() {
 
+        final PaymentResultScreenPreference paymentResultScreenPreference =
+                new PaymentResultScreenPreference.Builder()
+                        .setApprovedTitle("Approved title")
+                        .setPendingTitle("Pending title")
+                        .setRejectedTitle("Rejected title")
+                        .setApprovedLabelText("Approved label")
+                        .disableRejectedLabelText()
+                        .setBadgeApproved(Badge.PENDING_BADGE_IMAGE)
+                        .build();
+
         final MercadoPagoCheckout.Builder builder = new MercadoPagoCheckout.Builder()
                 .setActivity(this)
                 .setPublicKey(mPublicKey)
+                .setPaymentResultScreenPreference(paymentResultScreenPreference)
                 .setCheckoutPreference(getCheckoutPreference())
                 .setDecorationPreference(getCurrentDecorationPreference());
 
@@ -106,7 +119,7 @@ public class CheckoutExampleActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         LayoutUtil.showRegularLayout(this);
 
         if (requestCode == MercadoPagoCheckout.CHECKOUT_REQUEST_CODE) {
@@ -135,7 +148,7 @@ public class CheckoutExampleActivity extends AppCompatActivity {
         mRegularLayout.setVisibility(View.VISIBLE);
     }
 
-    public void changeColor(View view) {
+    public void changeColor(final View view) {
         new ColorPickerDialog(this, mDefaultColor, new ColorPickerDialog.OnColorSelectedListener() {
             @Override
             public void onColorSelected(int color) {
@@ -146,7 +159,7 @@ public class CheckoutExampleActivity extends AppCompatActivity {
         }).show();
     }
 
-    public void resetSelection(View view) {
+    public void resetSelection(final View view) {
         mSelectedColor = null;
         mColorSample.setBackgroundColor(mDefaultColor);
         mDarkFontEnabled.setChecked(false);
