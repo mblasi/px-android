@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.mercadopago.components.Component;
 import com.mercadopago.components.ComponentManager;
+import com.mercadopago.components.LoadingComponent;
+import com.mercadopago.components.LoadingRenderer;
 import com.mercadopago.components.RendererFactory;
 import com.mercadopago.core.MercadoPagoCheckout;
 import com.mercadopago.core.MercadoPagoComponents;
@@ -71,14 +73,14 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         RendererFactory.register(PaymentResultBodyComponent.class, PaymentResultBodyRenderer.class);
         RendererFactory.register(PaymentResultFooterComponent.class, PaymentResultFooterRenderer.class);
         RendererFactory.register(IconComponent.class, IconRenderer.class);
+        RendererFactory.register(LoadingComponent.class, LoadingRenderer.class);
 
         final Component root = new PaymentResultContainer(componentManager, provider);
         componentManager.setActionsListener(presenter);
         componentManager.setComponent(root);
         componentManager.setMutator(mutator);
 
-//        mutator.renderDefaultProps();
-
+        mutator.renderDefaultProps();
         presenter.initialize();
     }
 

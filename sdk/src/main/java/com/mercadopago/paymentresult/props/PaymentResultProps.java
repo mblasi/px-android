@@ -21,29 +21,6 @@ public class PaymentResultProps {
     public final AmountFormat amountFormat;
     public final boolean loading;
 
-    public PaymentResultProps() {
-        this.paymentResult = null;
-        this.paymentResultScreenPreference = null;
-        this.instruction = null;
-        this.headerMode = "wrap";
-        this.amountFormat = null;
-        this.loading = true;
-    }
-
-    public PaymentResultProps(final PaymentResult paymentResult,
-                              final PaymentResultScreenPreference paymentResultScreenPreference,
-                              final Instruction instruction,
-                              final String headerMode,
-                              final AmountFormat amountFormat,
-                              final boolean loading) {
-        this.paymentResult = paymentResult;
-        this.paymentResultScreenPreference = paymentResultScreenPreference;
-        this.instruction = instruction;
-        this.headerMode = headerMode;
-        this.amountFormat = amountFormat;
-        this.loading = loading;
-    }
-
     public PaymentResultProps(@NonNull final Builder builder) {
         this.paymentResult = builder.paymentResult;
         this.headerMode = builder.headerMode;
@@ -210,14 +187,14 @@ public class PaymentResultProps {
         }
     }
 
-    public class Builder {
+    public static class Builder {
 
         public PaymentResult paymentResult;
         public PaymentResultScreenPreference paymentResultScreenPreference;
         public Instruction instruction;
-        public String headerMode;
+        public String headerMode = "wrap";
         public AmountFormat amountFormat;
-        public boolean loading;
+        public boolean loading = true;
 
         public Builder setPaymentResult(@NonNull final PaymentResult paymentResult) {
             this.paymentResult = paymentResult;

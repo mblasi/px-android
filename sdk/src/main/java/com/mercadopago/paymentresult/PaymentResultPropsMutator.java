@@ -19,7 +19,7 @@ public class PaymentResultPropsMutator implements Mutator, PaymentResultPropsVie
     private MutatorPropsListener propsListener;
 
     //Component props with default values
-    private PaymentResultProps props = new PaymentResultProps();
+    private PaymentResultProps props = new PaymentResultProps.Builder().build();
 
     @Override
     public void setPropsListener(MutatorPropsListener listener) {

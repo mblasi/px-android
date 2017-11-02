@@ -5,15 +5,16 @@ import android.support.annotation.NonNull;
 import com.mercadopago.R;
 import com.mercadopago.components.ActionDispatcher;
 import com.mercadopago.components.Component;
+import com.mercadopago.components.LoadingComponent;
 import com.mercadopago.constants.PaymentMethods;
 import com.mercadopago.constants.PaymentTypes;
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentResult;
-import com.mercadopago.paymentresult.model.Badge;
-import com.mercadopago.paymentresult.props.PaymentResultBodyProps;
-import com.mercadopago.paymentresult.props.HeaderProps;
-import com.mercadopago.paymentresult.props.PaymentResultProps;
 import com.mercadopago.paymentresult.PaymentResultProvider;
+import com.mercadopago.paymentresult.model.Badge;
+import com.mercadopago.paymentresult.props.HeaderProps;
+import com.mercadopago.paymentresult.props.PaymentResultBodyProps;
+import com.mercadopago.paymentresult.props.PaymentResultProps;
 
 /**
  * Created by vaserber on 10/20/17.
@@ -38,19 +39,23 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
     private static final int ERROR_BADGE_IMAGE = R.drawable.mpsdk_badge_error;
     private static final int WARNING_BADGE_IMAGE = R.drawable.mpsdk_badge_warning;
 
-    public HeaderComponent headerComponent;
-    public PaymentResultBodyComponent bodyComponent;
-    public PaymentResultFooterComponent footerComponent;
-
     public PaymentResultProvider resourcesProvider;
 
-    public PaymentResultContainer(@NonNull final ActionDispatcher dispatcher, PaymentResultProvider provider) {
-        super(dispatcher);
+    public PaymentResultContainer(@NonNull final ActionDispatcher dispatcher,
+                                  @NonNull final PaymentResultProvider provider) {
+        super(new PaymentResultProps.Builder().build(), dispatcher);
         this.resourcesProvider = provider;
     }
 
-    @Override
-    public void applyProps(@NonNull PaymentResultProps props) {
+    public boolean isLoading() {
+        return props.loading;
+    }
+
+    public LoadingComponent getLoadingComponent() {
+        return new LoadingComponent(getDispatcher());
+    }
+
+    public HeaderComponent getHeaderComponent() {
 
         HeaderProps headerProps = new HeaderProps.Builder()
                 .setHeight(props.headerMode)
@@ -62,24 +67,28 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
                 .setAmountFormat(props.amountFormat)
                 .build();
 
+        return new HeaderComponent(headerProps, getDispatcher());
+    }
 
-        this.headerComponent = new HeaderComponent(headerProps, getDispatcher());
-
+    public PaymentResultBodyComponent getBodyComponent() {
+        PaymentResultBodyComponent body = null;
         if (props.paymentResult != null) {
-            PaymentResultBodyProps bodyProps = new PaymentResultBodyProps(props.paymentResult.getPaymentStatus(),
-                    props.paymentResult.getPaymentStatusDetail());
-            this.bodyComponent = new PaymentResultBodyComponent(bodyProps, getDispatcher());
-
-            this.footerComponent = new PaymentResultFooterComponent(props.paymentResult.getPaymentStatus(), getDispatcher());
+            final PaymentResultBodyProps bodyProps = new PaymentResultBodyProps(props.paymentResult.getPaymentStatus());
+            body = new PaymentResultBodyComponent(bodyProps, getDispatcher());
         }
+        return body;
     }
 
-    public boolean hasBody() {
-        return bodyComponent != null;
+    public PaymentResultFooterComponent getFooterComponent() {
+        PaymentResultFooterComponent footer = null;
+        if (props.paymentResult != null) {
+            footer = new PaymentResultFooterComponent(props.paymentResult.getPaymentStatus(), getDispatcher());
+        }
+        return footer;
     }
 
-    // Background logic
-    private int getBackground(PaymentResult paymentResult) {
+    private int getBackground(@NonNull final PaymentResult paymentResult) {
+
         if (paymentResult == null) {
             return DEFAULT_BACKGROUND_COLOR;
         } else if (isGreenBackground(paymentResult)) {
@@ -93,13 +102,13 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
         }
     }
 
-    private boolean isGreenBackground(PaymentResult paymentResult) {
+    private boolean isGreenBackground(@NonNull final PaymentResult paymentResult) {
         return (paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_APPROVED) ||
                 paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_IN_PROCESS) ||
                 paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_PENDING));
     }
 
-    private boolean isRedBackground(PaymentResult paymentResult) {
+    private boolean isRedBackground(@NonNull final PaymentResult paymentResult) {
         String status = paymentResult.getPaymentStatus();
         String statusDetail = paymentResult.getPaymentStatusDetail();
         return status.equals(Payment.StatusCodes.STATUS_REJECTED) &&
@@ -112,7 +121,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
 
     }
 
-    private boolean isOrangeBackground(PaymentResult paymentResult) {
+    private boolean isOrangeBackground(@NonNull final PaymentResult paymentResult) {
         String status = paymentResult.getPaymentStatus();
         String statusDetail = paymentResult.getPaymentStatusDetail();
         return status.equals(Payment.StatusCodes.STATUS_REJECTED) &&
@@ -127,10 +136,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
 
     }
 
-
-    // Icon Image logic
-
-    private int getIconImage(final PaymentResultProps props) {
+    private int getIconImage(@NonNull final PaymentResultProps props) {
         if (props.hasCustomizedIcon()) {
             return props.getPreferenceIcon();
         } else if (props.paymentResult == null) {
@@ -146,15 +152,16 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
         }
     }
 
-    private boolean isItemIconImage(PaymentResult paymentResult) {
+    private boolean isItemIconImage(@NonNull final PaymentResult paymentResult) {
         String status = paymentResult.getPaymentStatus();
         String statusDetail = paymentResult.getPaymentStatusDetail();
         return status.equals(Payment.StatusCodes.STATUS_APPROVED) ||
+                status.equals(Payment.StatusCodes.STATUS_IN_PROCESS) ||
                 (status.equals(Payment.StatusCodes.STATUS_PENDING) &&
                         statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_WAITING_PAYMENT));
     }
 
-    private boolean isCardIconImage(PaymentResult paymentResult) {
+    private boolean isCardIconImage(@NonNull final PaymentResult paymentResult) {
         if (isPaymentMethodIconImage(paymentResult)) {
             String paymentTypeId = paymentResult.getPaymentData().getPaymentMethod().getPaymentTypeId();
             return paymentTypeId.equals(PaymentTypes.PREPAID_CARD) || paymentTypeId.equals(PaymentTypes.DEBIT_CARD) ||
@@ -163,7 +170,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
         return false;
     }
 
-    private boolean isBoletoIconImage(PaymentResult paymentResult) {
+    private boolean isBoletoIconImage(@NonNull final PaymentResult paymentResult) {
         if (isPaymentMethodIconImage(paymentResult)) {
             String paymentMethodId = paymentResult.getPaymentData().getPaymentMethod().getId();
             return paymentMethodId.equals(PaymentMethods.BRASIL.BOLBRADESCO);
@@ -171,7 +178,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
         return false;
     }
 
-    private boolean isPaymentMethodIconImage(PaymentResult paymentResult) {
+    private boolean isPaymentMethodIconImage(@NonNull final PaymentResult paymentResult) {
         String status = paymentResult.getPaymentStatus();
         String statusDetail = paymentResult.getPaymentStatusDetail();
         return ((status.equals(Payment.StatusCodes.STATUS_PENDING) && !statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_WAITING_PAYMENT)) ||
@@ -179,9 +186,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
                 status.equals(Payment.StatusCodes.STATUS_REJECTED));
     }
 
-    // Badge Image logic
-
-    private int getBadgeImage(final PaymentResultProps props) {
+    private int getBadgeImage(@NonNull final  PaymentResultProps props) {
         if (props.hasCustomizedBadge()) {
             String badge = props.getPreferenceBadge();
             if (badge.equals(Badge.CHECK_BADGE_IMAGE)) {
@@ -206,16 +211,16 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
         }
     }
 
-    private boolean isCheckBagdeImage(PaymentResult paymentResult) {
+    private boolean isCheckBagdeImage(@NonNull final PaymentResult paymentResult) {
         return paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_APPROVED);
     }
 
-    private boolean isPendingBadgeImage(PaymentResult paymentResult) {
+    private boolean isPendingBadgeImage(@NonNull final PaymentResult paymentResult) {
         return paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_PENDING) ||
                 paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_IN_PROCESS);
     }
 
-    private boolean isWarningBadgeImage(PaymentResult paymentResult) {
+    private boolean isWarningBadgeImage(@NonNull final PaymentResult paymentResult) {
         String status = paymentResult.getPaymentStatus();
         String statusDetail = paymentResult.getPaymentStatusDetail();
         return status.equals(Payment.StatusCodes.STATUS_REJECTED) && (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_INVALID_ESC) ||
@@ -228,7 +233,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
                 statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_INSUFFICIENT_AMOUNT));
     }
 
-    private boolean isErrorBadgeImage(PaymentResult paymentResult) {
+    private boolean isErrorBadgeImage(@NonNull final PaymentResult paymentResult) {
         String status = paymentResult.getPaymentStatus();
         String statusDetail = paymentResult.getPaymentStatusDetail();
         return status.equals(Payment.StatusCodes.STATUS_REJECTED) && (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_OTHER_REASON) ||
@@ -239,9 +244,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
                 statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_REJECTED_HIGH_RISK));
     }
 
-    // Title logic
-
-    private String getTitle(final PaymentResultProps props) {
+    private String getTitle(@NonNull final  PaymentResultProps props) {
 
         if (props.hasCustomizedTitle()) {
             return props.getPreferenceTitle();
@@ -291,8 +294,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
         return resourcesProvider.getEmptyText();
     }
 
-    // Label logic
-    private String getLabel(final PaymentResultProps props) {
+    private String getLabel(@NonNull final  PaymentResultProps props) {
         if (props.hasCustomizedLabel()) {
             return props.getPreferenceLabel();
         } else if (props.paymentResult == null) {
@@ -309,26 +311,25 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
         return resourcesProvider.getEmptyText();
     }
 
-    private boolean isLabelEmpty(PaymentResult paymentResult) {
+    private boolean isLabelEmpty(@NonNull final PaymentResult paymentResult) {
         String status = paymentResult.getPaymentStatus();
         String statusDetail = paymentResult.getPaymentStatusDetail();
         return status.equals(Payment.StatusCodes.STATUS_APPROVED) || status.equals(Payment.StatusCodes.STATUS_IN_PROCESS) ||
                 (status.equals(Payment.StatusCodes.STATUS_PENDING) && !statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_WAITING_PAYMENT));
     }
 
-    private boolean isLabelPending(PaymentResult paymentResult) {
+    private boolean isLabelPending(@NonNull final PaymentResult paymentResult) {
         String status = paymentResult.getPaymentStatus();
         String statusDetail = paymentResult.getPaymentStatusDetail();
         return status.equals(Payment.StatusCodes.STATUS_PENDING) && statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_WAITING_PAYMENT);
     }
 
-    private boolean isLabelError(PaymentResult paymentResult) {
+    private boolean isLabelError(@NonNull final PaymentResult paymentResult) {
         return paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_REJECTED);
     }
 
-    private boolean isPaymentMethodOff(PaymentResult paymentResult) {
+    private boolean isPaymentMethodOff(@NonNull final PaymentResult paymentResult) {
         String paymentTypeId = paymentResult.getPaymentData().getPaymentMethod().getPaymentTypeId();
         return paymentTypeId.equals(PaymentTypes.TICKET) || paymentTypeId.equals(PaymentTypes.ATM) || paymentTypeId.equals(PaymentTypes.BANK_TRANSFER);
     }
-
 }
