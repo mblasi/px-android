@@ -121,6 +121,8 @@ public class PaymentResultPresenter extends MvpPresenter<PaymentResultPropsView,
     private void checkGetInstructions() {
         if (isPaymentMethodOff()) {
             getInstructionsAsync(paymentResult.getPaymentId(), paymentResult.getPaymentData().getPaymentMethod().getPaymentTypeId());
+        } else {
+            getView().notifyPropsChanged();
         }
     }
 
@@ -169,6 +171,7 @@ public class PaymentResultPresenter extends MvpPresenter<PaymentResultPropsView,
             navigator.showError(new MercadoPagoError(getResourcesProvider().getStandardErrorMessage(), false), ApiUtil.RequestOrigin.GET_INSTRUCTIONS);
         } else {
             getView().setPropInstruction(instruction, new AmountFormat(site.getCurrencyId(), amount));
+            getView().notifyPropsChanged();
         }
     }
 

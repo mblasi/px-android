@@ -20,6 +20,7 @@ public class PaymentResultPropsMutator implements Mutator, PaymentResultPropsVie
 
     //Component props with default values
     private PaymentResultProps props = new PaymentResultProps.Builder().build();
+    private PaymentResultProps batchProps = new PaymentResultProps.Builder().build();
 
     @Override
     public void setPropsListener(MutatorPropsListener listener) {
@@ -36,10 +37,8 @@ public class PaymentResultPropsMutator implements Mutator, PaymentResultPropsVie
                 .setPaymentResult(paymentResult)
                 .setPreference(paymentResultScreenPreference)
                 .setHeaderMode("wrap")
-                .setLoading(false)
                 .setAmountFormat(amountFormat)
                 .build();
-        notifyPropsChanged();
     }
 
     @Override
@@ -50,10 +49,9 @@ public class PaymentResultPropsMutator implements Mutator, PaymentResultPropsVie
                 .setAmountFormat(amountFormat)
                 .setLoading(false)
                 .build();
-        notifyPropsChanged();
     }
 
-    private void notifyPropsChanged() {
+    public void notifyPropsChanged() {
         if (propsListener != null) {
             propsListener.onProps(props);
         }

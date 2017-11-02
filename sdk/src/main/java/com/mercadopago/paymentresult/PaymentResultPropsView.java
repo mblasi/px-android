@@ -11,4 +11,6 @@ public interface PaymentResultPropsView extends MvpView {
     void setPropPaymentResult(final PaymentResult paymentResult, final PaymentResultScreenPreference paymentResultScreenPreference, final AmountFormat amountFormat);
 
     void setPropInstruction(final Instruction instruction, final AmountFormat amountFormat);
+
+    void notifyPropsChanged();
 }
