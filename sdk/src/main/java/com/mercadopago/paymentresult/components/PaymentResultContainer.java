@@ -73,7 +73,9 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
     public PaymentResultBodyComponent getBodyComponent() {
         PaymentResultBodyComponent body = null;
         if (props.paymentResult != null) {
-            final PaymentResultBodyProps bodyProps = new PaymentResultBodyProps(props.paymentResult.getPaymentStatus());
+            final PaymentResultBodyProps bodyProps = new PaymentResultBodyProps(
+                    props.paymentResult.getPaymentStatus(),
+                    props.paymentResult.getPaymentStatusDetail());
             body = new PaymentResultBodyComponent(bodyProps, getDispatcher());
         }
         return body;
