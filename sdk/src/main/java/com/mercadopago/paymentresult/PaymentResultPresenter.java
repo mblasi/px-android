@@ -1,5 +1,6 @@
 package com.mercadopago.paymentresult;
 
+import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.mercadopago.callbacks.FailureRecovery;
@@ -171,7 +172,14 @@ public class PaymentResultPresenter extends MvpPresenter<PaymentResultPropsView,
             navigator.showError(new MercadoPagoError(getResourcesProvider().getStandardErrorMessage(), false), ApiUtil.RequestOrigin.GET_INSTRUCTIONS);
         } else {
             getView().setPropInstruction(instruction, new AmountFormat(site.getCurrencyId(), amount));
-            getView().notifyPropsChanged();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getView().notifyPropsChanged();
+                }
+            }, 3000);
         }
     }
 
