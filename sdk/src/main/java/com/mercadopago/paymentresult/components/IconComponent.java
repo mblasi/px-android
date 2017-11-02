@@ -12,12 +12,9 @@ import com.mercadopago.paymentresult.props.IconProps;
 
 public class IconComponent extends Component<IconProps> {
 
-    public IconComponent(IconProps props, @NonNull final ActionDispatcher dispatcher) {
+    public IconComponent(@NonNull final IconProps props,
+                         @NonNull final ActionDispatcher dispatcher) {
         super(props, dispatcher);
     }
 
-    @Override
-    public void applyProps(@NonNull IconProps props) {
-
-    }
 }

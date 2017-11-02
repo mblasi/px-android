@@ -17,25 +17,29 @@ public class PaymentResultRenderer extends Renderer<PaymentResultContainer> {
 
     @Override
     public View render() {
-        View containerView;
-        if (component.getProps().loading) {
-            containerView = LayoutInflater.from(context).inflate(R.layout.mpsdk_loading_spinner, null, false);
-        } else {
-            containerView = LayoutInflater.from(context).inflate(R.layout.mpsdk_payment_result_container, null, false);
-            final ViewGroup parentViewGroup = (ViewGroup) containerView.findViewById(R.id.mpsdkPaymentResultContainer);
+        View view;
 
-            final Renderer headerRenderer = RendererFactory.create(context, component.headerComponent);
+        if (component.isLoading()) {
+
+            view = RendererFactory.create(context, component.getLoadingComponent()).render();
+
+        } else {
+
+            view = LayoutInflater.from(context).inflate(R.layout.mpsdk_payment_result_container, null, false);
+            final ViewGroup parentViewGroup = (ViewGroup) view.findViewById(R.id.mpsdkPaymentResultContainer);
+
+            final Renderer headerRenderer = RendererFactory.create(context, component.getHeaderComponent());
             final View header = headerRenderer.render();
             parentViewGroup.addView(header);
 
-            final Renderer bodyRenderer = RendererFactory.create(context, component.bodyComponent);
+            final Renderer bodyRenderer = RendererFactory.create(context, component.getBodyComponent());
             final View body = bodyRenderer.render();
             parentViewGroup.addView(body);
 
-            final Renderer footerRenderer = RendererFactory.create(context, component.footerComponent);
+            final Renderer footerRenderer = RendererFactory.create(context, component.getFooterComponent());
             final View footer = footerRenderer.render();
             parentViewGroup.addView(footer);
         }
-        return containerView;
+        return view;
     }
 }

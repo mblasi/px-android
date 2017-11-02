@@ -15,7 +15,6 @@ import com.mercadopago.paymentresult.components.PaymentResultBodyComponent;
  */
 
 public class PaymentResultBodyRenderer extends Renderer<PaymentResultBodyComponent> {
-
     @Override
     public View render() {
         final View bodyView = LayoutInflater.from(context).inflate(R.layout.mpsdk_payment_result_body, null, false);
@@ -23,9 +22,8 @@ public class PaymentResultBodyRenderer extends Renderer<PaymentResultBodyCompone
         final TextView textView = (TextView) bodyView.findViewById(R.id.bodyText);
         final TextView detailTextView = (TextView) bodyContainer.findViewById(R.id.detailText);
         stretchHeight(bodyContainer);
-        textView.setText(component.getProps().status);
-        detailTextView.setText(component.getProps().statusDetail);
+        textView.setText(component.props.status);
+        detailTextView.setText(component.props.statusDetail);
         return bodyView;
     }
-
 }

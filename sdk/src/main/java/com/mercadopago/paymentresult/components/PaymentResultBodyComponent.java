@@ -11,12 +11,8 @@ import com.mercadopago.paymentresult.props.PaymentResultBodyProps;
  */
 
 public class PaymentResultBodyComponent extends Component<PaymentResultBodyProps> {
-
-    public PaymentResultBodyComponent(PaymentResultBodyProps props, @NonNull final ActionDispatcher dispatcher) {
+    public PaymentResultBodyComponent(@NonNull final PaymentResultBodyProps props,
+                                      @NonNull final ActionDispatcher dispatcher) {
         super(props, dispatcher);
-    }
-
-    @Override
-    public void applyProps(@NonNull PaymentResultBodyProps props) {
     }
 }

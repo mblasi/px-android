@@ -33,7 +33,7 @@ public class IconRenderer extends Renderer<IconComponent> {
     private void renderIcon(@NonNull final ImageView imageView) {
         final int dimen = ScaleUtil.getPxFromDp(90, context);
         Picasso.with(context)
-                .load(component.getProps().iconImage)
+                .load(component.props.iconImage)
                 .transform(new CircleTransform())
                 .resize(dimen, dimen)
                 .centerInside()
@@ -41,11 +41,11 @@ public class IconRenderer extends Renderer<IconComponent> {
     }
 
     private void renderBadge(@NonNull final ImageView imageView) {
-        if (component.getProps().badgeImage == 0) {
+        if (component.props.badgeImage == 0) {
             imageView.setVisibility(View.INVISIBLE);
         } else {
             final Drawable badgeImage = ContextCompat.getDrawable(context,
-                    component.getProps().badgeImage);
+                    component.props.badgeImage);
             imageView.setImageDrawable(badgeImage);
             imageView.setVisibility(View.VISIBLE);
         }
