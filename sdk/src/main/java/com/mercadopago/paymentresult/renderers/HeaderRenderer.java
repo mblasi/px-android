@@ -1,11 +1,15 @@
 package com.mercadopago.paymentresult.renderers;
 
+import android.app.Activity;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.mercadopago.R;
@@ -28,6 +32,15 @@ public class HeaderRenderer extends Renderer<HeaderComponent> {
         final TextView titleTextView = (TextView) headerView.findViewById(R.id.mpsdkHeaderTitle);
         final ViewGroup iconParentViewGroup = (ViewGroup) headerView.findViewById(R.id.iconContainer);
         final TextView labelTextView = (TextView) headerView.findViewById(R.id.mpsdkHeaderLabel);
+        final int background = ContextCompat.getColor(context, component.props.background);
+
+        headerContainer.setBackgroundColor(background);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = ((Activity) context).getWindow(); //context.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(background);
+        }
 
         headerContainer.setBackgroundColor(ContextCompat.getColor(context, component.props.background));
         setText(labelTextView, component.props.label);
