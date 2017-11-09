@@ -22,22 +22,22 @@ import com.mercadopago.paymentresult.props.PaymentResultProps;
 
 public class PaymentResultContainer extends Component<PaymentResultProps> {
 
-    private static final int DEFAULT_BACKGROUND_COLOR = R.color.mpsdk_blue_MP;
-    private static final int GREEN_BACKGROUND_COLOR = R.color.mpsdk_green_MP;
-    private static final int RED_BACKGROUND_COLOR = R.color.mpsdk_red_MP;
-    private static final int ORANGE_BACKGROUND_COLOR = R.color.mpsdk_orange_MP;
+    public static final int DEFAULT_BACKGROUND_COLOR = R.color.mpsdk_blue_MP;
+    public static final int GREEN_BACKGROUND_COLOR = R.color.mpsdk_green_MP;
+    public static final int RED_BACKGROUND_COLOR = R.color.mpsdk_red_MP;
+    public static final int ORANGE_BACKGROUND_COLOR = R.color.mpsdk_orange_MP;
 
-    private static final int DEFAULT_ICON_IMAGE = R.drawable.mpsdk_icon_default;
-    private static final int ITEM_ICON_IMAGE = R.drawable.mpsdk_icon_product;
-    private static final int CARD_ICON_IMAGE = R.drawable.mpsdk_icon_card;
-    private static final int BOLETO_ICON_IMAGE = R.drawable.mpsdk_icon_boleto;
+    public static final int DEFAULT_ICON_IMAGE = R.drawable.mpsdk_icon_default;
+    public static final int ITEM_ICON_IMAGE = R.drawable.mpsdk_icon_product;
+    public static final int CARD_ICON_IMAGE = R.drawable.mpsdk_icon_card;
+    public static final int BOLETO_ICON_IMAGE = R.drawable.mpsdk_icon_boleto;
 
     //armar componente Badge que va como hijo
-    private static final int DEFAULT_BADGE_IMAGE = 0;
-    private static final int CHECK_BADGE_IMAGE = R.drawable.mpsdk_badge_check;
-    private static final int PENDING_BADGE_IMAGE = R.drawable.mpsdk_badge_pending;
-    private static final int ERROR_BADGE_IMAGE = R.drawable.mpsdk_badge_error;
-    private static final int WARNING_BADGE_IMAGE = R.drawable.mpsdk_badge_warning;
+    public static final int DEFAULT_BADGE_IMAGE = 0;
+    public static final int CHECK_BADGE_IMAGE = R.drawable.mpsdk_badge_check;
+    public static final int PENDING_BADGE_IMAGE = R.drawable.mpsdk_badge_pending;
+    public static final int ERROR_BADGE_IMAGE = R.drawable.mpsdk_badge_error;
+    public static final int WARNING_BADGE_IMAGE = R.drawable.mpsdk_badge_warning;
 
     public PaymentResultProvider resourcesProvider;
 
@@ -158,7 +158,6 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
         String status = paymentResult.getPaymentStatus();
         String statusDetail = paymentResult.getPaymentStatusDetail();
         return status.equals(Payment.StatusCodes.STATUS_APPROVED) ||
-                status.equals(Payment.StatusCodes.STATUS_IN_PROCESS) ||
                 (status.equals(Payment.StatusCodes.STATUS_PENDING) &&
                         statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_WAITING_PAYMENT));
     }
