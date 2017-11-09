@@ -115,7 +115,7 @@ public class PaymentResultProps {
     }
 
     private boolean isRejectedLabelValidState() {
-        return isRejectedTitleValidState();
+        return isStatusRejected();
     }
 
     public boolean hasCustomizedBadge() {
