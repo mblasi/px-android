@@ -10,7 +10,7 @@ import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentData;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.mvp.OnResourcesRetrievedCallback;
-import com.mercadopago.paymentresult.model.AmountFormat;
+import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
 
 import junit.framework.Assert;
@@ -315,12 +315,17 @@ public class PaymentResultTest {
     private class MockedPropsView implements PaymentResultPropsView {
 
         @Override
-        public void setPropPaymentResult(PaymentResult paymentResult, PaymentResultScreenPreference paymentResultScreenPreference, AmountFormat amountFormat) {
+        public void setPropPaymentResult(PaymentResult paymentResult, PaymentResultScreenPreference paymentResultScreenPreference, HeaderTitleFormatter amountFormat, boolean showLoading) {
 
         }
 
         @Override
-        public void setPropInstruction(Instruction instruction, AmountFormat amountFormat) {
+        public void setPropInstruction(Instruction instruction, HeaderTitleFormatter amountFormat, boolean showLoading) {
+
+        }
+
+        @Override
+        public void notifyPropsChanged() {
 
         }
 
@@ -391,12 +396,12 @@ public class PaymentResultTest {
         }
 
         @Override
-        public String getRejectedBadFilledOther() {
+        public String getRejectedCallForAuthorizeTitle() {
             return null;
         }
 
         @Override
-        public String getRejectedCallForAuthorizeTitle() {
+        public String getRejectedBadFilledOther() {
             return null;
         }
 

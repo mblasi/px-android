@@ -5,7 +5,8 @@ import android.support.annotation.NonNull;
 import com.mercadopago.model.Instruction;
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentResult;
-import com.mercadopago.paymentresult.model.AmountFormat;
+import com.mercadopago.paymentresult.formatter.AmountFormat;
+import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
 
 /**
@@ -18,7 +19,7 @@ public class PaymentResultProps {
     public final PaymentResultScreenPreference paymentResultScreenPreference;
     public final Instruction instruction;
     public final String headerMode;
-    public final AmountFormat amountFormat;
+    public final HeaderTitleFormatter amountFormat;
     public final boolean loading;
 
     public PaymentResultProps(@NonNull final Builder builder) {
@@ -193,7 +194,7 @@ public class PaymentResultProps {
         public PaymentResultScreenPreference paymentResultScreenPreference;
         public Instruction instruction;
         public String headerMode = "wrap";
-        public AmountFormat amountFormat;
+        public HeaderTitleFormatter amountFormat;
         public boolean loading = true;
 
         public Builder setPaymentResult(@NonNull final PaymentResult paymentResult) {
@@ -216,7 +217,7 @@ public class PaymentResultProps {
             return this;
         }
 
-        public Builder setAmountFormat(@NonNull final AmountFormat amountFormat) {
+        public Builder setAmountFormat(@NonNull final HeaderTitleFormatter amountFormat) {
             this.amountFormat = amountFormat;
             return this;
         }
