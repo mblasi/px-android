@@ -180,4 +180,8 @@
     <color name="mpsdk_green_MP">#00C677</color>
     <color name="mpsdk_red_MP">#FF4E55</color>
     <color name="mpsdk_orange_MP">#FFA644</color>
+    <color name="mpsdk_blue_status_MP">#008CD6</color>
+    <color name="mpsdk_green_status_MP">#00B26B</color>
+    <color name="mpsdk_red_status_MP">#E5464C</color>
+    <color name="mpsdk_orange_status_MP">#E5953D</color>
 </resources>

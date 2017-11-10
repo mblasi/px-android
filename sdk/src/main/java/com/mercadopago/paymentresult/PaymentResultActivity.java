@@ -101,6 +101,7 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
+        //TODO fix
         outState.putString(PRESENTER_BUNDLE, JsonUtil.getInstance().toJson(presenter));
 
         outState.putString(MERCHANT_PUBLIC_KEY_BUNDLE, merchantPublicKey);

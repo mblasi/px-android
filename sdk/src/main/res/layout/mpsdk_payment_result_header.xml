@@ -6,18 +6,18 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingBottom="50dp"
     android:paddingEnd="25dp"
     android:paddingLeft="25dp"
     android:paddingRight="25dp"
     android:paddingStart="25dp"
+    android:paddingBottom="50dp"
     tools:background="@color/mpsdk_green_MP">
 
     <FrameLayout
         android:id="@+id/iconContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp" />
 
     <com.mercadopago.customviews.MPTextView
         android:id="@+id/mpsdkHeaderLabel"
@@ -26,7 +26,7 @@
         android:layout_marginTop="13dp"
         android:gravity="center_horizontal"
         android:textColor="@color/mpsdk_white"
-        android:textSize="16sp"
+        android:textSize="16dp"
         tools:text="Lorem ipsum dolor sit" />
 
     <com.mercadopago.customviews.MPTextView
@@ -36,7 +36,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:textColor="@color/mpsdk_white"
-        android:textSize="26sp"
+        android:textSize="26dp"
         tools:text="¡Listo, se acreditó tu pago!" />
 
 </LinearLayout>
