@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.mercadopago.model.Instruction;
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentResult;
-import com.mercadopago.paymentresult.formatter.AmountFormat;
 import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
 
@@ -16,7 +15,7 @@ import com.mercadopago.preferences.PaymentResultScreenPreference;
 public class PaymentResultProps {
 
     public final PaymentResult paymentResult;
-    public final PaymentResultScreenPreference paymentResultScreenPreference;
+    public final PaymentResultScreenPreference preferences;
     public final Instruction instruction;
     public final String headerMode;
     public final HeaderTitleFormatter amountFormat;
@@ -25,7 +24,7 @@ public class PaymentResultProps {
     public PaymentResultProps(@NonNull final Builder builder) {
         this.paymentResult = builder.paymentResult;
         this.headerMode = builder.headerMode;
-        this.paymentResultScreenPreference = builder.paymentResultScreenPreference;
+        this.preferences = builder.preferences;
         this.instruction = builder.instruction;
         this.amountFormat = builder.amountFormat;
         this.loading = builder.loading;
@@ -34,7 +33,7 @@ public class PaymentResultProps {
     public Builder toBuilder() {
         return new Builder()
                 .setPaymentResult(this.paymentResult)
-                .setPreference(this.paymentResultScreenPreference)
+                .setPreference(this.preferences)
                 .setHeaderMode(this.headerMode)
                 .setInstruction(this.instruction)
                 .setAmountFormat(this.amountFormat)
@@ -42,26 +41,26 @@ public class PaymentResultProps {
     }
 
     public boolean hasCustomizedTitle() {
-        if (paymentResultScreenPreference != null) {
+        if (preferences != null) {
             if (isApprovedTitleValidState()) {
-                return paymentResultScreenPreference.getApprovedTitle() != null && !paymentResultScreenPreference.getApprovedTitle().isEmpty();
+                return preferences.getApprovedTitle() != null && !preferences.getApprovedTitle().isEmpty();
             } else if (isPendingTitleValidState()) {
-                return paymentResultScreenPreference.getPendingTitle() != null && !paymentResultScreenPreference.getPendingTitle().isEmpty();
+                return preferences.getPendingTitle() != null && !preferences.getPendingTitle().isEmpty();
             } else if (isRejectedTitleValidState()) {
-                return paymentResultScreenPreference.getRejectedTitle() != null && !paymentResultScreenPreference.getRejectedTitle().isEmpty();
+                return preferences.getRejectedTitle() != null && !preferences.getRejectedTitle().isEmpty();
             }
         }
         return false;
     }
 
     public String getPreferenceTitle() {
-        if (paymentResultScreenPreference != null) {
+        if (preferences != null) {
             if (isApprovedTitleValidState()) {
-                return paymentResultScreenPreference.getApprovedTitle();
+                return preferences.getApprovedTitle();
             } else if (isPendingTitleValidState()) {
-                return paymentResultScreenPreference.getPendingTitle();
+                return preferences.getPendingTitle();
             } else if (isRejectedTitleValidState()) {
-                return paymentResultScreenPreference.getRejectedTitle();
+                return preferences.getRejectedTitle();
             }
         }
         return "";
@@ -90,21 +89,21 @@ public class PaymentResultProps {
     }
 
     public boolean hasCustomizedLabel() {
-        if (paymentResultScreenPreference != null) {
+        if (preferences != null) {
             if (isApprovedLabelValidState()) {
-                return paymentResultScreenPreference.getApprovedLabelText() != null && !paymentResultScreenPreference.getApprovedLabelText().isEmpty();
+                return preferences.getApprovedLabelText() != null && !preferences.getApprovedLabelText().isEmpty();
             } else if (isRejectedLabelValidState()) {
-                return !paymentResultScreenPreference.isRejectedLabelTextEnabled();
+                return !preferences.isRejectedLabelTextEnabled();
             }
         }
         return false;
     }
 
     public String getPreferenceLabel() {
-        if (paymentResultScreenPreference != null) {
+        if (preferences != null) {
             if (isApprovedLabelValidState()) {
-                return paymentResultScreenPreference.getApprovedLabelText();
-            } else if (isRejectedLabelValidState() && !paymentResultScreenPreference.isRejectedLabelTextEnabled()) {
+                return preferences.getApprovedLabelText();
+            } else if (isRejectedLabelValidState() && !preferences.isRejectedLabelTextEnabled()) {
                 return "";
             }
         }
@@ -120,15 +119,15 @@ public class PaymentResultProps {
     }
 
     public boolean hasCustomizedBadge() {
-        if (paymentResultScreenPreference != null && isApprovedBadgeValidState()) {
-            return paymentResultScreenPreference.getApprovedBadge() != null && !paymentResultScreenPreference.getApprovedBadge().isEmpty();
+        if (preferences != null && isApprovedBadgeValidState()) {
+            return preferences.getApprovedBadge() != null && !preferences.getApprovedBadge().isEmpty();
         }
         return false;
     }
 
     public String getPreferenceBadge() {
-        if (paymentResultScreenPreference != null && isApprovedBadgeValidState()) {
-            return paymentResultScreenPreference.getApprovedBadge();
+        if (preferences != null && isApprovedBadgeValidState()) {
+            return preferences.getApprovedBadge();
         }
         return "";
     }
@@ -138,26 +137,26 @@ public class PaymentResultProps {
     }
 
     public boolean hasCustomizedIcon() {
-        if (paymentResultScreenPreference != null) {
+        if (preferences != null) {
             if (isApprovedIconValidState()) {
-                return paymentResultScreenPreference.getApprovedIcon() != null;
+                return preferences.getApprovedIcon() != null;
             } else if (isPendingIconValidState()) {
-                return paymentResultScreenPreference.getPendingIcon() != null;
+                return preferences.getPendingIcon() != null;
             } else if (isRejectedIconValidState()) {
-                return paymentResultScreenPreference.getRejectedIcon() != null;
+                return preferences.getRejectedIcon() != null;
             }
         }
         return false;
     }
 
     public int getPreferenceIcon() {
-        if (paymentResultScreenPreference != null) {
+        if (preferences != null) {
             if (isApprovedIconValidState()) {
-                return paymentResultScreenPreference.getApprovedIcon();
+                return preferences.getApprovedIcon();
             } else if (isPendingIconValidState()) {
-                return paymentResultScreenPreference.getPendingIcon();
+                return preferences.getPendingIcon();
             } else if (isRejectedIconValidState()) {
-                return paymentResultScreenPreference.getRejectedIcon();
+                return preferences.getRejectedIcon();
             }
         }
         return 0;
@@ -191,7 +190,10 @@ public class PaymentResultProps {
     public static class Builder {
 
         public PaymentResult paymentResult;
-        public PaymentResultScreenPreference paymentResultScreenPreference;
+
+        public PaymentResultScreenPreference preferences =
+                new PaymentResultScreenPreference.Builder().build();
+
         public Instruction instruction;
         public String headerMode = "wrap";
         public HeaderTitleFormatter amountFormat;
@@ -208,7 +210,7 @@ public class PaymentResultProps {
         }
 
         public Builder setPreference(@NonNull final PaymentResultScreenPreference paymentResultScreenPreference) {
-            this.paymentResultScreenPreference = paymentResultScreenPreference;
+            this.preferences = paymentResultScreenPreference;
             return this;
         }
 

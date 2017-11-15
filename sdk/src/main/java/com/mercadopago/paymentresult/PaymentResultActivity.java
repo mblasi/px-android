@@ -14,16 +14,17 @@ import com.mercadopago.core.MercadoPagoComponents;
 import com.mercadopago.exceptions.MercadoPagoError;
 import com.mercadopago.model.ApiException;
 import com.mercadopago.model.PaymentResult;
+import com.mercadopago.model.PaymentResultAction;
 import com.mercadopago.model.Site;
+import com.mercadopago.paymentresult.components.Footer;
+import com.mercadopago.paymentresult.components.FooterRenderer;
 import com.mercadopago.paymentresult.components.HeaderComponent;
 import com.mercadopago.paymentresult.components.IconComponent;
 import com.mercadopago.paymentresult.components.PaymentResultBodyComponent;
 import com.mercadopago.paymentresult.components.PaymentResultContainer;
-import com.mercadopago.paymentresult.components.PaymentResultFooterComponent;
 import com.mercadopago.paymentresult.renderers.HeaderRenderer;
 import com.mercadopago.paymentresult.renderers.IconRenderer;
 import com.mercadopago.paymentresult.renderers.PaymentResultBodyRenderer;
-import com.mercadopago.paymentresult.renderers.PaymentResultFooterRenderer;
 import com.mercadopago.paymentresult.renderers.PaymentResultRenderer;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.util.ApiUtil;
@@ -43,6 +44,8 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
 
     public static final String PRESENTER_BUNDLE = "presenter";
 
+    private static final String EXTRA_NEXT_ACTION = "nextAction";
+
     private PaymentResultPresenter presenter;
 
     private String merchantPublicKey;
@@ -61,17 +64,16 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         presenter = new PaymentResultPresenter(this);
         getActivityParameters();
 
-        PaymentResultProvider provider = new PaymentResultProviderImpl(this, merchantPublicKey, payerAccessToken);
+        final PaymentResultProvider provider = new PaymentResultProviderImpl(this, merchantPublicKey, payerAccessToken);
         presenter.attachView(mutator);
         presenter.attachResourcesProvider(provider);
-
 
         componentManager = new ComponentManager(this);
 
         RendererFactory.register(PaymentResultContainer.class, PaymentResultRenderer.class);
         RendererFactory.register(HeaderComponent.class, HeaderRenderer.class);
         RendererFactory.register(PaymentResultBodyComponent.class, PaymentResultBodyRenderer.class);
-        RendererFactory.register(PaymentResultFooterComponent.class, PaymentResultFooterRenderer.class);
+        RendererFactory.register(Footer.class, FooterRenderer.class);
         RendererFactory.register(IconComponent.class, IconRenderer.class);
         RendererFactory.register(LoadingComponent.class, LoadingRenderer.class);
 
@@ -142,9 +144,9 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         merchantPublicKey = getIntent().getStringExtra("merchantPublicKey");
         payerAccessToken = getIntent().getStringExtra("payerAccessToken");
         congratsDisplay = getIntent().getIntExtra("congratsDisplay", -1);
-        paymentResultScreenPreference = JsonUtil.getInstance().fromJson(getIntent().getExtras().getString("paymentResultScreenPreference"), PaymentResultScreenPreference.class);
+        paymentResultScreenPreference = JsonUtil.getInstance().fromJson(getIntent().getExtras().getString("preferences"), PaymentResultScreenPreference.class);
 
-        presenter.setPaymentResultScreenPreference(paymentResultScreenPreference);
+        presenter.setPreferences(paymentResultScreenPreference);
     }
 
     @Override
@@ -187,6 +189,32 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
 
     private void finishWithOkResult(final int resultCode, final Intent data) {
         setResult(resultCode, data);
+        finish();
+    }
+
+    @Override
+    public void finishWithResult(int resultCode) {
+        final Intent intent = new Intent();
+        intent.putExtra("resultCode", resultCode);
+        setResult(resultCode, intent);
+        finish();
+    }
+
+    @Override
+    public void changePaymentMethod() {
+        final Intent returnIntent = new Intent();
+        final String action = PaymentResultAction.SELECT_OTHER_PAYMENT_METHOD;
+        returnIntent.putExtra(EXTRA_NEXT_ACTION, action);
+        setResult(RESULT_CANCELED, returnIntent);
+        finish();
+    }
+
+    @Override
+    public void recoverPayment() {
+        final Intent returnIntent = new Intent();
+        final String action = PaymentResultAction.RECOVER_PAYMENT;
+        returnIntent.putExtra(EXTRA_NEXT_ACTION, action);
+        setResult(RESULT_CANCELED, returnIntent);
         finish();
     }
 }
