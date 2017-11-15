@@ -1,5 +1,6 @@
 package com.mercadopago.paymentresult;
 
+import com.mercadopago.R;
 import com.mercadopago.model.Instructions;
 import com.mercadopago.mvp.OnResourcesRetrievedCallback;
 import com.mercadopago.mvp.ResourcesProvider;
@@ -39,4 +40,10 @@ public interface PaymentResultProvider extends ResourcesProvider {
     String getPendingLabel();
 
     String getRejectionLabel();
+
+    String getExitButtonDefaultText();
+
+    String getChengePaymentMethodLabel();
+
+    String getRecoverPayment();
 }
