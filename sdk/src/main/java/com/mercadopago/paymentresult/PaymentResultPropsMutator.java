@@ -9,6 +9,7 @@ import com.mercadopago.model.PaymentResult;
 import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
 import com.mercadopago.paymentresult.props.PaymentResultProps;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
+import com.mercadopago.preferences.ServicePreference;
 
 /**
  * Created by vaserber on 10/20/17.
@@ -40,20 +41,22 @@ public class PaymentResultPropsMutator implements Mutator, PaymentResultPropsVie
     }
 
     @Override
-    public void setPreferences(@NonNull final PaymentResultScreenPreference preferences) {
+    public void setPaymentResultScreenPreference(@NonNull final PaymentResultScreenPreference preferences) {
         props = props.toBuilder()
-                .setPreference(preferences)
+                .setPaymentResultScreenPreference(preferences)
                 .build();
     }
 
     @Override
     public void setPropInstruction(@NonNull final Instruction instruction,
                                    @NonNull final HeaderTitleFormatter amountFormat,
-                                   final boolean showLoading) {
+                                   final boolean showLoading,
+                                   @NonNull final String processingMode) {
         props = props.toBuilder()
                 .setInstruction(instruction)
                 .setAmountFormat(amountFormat)
                 .setLoading(showLoading)
+                .setProcessingMode(processingMode)
                 .build();
     }
 
@@ -66,4 +69,5 @@ public class PaymentResultPropsMutator implements Mutator, PaymentResultPropsVie
     public void renderDefaultProps() {
         notifyPropsChanged();
     }
+
 }

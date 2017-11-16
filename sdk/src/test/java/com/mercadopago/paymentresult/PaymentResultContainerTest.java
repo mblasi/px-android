@@ -677,7 +677,7 @@ public class PaymentResultContainerTest {
         PaymentResultProps paymentResultProps = new PaymentResultProps.Builder()
                 .setPaymentResult(paymentResult)
                 .setInstruction(instruction)
-                .setPreference(preference)
+                .setPaymentResultScreenPreference(preference)
                 .build();
         container.setProps(paymentResultProps);
         return container.getHeaderComponent().props;
@@ -688,7 +688,7 @@ public class PaymentResultContainerTest {
 
         PaymentResultProps paymentResultProps = new PaymentResultProps.Builder()
                 .setPaymentResult(paymentResult)
-                .setPreference(preference)
+                .setPaymentResultScreenPreference(preference)
                 .build();
         container.setProps(paymentResultProps);
         return container.getHeaderComponent().props;
@@ -809,6 +809,21 @@ public class PaymentResultContainerTest {
         @Override
         public String getRejectionLabel() {
             return REJECTION_LABEL;
+        }
+
+        @Override
+        public String getExitButtonDefaultText() {
+            return null;
+        }
+
+        @Override
+        public String getRecoverPayment() {
+            return null;
+        }
+
+        @Override
+        public String getChangePaymentMethodLabel() {
+            return null;
         }
     }
 }

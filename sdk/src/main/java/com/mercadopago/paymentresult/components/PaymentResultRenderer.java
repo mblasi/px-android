@@ -1,4 +1,4 @@
-package com.mercadopago.paymentresult.renderers;
+package com.mercadopago.paymentresult.components;
 
 import android.view.LayoutInflater;
 import android.view.View;

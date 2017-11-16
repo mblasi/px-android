@@ -127,7 +127,7 @@ public class PaymentResultProviderImpl implements PaymentResultProvider {
     }
 
     @Override
-    public String getChengePaymentMethodLabel() {
+    public String getChangePaymentMethodLabel() {
         return context.getString(R.string.mpsdk_text_pay_with_other_method);
     }
 

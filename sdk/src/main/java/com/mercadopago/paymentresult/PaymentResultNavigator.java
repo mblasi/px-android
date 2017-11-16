@@ -13,6 +13,8 @@ public interface PaymentResultNavigator {
 
     void showError(MercadoPagoError error, String requestOrigin);
 
+    void openLink(String url);
+
     void finishWithResult(final int resultCode);
 
     void changePaymentMethod();

@@ -1,5 +1,7 @@
 package com.mercadopago.paymentresult;
 
+import android.support.annotation.NonNull;
+
 import com.mercadopago.constants.Sites;
 import com.mercadopago.exceptions.MercadoPagoError;
 import com.mercadopago.mocks.PaymentMethods;
@@ -315,12 +317,17 @@ public class PaymentResultTest {
     private class MockedPropsView implements PaymentResultPropsView {
 
         @Override
-        public void setPropPaymentResult(PaymentResult paymentResult, PaymentResultScreenPreference paymentResultScreenPreference, HeaderTitleFormatter amountFormat, boolean showLoading) {
+        public void setPropPaymentResult(@NonNull PaymentResult paymentResult, HeaderTitleFormatter amountFormat, boolean showLoading) {
 
         }
 
         @Override
-        public void setPropInstruction(Instruction instruction, HeaderTitleFormatter amountFormat, boolean showLoading) {
+        public void setPaymentResultScreenPreference(@NonNull PaymentResultScreenPreference paymentResultScreenPreference) {
+
+        }
+
+        @Override
+        public void setPropInstruction(@NonNull Instruction instruction, @NonNull HeaderTitleFormatter amountFormat, boolean showLoading, @NonNull String processingMode) {
 
         }
 
@@ -419,6 +426,21 @@ public class PaymentResultTest {
         public String getRejectionLabel() {
             return null;
         }
+
+        @Override
+        public String getExitButtonDefaultText() {
+            return null;
+        }
+
+        @Override
+        public String getChangePaymentMethodLabel() {
+            return null;
+        }
+
+        @Override
+        public String getRecoverPayment() {
+            return null;
+        }
     }
 
     private class MockedNavigator implements PaymentResultNavigator {
@@ -433,6 +455,26 @@ public class PaymentResultTest {
         @Override
         public void showError(MercadoPagoError error, String requestOrigin) {
             this.errorShown = true;
+        }
+
+        @Override
+        public void openLink(String url) {
+
+        }
+
+        @Override
+        public void changePaymentMethod() {
+
+        }
+
+        @Override
+        public void finishWithResult(int resultCode) {
+
+        }
+
+        @Override
+        public void recoverPayment() {
+
         }
     }
 }

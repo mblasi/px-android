@@ -43,7 +43,7 @@ public interface PaymentResultProvider extends ResourcesProvider {
 
     String getExitButtonDefaultText();
 
-    String getChengePaymentMethodLabel();
+    String getChangePaymentMethodLabel();
 
     String getRecoverPayment();
 }

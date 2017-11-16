@@ -2,8 +2,8 @@ package com.mercadopago.paymentresult;
 
 import com.mercadopago.components.Action;
 import com.mercadopago.components.ActionDispatcher;
-import com.mercadopago.paymentresult.components.HeaderComponent;
-import com.mercadopago.paymentresult.components.IconComponent;
+import com.mercadopago.paymentresult.components.Header;
+import com.mercadopago.paymentresult.components.Icon;
 import com.mercadopago.paymentresult.props.HeaderProps;
 import com.mercadopago.paymentresult.props.IconProps;
 
@@ -15,7 +15,7 @@ import org.junit.Test;
  * Created by vaserber on 11/2/17.
  */
 
-public class HeaderComponentTest {
+public class HeaderTest {
 
     private static final int ICON_IMAGE = 1;
     private static final int BACKGROUND = 2;
@@ -28,7 +28,7 @@ public class HeaderComponentTest {
     public void testHeaderHasIconComponent() {
 
         final HeaderProps headerProps = getMockedHeaderProps();
-        final IconComponent iconComponent = getIconComponent(headerProps);
+        final Icon iconComponent = getIconComponent(headerProps);
 
         Assert.assertNotNull(iconComponent);
     }
@@ -37,7 +37,7 @@ public class HeaderComponentTest {
     public void testIconComponentHasValidProps() {
 
         final HeaderProps headerProps = getMockedHeaderProps();
-        final IconComponent iconComponent = getIconComponent(headerProps);
+        final Icon iconComponent = getIconComponent(headerProps);
         final IconProps iconProps = iconComponent.props;
 
         Assert.assertEquals(iconProps.iconImage, ICON_IMAGE);
@@ -55,9 +55,9 @@ public class HeaderComponentTest {
                 .build();
     }
 
-    private IconComponent getIconComponent(HeaderProps headerProps) {
+    private Icon getIconComponent(HeaderProps headerProps) {
         final MockedActionDispatcher dispatcher = new MockedActionDispatcher();
-        final HeaderComponent headerComponent = new HeaderComponent(headerProps, dispatcher);
+        final Header headerComponent = new Header(headerProps, dispatcher);
         return headerComponent.getIconComponent();
     }
 

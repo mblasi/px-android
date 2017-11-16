@@ -1,4 +1,4 @@
-package com.mercadopago.paymentresult.renderers;
+package com.mercadopago.paymentresult.components;
 
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.mercadopago.R;
 import com.mercadopago.components.Renderer;
-import com.mercadopago.paymentresult.components.IconComponent;
+import com.mercadopago.paymentresult.components.Icon;
 import com.mercadopago.util.CircleTransform;
 import com.mercadopago.util.ScaleUtil;
 import com.squareup.picasso.Picasso;
@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
  * Created by vaserber on 10/23/17.
  */
 
-public class IconRenderer extends Renderer<IconComponent> {
+public class IconRenderer extends Renderer<Icon> {
 
     @Override
     public View render() {
