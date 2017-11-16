@@ -1,6 +1,7 @@
 package com.mercadopago.paymentresult;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -16,17 +17,42 @@ import com.mercadopago.model.ApiException;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.model.PaymentResultAction;
 import com.mercadopago.model.Site;
+import com.mercadopago.paymentresult.components.AccreditationComment;
+import com.mercadopago.paymentresult.components.AccreditationTime;
 import com.mercadopago.paymentresult.components.Footer;
 import com.mercadopago.paymentresult.components.FooterRenderer;
-import com.mercadopago.paymentresult.components.HeaderComponent;
-import com.mercadopago.paymentresult.components.IconComponent;
-import com.mercadopago.paymentresult.components.PaymentResultBodyComponent;
+import com.mercadopago.paymentresult.components.Header;
+import com.mercadopago.paymentresult.components.Icon;
+import com.mercadopago.paymentresult.components.InstructionReferenceComponent;
+import com.mercadopago.paymentresult.components.InstructionsAction;
+import com.mercadopago.paymentresult.components.InstructionsActions;
+import com.mercadopago.paymentresult.components.Instructions;
+import com.mercadopago.paymentresult.components.InstructionsContent;
+import com.mercadopago.paymentresult.components.InstructionsInfo;
+import com.mercadopago.paymentresult.components.InstructionsReferences;
+import com.mercadopago.paymentresult.components.InstructionsSecondaryInfo;
+import com.mercadopago.paymentresult.components.InstructionsSubtitle;
+import com.mercadopago.paymentresult.components.InstructionsTertiaryInfo;
+import com.mercadopago.paymentresult.components.Body;
 import com.mercadopago.paymentresult.components.PaymentResultContainer;
-import com.mercadopago.paymentresult.renderers.HeaderRenderer;
-import com.mercadopago.paymentresult.renderers.IconRenderer;
-import com.mercadopago.paymentresult.renderers.PaymentResultBodyRenderer;
-import com.mercadopago.paymentresult.renderers.PaymentResultRenderer;
+import com.mercadopago.paymentresult.components.AccreditationCommentRenderer;
+import com.mercadopago.paymentresult.components.AccreditationTimeRenderer;
+import com.mercadopago.paymentresult.components.HeaderRenderer;
+import com.mercadopago.paymentresult.components.IconRenderer;
+import com.mercadopago.paymentresult.components.InstructionReferenceRenderer;
+import com.mercadopago.paymentresult.components.InstructionsActionRenderer;
+import com.mercadopago.paymentresult.components.InstructionsActionsRenderer;
+import com.mercadopago.paymentresult.components.InstructionsContentRenderer;
+import com.mercadopago.paymentresult.components.InstructionsInfoRenderer;
+import com.mercadopago.paymentresult.components.InstructionsReferencesRenderer;
+import com.mercadopago.paymentresult.components.InstructionsRenderer;
+import com.mercadopago.paymentresult.components.InstructionsSecondaryInfoRenderer;
+import com.mercadopago.paymentresult.components.InstructionsSubtitleRenderer;
+import com.mercadopago.paymentresult.components.InstructionsTertiaryInfoRenderer;
+import com.mercadopago.paymentresult.components.PaymentResultBodyRenderer;
+import com.mercadopago.paymentresult.components.PaymentResultRenderer;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
+import com.mercadopago.preferences.ServicePreference;
 import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
@@ -52,6 +78,7 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
     private String payerAccessToken;
     private Integer congratsDisplay;
     private PaymentResultScreenPreference paymentResultScreenPreference;
+    private ServicePreference servicePreference;
 
     private ComponentManager componentManager;
 
@@ -71,11 +98,23 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         componentManager = new ComponentManager(this);
 
         RendererFactory.register(PaymentResultContainer.class, PaymentResultRenderer.class);
-        RendererFactory.register(HeaderComponent.class, HeaderRenderer.class);
-        RendererFactory.register(PaymentResultBodyComponent.class, PaymentResultBodyRenderer.class);
+        RendererFactory.register(Header.class, HeaderRenderer.class);
+        RendererFactory.register(Body.class, PaymentResultBodyRenderer.class);
         RendererFactory.register(Footer.class, FooterRenderer.class);
-        RendererFactory.register(IconComponent.class, IconRenderer.class);
+        RendererFactory.register(Icon.class, IconRenderer.class);
         RendererFactory.register(LoadingComponent.class, LoadingRenderer.class);
+        RendererFactory.register(Instructions.class, InstructionsRenderer.class);
+        RendererFactory.register(InstructionsSubtitle.class, InstructionsSubtitleRenderer.class);
+        RendererFactory.register(InstructionsContent.class, InstructionsContentRenderer.class);
+        RendererFactory.register(InstructionsInfo.class, InstructionsInfoRenderer.class);
+        RendererFactory.register(InstructionsReferences.class, InstructionsReferencesRenderer.class);
+        RendererFactory.register(InstructionReferenceComponent.class, InstructionReferenceRenderer.class);
+        RendererFactory.register(AccreditationTime.class, AccreditationTimeRenderer.class);
+        RendererFactory.register(AccreditationComment.class, AccreditationCommentRenderer.class);
+        RendererFactory.register(InstructionsSecondaryInfo.class, InstructionsSecondaryInfoRenderer.class);
+        RendererFactory.register(InstructionsTertiaryInfo.class, InstructionsTertiaryInfoRenderer.class);
+        RendererFactory.register(InstructionsActions.class, InstructionsActionsRenderer.class);
+        RendererFactory.register(InstructionsAction.class, InstructionsActionRenderer.class);
 
         final Component root = new PaymentResultContainer(componentManager, provider);
         componentManager.setActionsListener(presenter);
@@ -103,7 +142,7 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
-        //TODO fix
+        //TODO fix: explota al abrir el link de las instrucciones y al salir de la activity
         outState.putString(PRESENTER_BUNDLE, JsonUtil.getInstance().toJson(presenter));
 
         outState.putString(MERCHANT_PUBLIC_KEY_BUNDLE, merchantPublicKey);
@@ -144,9 +183,11 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         merchantPublicKey = getIntent().getStringExtra("merchantPublicKey");
         payerAccessToken = getIntent().getStringExtra("payerAccessToken");
         congratsDisplay = getIntent().getIntExtra("congratsDisplay", -1);
-        paymentResultScreenPreference = JsonUtil.getInstance().fromJson(getIntent().getExtras().getString("preferences"), PaymentResultScreenPreference.class);
+        servicePreference = JsonUtil.getInstance().fromJson(getIntent().getExtras().getString("servicePreference"), ServicePreference.class);
+        paymentResultScreenPreference = JsonUtil.getInstance().fromJson(getIntent().getExtras().getString("paymentResultScreenPreference"), PaymentResultScreenPreference.class);
 
-        presenter.setPreferences(paymentResultScreenPreference);
+        presenter.setServicePreference(servicePreference);
+        presenter.setPaymentResultScreenPreference(paymentResultScreenPreference);
     }
 
     @Override
@@ -193,6 +234,12 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
     }
 
     @Override
+    public void openLink(String url) {
+        //TODO agregar try catch
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+    }
+
     public void finishWithResult(int resultCode) {
         final Intent intent = new Intent();
         intent.putExtra("resultCode", resultCode);

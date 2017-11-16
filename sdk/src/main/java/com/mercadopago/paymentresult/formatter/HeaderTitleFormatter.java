@@ -51,9 +51,10 @@ public class HeaderTitleFormatter extends AmountFormat {
         }
 
         //Position symbol higher
+        int symbolLength = getSymbolLength();
         SpannableStringBuilder spannableAmount = new SpannableStringBuilder(amountWithDecimals);
-        spannableAmount.setSpan(new RelativeSizeSpan(0.5f), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spannableAmount.setSpan(new SuperscriptSpanAdjuster(0.65f), 0, 1, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableAmount.setSpan(new RelativeSizeSpan(0.5f), 0, symbolLength, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableAmount.setSpan(new SuperscriptSpanAdjuster(0.65f), 0, symbolLength, SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         //Position decimals higher
         if (fromDecimals != 0 && toDecimals != 0) {

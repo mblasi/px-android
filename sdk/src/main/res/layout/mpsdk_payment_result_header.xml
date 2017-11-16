@@ -26,7 +26,7 @@
         android:layout_marginTop="13dp"
         android:gravity="center_horizontal"
         android:textColor="@color/mpsdk_white"
-        android:textSize="16dp"
+        android:textSize="16sp"
         tools:text="Lorem ipsum dolor sit" />
 
     <com.mercadopago.customviews.MPTextView
@@ -36,7 +36,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:textColor="@color/mpsdk_white"
-        android:textSize="26dp"
+        android:textSize="26sp"
         tools:text="¡Listo, se acreditó tu pago!" />
 
 </LinearLayout>

@@ -11,20 +11,20 @@ import com.mercadopago.paymentresult.props.IconProps;
  * Created by vaserber on 10/20/17.
  */
 
-public class HeaderComponent extends Component<HeaderProps> {
+public class Header extends Component<HeaderProps> {
 
-    public HeaderComponent(@NonNull final HeaderProps props,
-                           @NonNull final ActionDispatcher dispatcher) {
+    public Header(@NonNull final HeaderProps props,
+                  @NonNull final ActionDispatcher dispatcher) {
         super(props, dispatcher);
     }
 
-    public IconComponent getIconComponent() {
+    public Icon getIconComponent() {
 
         final IconProps iconProps = new IconProps.Builder()
                 .setIconImage(props.iconImage)
                 .setBadgeImage(props.badgeImage)
                 .build();
 
-        return new IconComponent(iconProps, getDispatcher());
+        return new Icon(iconProps, getDispatcher());
     }
 }

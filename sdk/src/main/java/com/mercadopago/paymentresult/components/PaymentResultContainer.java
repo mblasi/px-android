@@ -65,7 +65,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
         return new LoadingComponent(getDispatcher());
     }
 
-    public HeaderComponent getHeaderComponent() {
+    public Header getHeaderComponent() {
 
         final HeaderProps headerProps = new HeaderProps.Builder()
                 .setHeight(props.headerMode)
@@ -78,16 +78,18 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
                 .setAmountFormat(props.amountFormat)
                 .build();
 
-        return new HeaderComponent(headerProps, getDispatcher());
+        return new Header(headerProps, getDispatcher());
     }
 
-    public PaymentResultBodyComponent getBodyComponent() {
-        PaymentResultBodyComponent body = null;
+    public Body getBodyComponent() {
+        Body body = null;
         if (props.paymentResult != null) {
             final PaymentResultBodyProps bodyProps = new PaymentResultBodyProps(
                     props.paymentResult.getPaymentStatus(),
-                    props.paymentResult.getPaymentStatusDetail());
-            body = new PaymentResultBodyComponent(bodyProps, getDispatcher());
+                    props.paymentResult.getPaymentStatusDetail(),
+                    props.instruction,
+                    props.processingMode);
+            body = new Body(bodyProps, getDispatcher());
         }
         return body;
     }
@@ -100,7 +102,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
     private Footer.Props getFooterProps() {
 
         Footer.FooterAction buttonAction = new Footer.FooterAction(
-            resourcesProvider.getChengePaymentMethodLabel(),
+            resourcesProvider.getChangePaymentMethodLabel(),
             new ChangePaymentMethodAction()
         );
 

@@ -1,46 +1,35 @@
-package com.mercadopago.paymentresult.renderers;
+package com.mercadopago.paymentresult.components;
 
 import android.app.Activity;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.SuperscriptSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.mercadopago.R;
 import com.mercadopago.components.Renderer;
 import com.mercadopago.components.RendererFactory;
-import com.mercadopago.paymentresult.components.HeaderComponent;
-import com.mercadopago.util.CurrenciesUtil;
-import com.mercadopago.util.SuperscriptSpanAdjuster;
-
-import java.math.BigDecimal;
+import com.mercadopago.customviews.MPTextView;
+import com.mercadopago.paymentresult.components.Header;
 
 /**
  * Created by vaserber on 10/20/17.
  */
 
-public class HeaderRenderer extends Renderer<HeaderComponent> {
+public class HeaderRenderer extends Renderer<Header> {
 
     @Override
     public View render() {
 
         final View headerView = LayoutInflater.from(context).inflate(R.layout.mpsdk_payment_result_header, null, false);
         final ViewGroup headerContainer = headerView.findViewById(R.id.mpsdkPaymentResultContainerHeader);
-        final TextView titleTextView = headerView.findViewById(R.id.mpsdkHeaderTitle);
+        final MPTextView titleTextView = headerView.findViewById(R.id.mpsdkHeaderTitle);
         final ViewGroup iconParentViewGroup = headerView.findViewById(R.id.iconContainer);
-        final TextView labelTextView = headerView.findViewById(R.id.mpsdkHeaderLabel);
+        final MPTextView labelTextView = headerView.findViewById(R.id.mpsdkHeaderLabel);
         final int background = ContextCompat.getColor(context, component.props.background);
         final int statusBarColor = ContextCompat.getColor(context, component.props.statusBarColor);
 
@@ -69,7 +58,7 @@ public class HeaderRenderer extends Renderer<HeaderComponent> {
         parent.addView(icon);
     }
 
-    private void renderTitle(@NonNull final TextView titleTextView) {
+    private void renderTitle(@NonNull final MPTextView titleTextView) {
         if (component.props.amountFormat == null) {
             setText(titleTextView, component.props.title);
         } else {

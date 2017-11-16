@@ -94,6 +94,11 @@ public class AmountFormat {
         return wholeNumber;
     }
 
+    protected int getSymbolLength() {
+        Currency currency = CurrenciesUtil.currenciesList.get(currencyId);
+        return currency.getSymbol().length();
+    }
+
     protected CharSequence insertSpannedAmountInText(String title, SpannableStringBuilder spannedAmount) {
         Currency currency = CurrenciesUtil.currenciesList.get(currencyId);
 
@@ -106,8 +111,9 @@ public class AmountFormat {
             String firstSubstring = formattedText.substring(0, index);
             String secondSubstring = formattedText.substring(index + 1, formattedText.length());
 
-            CharSequence auxSubstring = TextUtils.concat(firstSubstring, spannedAmount);
-            result = TextUtils.concat(auxSubstring, secondSubstring);
+            CharSequence auxSubstring1 = TextUtils.concat(firstSubstring, "\n");
+            CharSequence auxSubstring2 = TextUtils.concat(auxSubstring1, spannedAmount);
+            result = TextUtils.concat(auxSubstring2, secondSubstring);
         }
 
         return result;

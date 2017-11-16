@@ -1,18 +1,22 @@
 package com.mercadopago.paymentresult;
 
+import android.support.annotation.NonNull;
+
 import com.mercadopago.model.Instruction;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.mvp.MvpView;
 import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
+import com.mercadopago.preferences.ServicePreference;
 
 public interface PaymentResultPropsView extends MvpView {
 
-    void setPropPaymentResult(final PaymentResult paymentResult, final HeaderTitleFormatter amountFormat, final boolean showLoading);
+    void setPropPaymentResult(@NonNull final PaymentResult paymentResult, final HeaderTitleFormatter amountFormat, final boolean showLoading);
 
-    void setPreferences(final PaymentResultScreenPreference paymentResultScreenPreference);
+    void setPaymentResultScreenPreference(@NonNull final PaymentResultScreenPreference paymentResultScreenPreference);
 
-    void setPropInstruction(final Instruction instruction, final HeaderTitleFormatter amountFormat, final boolean showLoading);
+    void setPropInstruction(@NonNull final Instruction instruction, @NonNull final HeaderTitleFormatter amountFormat, final boolean showLoading, @NonNull final String processingMode);
 
     void notifyPropsChanged();
+
 }

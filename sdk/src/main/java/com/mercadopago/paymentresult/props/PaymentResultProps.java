@@ -20,6 +20,7 @@ public class PaymentResultProps {
     public final String headerMode;
     public final HeaderTitleFormatter amountFormat;
     public final boolean loading;
+    public final String processingMode;
 
     public PaymentResultProps(@NonNull final Builder builder) {
         this.paymentResult = builder.paymentResult;
@@ -28,16 +29,18 @@ public class PaymentResultProps {
         this.instruction = builder.instruction;
         this.amountFormat = builder.amountFormat;
         this.loading = builder.loading;
+        this.processingMode = builder.processingMode;
     }
 
     public Builder toBuilder() {
         return new Builder()
                 .setPaymentResult(this.paymentResult)
-                .setPreference(this.preferences)
+                .setPaymentResultScreenPreference(this.preferences)
                 .setHeaderMode(this.headerMode)
                 .setInstruction(this.instruction)
                 .setAmountFormat(this.amountFormat)
-                .setLoading(this.loading);
+                .setLoading(this.loading)
+                .setProcessingMode(this.processingMode);
     }
 
     public boolean hasCustomizedTitle() {
@@ -198,6 +201,7 @@ public class PaymentResultProps {
         public String headerMode = "wrap";
         public HeaderTitleFormatter amountFormat;
         public boolean loading = true;
+        public String processingMode;
 
         public Builder setPaymentResult(@NonNull final PaymentResult paymentResult) {
             this.paymentResult = paymentResult;
@@ -209,7 +213,7 @@ public class PaymentResultProps {
             return this;
         }
 
-        public Builder setPreference(@NonNull final PaymentResultScreenPreference paymentResultScreenPreference) {
+        public Builder setPaymentResultScreenPreference(@NonNull final PaymentResultScreenPreference paymentResultScreenPreference) {
             this.preferences = paymentResultScreenPreference;
             return this;
         }
@@ -226,6 +230,11 @@ public class PaymentResultProps {
 
         public Builder setLoading(final boolean loading) {
             this.loading = loading;
+            return this;
+        }
+
+        public Builder setProcessingMode(String processingMode) {
+            this.processingMode = processingMode;
             return this;
         }
 

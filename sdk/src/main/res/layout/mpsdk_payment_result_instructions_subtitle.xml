@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="98dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/mpsdk_white"
+    android:padding="24dp">
+
+    <com.mercadopago.customviews.MPTextView
+        android:id="@+id/msdpkInstructionsSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/mpsdk_brownish_grey"
+        android:textSize="22sp"
+        tools:text="subtitle"/>
+
+</FrameLayout>
