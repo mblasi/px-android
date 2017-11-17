@@ -82,6 +82,11 @@ public class PaymentResultProviderImpl implements PaymentResultProvider {
     }
 
     @Override
+    public String getRejectedBadFilledCardTitle() {
+        return context.getString(R.string.mpsdk_text_card_data_invalid);
+    }
+
+    @Override
     public String getRejectedHighRiskTitle() {
         return context.getString(R.string.mpsdk_title_rejection_high_risk);
     }
@@ -122,6 +127,16 @@ public class PaymentResultProviderImpl implements PaymentResultProvider {
     }
 
     @Override
+    public String getCancelPayment() {
+        return context.getString(R.string.mpsdk_cancel_payment);
+    }
+
+    @Override
+    public String getContinueShopping() {
+        return context.getString(R.string.mpsdk_continue_shopping);
+    }
+
+    @Override
     public String getExitButtonDefaultText() {
         return context.getString(R.string.mpsdk_cancel_payment);
     }
@@ -134,5 +149,10 @@ public class PaymentResultProviderImpl implements PaymentResultProvider {
     @Override
     public String getRecoverPayment() {
         return context.getString(R.string.mpsdk_text_enter_again);
+    }
+
+    @Override
+    public String getCardEnabled() {
+        return context.getString(R.string.mpsdk_text_card_enabled);
     }
 }

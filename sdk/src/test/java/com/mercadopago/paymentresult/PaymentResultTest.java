@@ -388,6 +388,11 @@ public class PaymentResultTest {
         }
 
         @Override
+        public String getRejectedBadFilledCardTitle() {
+            return null;
+        }
+
+        @Override
         public String getRejectedHighRiskTitle() {
             return null;
         }
@@ -428,6 +433,16 @@ public class PaymentResultTest {
         }
 
         @Override
+        public String getCancelPayment() {
+            return null;
+        }
+
+        @Override
+        public String getContinueShopping() {
+            return null;
+        }
+
+        @Override
         public String getExitButtonDefaultText() {
             return null;
         }
@@ -439,6 +454,11 @@ public class PaymentResultTest {
 
         @Override
         public String getRecoverPayment() {
+            return null;
+        }
+
+        @Override
+        public String getCardEnabled() {
             return null;
         }
     }

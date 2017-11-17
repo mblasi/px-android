@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import com.mercadopago.R;
 import com.mercadopago.components.Renderer;
 import com.mercadopago.components.RendererFactory;
-import com.mercadopago.model.Payment;
 import com.mercadopago.paymentresult.components.PaymentResultContainer;
 
 /**
@@ -37,7 +36,7 @@ public class PaymentResultRenderer extends Renderer<PaymentResultContainer> {
             final View body = bodyRenderer.render();
             parentViewGroup.addView(body);
 
-            parentViewGroup.addView(RendererFactory.create(context, component.getFooterComponent()).render());
+            parentViewGroup.addView(RendererFactory.create(context, component.getFooterContainer()).render());
         }
 
         return view;

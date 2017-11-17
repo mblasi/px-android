@@ -1,6 +1,5 @@
 package com.mercadopago.paymentresult;
 
-import com.mercadopago.R;
 import com.mercadopago.model.Instructions;
 import com.mercadopago.mvp.OnResourcesRetrievedCallback;
 import com.mercadopago.mvp.ResourcesProvider;
@@ -25,6 +24,8 @@ public interface PaymentResultProvider extends ResourcesProvider {
 
     String getRejectedBadFilledCardTitle(final String paymentMethodName);
 
+    String getRejectedBadFilledCardTitle();
+
     String getRejectedHighRiskTitle();
 
     String getRejectedMaxAttemptsTitle();
@@ -41,9 +42,15 @@ public interface PaymentResultProvider extends ResourcesProvider {
 
     String getRejectionLabel();
 
+    String getCancelPayment();
+
+    String getContinueShopping();
+
     String getExitButtonDefaultText();
 
     String getChangePaymentMethodLabel();
 
     String getRecoverPayment();
+
+    String getCardEnabled();
 }
