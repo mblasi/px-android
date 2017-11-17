@@ -106,7 +106,8 @@ public class PaymentResultPresenter extends MvpPresenter<PaymentResultPropsView,
     private boolean isPaymentMethodOff() {
         final String paymentStatus = paymentResult.getPaymentStatus();
         final String paymentStatusDetail = paymentResult.getPaymentStatusDetail();
-        return paymentStatus.equals(Payment.StatusCodes.STATUS_PENDING) && paymentStatusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_WAITING_PAYMENT);
+        return paymentStatus.equals(Payment.StatusCodes.STATUS_PENDING)
+                && paymentStatusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_WAITING_PAYMENT);
     }
 
     public void setDiscountEnabled(final Boolean discountEnabled) {
@@ -141,7 +142,8 @@ public class PaymentResultPresenter extends MvpPresenter<PaymentResultPropsView,
 
     private void checkGetInstructions() {
         if (hasToAskForInstructions()) {
-            getInstructionsAsync(paymentResult.getPaymentId(), paymentResult.getPaymentData().getPaymentMethod().getPaymentTypeId());
+            getInstructionsAsync(paymentResult.getPaymentId(), paymentResult.getPaymentData()
+                    .getPaymentMethod().getPaymentTypeId());
         } else {
             getView().notifyPropsChanged();
         }

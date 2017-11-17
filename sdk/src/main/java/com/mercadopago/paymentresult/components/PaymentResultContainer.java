@@ -94,73 +94,12 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
         return body;
     }
 
-    public Footer getFooterComponent() {
-
-        return new Footer(getFooterProps(), getDispatcher());
-    }
-
-    private Footer.Props getFooterProps() {
-
-        Footer.FooterAction buttonAction = new Footer.FooterAction(
-            resourcesProvider.getChangePaymentMethodLabel(),
-            new ChangePaymentMethodAction()
-        );
-
-        Footer.FooterAction linkAction;
-
-        final PaymentResultScreenPreference preferences = props.preferences;
-
-        if (TextUtils.isEmpty(preferences.getExitButtonTitle())) {
-            linkAction = new Footer.FooterAction(resourcesProvider.getExitButtonDefaultText());
-        } else {
-            linkAction = new Footer.FooterAction(preferences.getExitButtonTitle());
-        }
-
-        if (props.paymentResult.isStatusApproved()) {
-
-            if (!preferences.isCongratsSecondaryExitButtonEnabled() ||
-                    preferences.getSecondaryCongratsExitButtonTitle() == null
-                    || preferences.getSecondaryCongratsExitResultCode() == null) {
-                buttonAction = null;
-            } else {
-                buttonAction = new Footer.FooterAction(
-                    preferences.getSecondaryCongratsExitButtonTitle(),
-                    new ResultCodeAction(preferences.getSecondaryCongratsExitResultCode())
-                );
-            }
-
-        } else if (props.paymentResult.isStatusPending()) {
-
-            if (!preferences.isPendingSecondaryExitButtonEnabled() ||
-                    preferences.getSecondaryPendingExitButtonTitle() == null
-                    || preferences.getSecondaryPendingExitResultCode() == null) {
-                buttonAction = null;
-            } else {
-                buttonAction = new Footer.FooterAction(
-                    preferences.getSecondaryPendingExitButtonTitle(),
-                    new ResultCodeAction(preferences.getSecondaryPendingExitResultCode())
-                );
-            }
-
-        } else if (props.paymentResult.isStatusRejected()) {
-            if (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_CARD_NUMBER
-                    .equals(props.paymentResult.getPaymentStatusDetail())
-                || Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_DATE
-                    .equals(props.paymentResult.getPaymentStatusDetail())
-                || Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_SECURITY_CODE
-                    .equals(props.paymentResult.getPaymentStatusDetail())
-                || Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_OTHER
-                    .equals(props.paymentResult.getPaymentStatusDetail())) {
-
-                buttonAction = new Footer.FooterAction(
-                    resourcesProvider.getRecoverPayment(),
-                    new RecoverPaymentAction()
-                );
-            }
-        }
-
-        return new Footer.Props(
-            buttonAction, linkAction
+    public FooterContainer getFooterContainer() {
+        return new FooterContainer(new FooterContainer.Props(
+                props.paymentResult,
+                props.preferences),
+                getDispatcher(),
+                resourcesProvider
         );
     }
 

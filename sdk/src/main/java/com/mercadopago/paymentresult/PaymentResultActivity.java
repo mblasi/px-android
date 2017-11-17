@@ -20,6 +20,8 @@ import com.mercadopago.model.Site;
 import com.mercadopago.paymentresult.components.AccreditationComment;
 import com.mercadopago.paymentresult.components.AccreditationTime;
 import com.mercadopago.paymentresult.components.Footer;
+import com.mercadopago.paymentresult.components.FooterContainer;
+import com.mercadopago.paymentresult.components.FooterContainerRenderer;
 import com.mercadopago.paymentresult.components.FooterRenderer;
 import com.mercadopago.paymentresult.components.Header;
 import com.mercadopago.paymentresult.components.Icon;
@@ -100,6 +102,7 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         RendererFactory.register(PaymentResultContainer.class, PaymentResultRenderer.class);
         RendererFactory.register(Header.class, HeaderRenderer.class);
         RendererFactory.register(Body.class, PaymentResultBodyRenderer.class);
+        RendererFactory.register(FooterContainer.class, FooterContainerRenderer.class);
         RendererFactory.register(Footer.class, FooterRenderer.class);
         RendererFactory.register(Icon.class, IconRenderer.class);
         RendererFactory.register(LoadingComponent.class, LoadingRenderer.class);

@@ -49,6 +49,10 @@ public class PaymentResult {
         return Payment.StatusCodes.STATUS_PENDING.equals(paymentStatus);
     }
 
+    public boolean isStatusInProcess() {
+        return Payment.StatusCodes.STATUS_IN_PROCESS.equals(paymentStatus);
+    }
+
     public String getPaymentStatusDetail() {
         return paymentStatusDetail;
     }

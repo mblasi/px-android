@@ -772,6 +772,11 @@ public class PaymentResultContainerTest {
         }
 
         @Override
+        public String getRejectedBadFilledCardTitle() {
+            return null;
+        }
+
+        @Override
         public String getRejectedHighRiskTitle() {
             return null;
         }
@@ -822,7 +827,22 @@ public class PaymentResultContainerTest {
         }
 
         @Override
+        public String getCancelPayment() {
+            return null;
+        }
+
+        @Override
+        public String getContinueShopping() {
+            return null;
+        }
+
+        @Override
         public String getChangePaymentMethodLabel() {
+            return null;
+        }
+
+        @Override
+        public String getCardEnabled() {
             return null;
         }
     }
