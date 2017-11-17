@@ -817,22 +817,22 @@ public class PaymentResultContainerTest {
         }
 
         @Override
-        public String getExitButtonDefaultText() {
-            return null;
-        }
-
-        @Override
-        public String getRecoverPayment() {
-            return null;
-        }
-
-        @Override
         public String getCancelPayment() {
             return null;
         }
 
         @Override
         public String getContinueShopping() {
+            return null;
+        }
+
+        @Override
+        public String getExitButtonDefaultText() {
+            return null;
+        }
+
+        @Override
+        public String getRecoverPayment() {
             return null;
         }
 

@@ -4,11 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.mercadopago.R;
 import com.mercadopago.components.ActionDispatcher;
-import com.mercadopago.components.ChangePaymentMethodAction;
 import com.mercadopago.components.Component;
 import com.mercadopago.components.LoadingComponent;
-import com.mercadopago.components.RecoverPaymentAction;
-import com.mercadopago.components.ResultCodeAction;
 import com.mercadopago.constants.PaymentMethods;
 import com.mercadopago.constants.PaymentTypes;
 import com.mercadopago.model.Payment;
@@ -18,8 +15,6 @@ import com.mercadopago.paymentresult.model.Badge;
 import com.mercadopago.paymentresult.props.HeaderProps;
 import com.mercadopago.paymentresult.props.PaymentResultBodyProps;
 import com.mercadopago.paymentresult.props.PaymentResultProps;
-import com.mercadopago.preferences.PaymentResultScreenPreference;
-import com.mercadopago.util.TextUtils;
 
 /**
  * Created by vaserber on 10/20/17.
