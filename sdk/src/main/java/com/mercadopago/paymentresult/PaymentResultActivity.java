@@ -119,8 +119,8 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         final Component root = new PaymentResultContainer(componentManager, provider);
         componentManager.setActionsListener(presenter);
         componentManager.setComponent(root);
-        componentManager.setMutator(mutator);
 
+        mutator.setPropsListener(componentManager);
         mutator.renderDefaultProps();
         presenter.initialize();
     }

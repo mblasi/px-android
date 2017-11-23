@@ -1,6 +1,7 @@
 package com.mercadopago.components;
 
 import android.content.Context;
+import android.support.annotation.StringRes;
 import android.view.View;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
