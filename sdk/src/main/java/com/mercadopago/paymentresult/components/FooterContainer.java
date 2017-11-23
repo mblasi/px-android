@@ -132,10 +132,15 @@ public class FooterContainer extends Component<FooterContainer.Props> {
 
                 linkAction = new Footer.FooterAction(resourcesProvider.getCancelPayment());
             }
+
+            // Remove the button by user preference
+            if (!preferences.isRejectedSecondaryExitButtonEnabled()) {
+                buttonAction = null;
+            }
         }
 
         return new Footer.Props(
-                buttonAction, linkAction
+            buttonAction, linkAction
         );
     }
 
