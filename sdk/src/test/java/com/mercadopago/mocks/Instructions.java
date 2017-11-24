@@ -24,6 +24,11 @@ public class Instructions {
         return JsonUtil.getInstance().fromJson(json, Instruction.class);
     }
 
+    public static Instruction getBoletoInstructionTicket() {
+        String json = ResourcesUtil.getStringResource("instructions_boleto_ticket.json");
+        return JsonUtil.getInstance().fromJson(json, Instruction.class);
+    }
+
     public static Instruction getRedLinkBankTransferInstruction() {
         String json = ResourcesUtil.getStringResource("instructions_redlink_bank_transfer.json");
         return JsonUtil.getInstance().fromJson(json, Instruction.class);
@@ -34,4 +39,13 @@ public class Instructions {
         return JsonUtil.getInstance().fromJson(json, Instruction.class);
     }
 
+    public static Instruction getBancomerAtmInstruction() {
+        String json = ResourcesUtil.getStringResource("instructions_bancomer_atm.json");
+        return JsonUtil.getInstance().fromJson(json, Instruction.class);
+    }
+
+    public static Instruction getBanamexBankTransferInstruction() {
+        String json = ResourcesUtil.getStringResource("instructions_banamex_bank_transfer.json");
+        return JsonUtil.getInstance().fromJson(json, Instruction.class);
+    }
 }
