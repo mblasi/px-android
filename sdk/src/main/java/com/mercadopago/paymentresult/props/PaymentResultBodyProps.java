@@ -37,7 +37,7 @@ public class PaymentResultBodyProps {
                 .setProcessingMode(this.processingMode);
     }
 
-    public class Builder {
+    public static class Builder {
 
         public String status;
         public String statusDetail;
