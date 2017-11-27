@@ -8,17 +8,17 @@
 
     <ImageView
         android:id="@+id/mpsdkIconProduct"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="@dimen/mpsdk_xxxxl_height"
+        android:layout_height="@dimen/mpsdk_xxxxl_height"
         android:layout_gravity="center"
-        android:layout_margin="11dp"
+        android:layout_margin="@dimen/mpsdk_xs_alternative_1_margin"
         tools:src="@drawable/mpsdk_icon_product"/>
 
     <ImageView
         android:id="@+id/mpsdkIconBadge"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="11dp"
+        android:layout_width="@dimen/mpsdk_l_alternative_margin"
+        android:layout_height="@dimen/mpsdk_l_alternative_margin"
+        android:layout_marginBottom="@dimen/mpsdk_xs_alternative_1_margin"
         android:layout_gravity="bottom|right"
         tools:src="@drawable/mpsdk_badge_check" />
 

@@ -238,4 +238,25 @@ public class PaymentResultPresenter extends MvpPresenter<PaymentResultPropsView,
         }
 
     }
+
+    public Boolean getDiscountEnabled() {
+        return discountEnabled;
+    }
+
+    public PaymentResult getPaymentResult() {
+        return paymentResult;
+    }
+
+    public Site getSite() {
+        return site;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public ServicePreference getServicePreference() {
+        return servicePreference;
+    }
+
 }

@@ -6,37 +6,37 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingEnd="25dp"
-    android:paddingLeft="25dp"
-    android:paddingRight="25dp"
-    android:paddingStart="25dp"
-    android:paddingBottom="50dp"
+    android:paddingEnd="@dimen/mpsdk_m_alternative_margin"
+    android:paddingLeft="@dimen/mpsdk_m_alternative_margin"
+    android:paddingRight="@dimen/mpsdk_m_alternative_margin"
+    android:paddingStart="@dimen/mpsdk_m_alternative_margin"
+    android:paddingBottom="@dimen/mpsdk_xxxl_margin"
     tools:background="@color/mpsdk_green_MP">
 
     <FrameLayout
         android:id="@+id/iconContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="@dimen/mpsdk_xxxl_margin" />
 
     <com.mercadopago.customviews.MPTextView
         android:id="@+id/mpsdkHeaderLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="@dimen/mpsdk_xs_alternative_margin"
         android:gravity="center_horizontal"
         android:textColor="@color/mpsdk_white"
-        android:textSize="16sp"
+        android:textSize="@dimen/mpsdk_s_text"
         tools:text="Lorem ipsum dolor sit" />
 
     <com.mercadopago.customviews.MPTextView
         android:id="@+id/mpsdkHeaderTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/mpsdk_m_alternative_1_margin"
         android:gravity="center_horizontal"
         android:textColor="@color/mpsdk_white"
-        android:textSize="26sp"
+        android:textSize="@dimen/mpsdk_xxxl_text"
         tools:text="¡Listo, se acreditó tu pago!" />
 
 </LinearLayout>

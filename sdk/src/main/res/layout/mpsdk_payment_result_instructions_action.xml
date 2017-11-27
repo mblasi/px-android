@@ -10,9 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/mpsdk_m_alternative_1_margin"
         android:gravity="center_horizontal"
         android:textColor="@color/mpsdk_blue_MP"
-        android:textSize="16sp"
+        android:textSize="@dimen/mpsdk_s_text"
         tools:text="Action"/>
 </FrameLayout>

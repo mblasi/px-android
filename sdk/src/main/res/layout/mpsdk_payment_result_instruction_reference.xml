@@ -4,11 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/mpsdk_light_gray"
-    android:paddingEnd="24dp"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:paddingStart="24dp">
+    android:background="@color/mpsdk_light_gray">
 
     <com.mercadopago.customviews.MPTextView
         android:id="@+id/mpsdkReferenceLabel"
@@ -16,9 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="@dimen/mpsdk_l_margin"
         android:textColor="@color/mpsdk_brownish_grey"
-        android:textSize="12sp"
+        android:textSize="@dimen/mpsdk_xxs_text"
         tools:text="Label" />
 
     <com.mercadopago.customviews.MPTextView
@@ -27,9 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="@dimen/mpsdk_xxxs_margin"
         android:textColor="@color/mpsdk_black"
-        android:textSize="20sp"
+        android:textSize="@dimen/mpsdk_l_text"
         tools:text="1234 1234 1234" />
 
     <com.mercadopago.customviews.MPTextView
@@ -38,9 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/mpsdk_l_alternative_margin"
         android:textColor="@color/mpsdk_brownish_grey"
-        android:textSize="16sp"
+        android:textSize="@dimen/mpsdk_s_text"
         tools:text="comment" />
 
 </LinearLayout>

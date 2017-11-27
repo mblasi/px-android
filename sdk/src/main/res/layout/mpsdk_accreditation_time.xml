@@ -5,19 +5,19 @@
     android:layout_height="wrap_content"
     android:background="@color/mpsdk_light_gray"
     android:orientation="vertical"
-    android:paddingEnd="24dp"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:paddingStart="24dp">
+    android:paddingEnd="@dimen/mpsdk_xl_margin"
+    android:paddingLeft="@dimen/mpsdk_xl_margin"
+    android:paddingRight="@dimen/mpsdk_xl_margin"
+    android:paddingStart="@dimen/mpsdk_xl_margin">
 
     <com.mercadopago.customviews.MPTextView
         android:id="@+id/mpsdkAccreditationTimeMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="@dimen/mpsdk_l_margin"
         android:gravity="center_horizontal|top"
-        android:textSize="12sp"
+        android:textSize="@dimen/mpsdk_xxs_text"
         android:textColor="@color/mpsdk_brownish_grey"
         tools:text="Se acreditara en x horas"/>
 

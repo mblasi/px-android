@@ -11,10 +11,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" />
 
-
     <FrameLayout
         android:id="@+id/mpsdkContentBottomMargin"
         android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        android:layout_height="@dimen/mpsdk_l_alternative_margin" />
 
 </LinearLayout>
