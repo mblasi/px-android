@@ -174,7 +174,8 @@
     <color name="mpsdk_black">#333333</color>
     <color name="mpsdk_brownish_grey">#666666</color>
     <color name="mpsdk_warm_grey">#999999</color>
-    <color name="mpsdk_light_gray">#E4E4E4</color>
+    <color name="mpsdk_med_light_gray">#EEEEEE</color>
+    <color name="mpsdk_light_gray">#F7F7F7</color>
     <color name="mpsdk_white">#FFFFFF</color>
     <color name="mpsdk_blue_MP">#009CEE</color>
     <color name="mpsdk_green_MP">#00C677</color>

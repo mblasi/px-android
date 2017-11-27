@@ -69,8 +69,10 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
     public static final String CONGRATS_DISPLAY_BUNDLE = "congratsDisplay";
     public static final String PAYMENT_RESULT_SCREEN_PREFERENCE_BUNDLE = "paymentResultScreenPreference";
     public static final String SERVICE_PREFERENCE_BUNDLE = "servicePreference";
-
-    public static final String PRESENTER_BUNDLE = "presenter";
+    public static final String PAYMENT_RESULT_BUNDLE = "paymentResult";
+    public static final String AMOUNT_BUNDLE = "amount";
+    public static final String SITE_BUNDLE = "site";
+    public static final String DISCOUNT_ENABLED_BUNDLE = "discountEnabled";
 
     private static final String EXTRA_NEXT_ACTION = "nextAction";
 
@@ -145,9 +147,14 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
-        //TODO fix: explota al abrir el link de las instrucciones y al salir de la activity
-        outState.putString(PRESENTER_BUNDLE, JsonUtil.getInstance().toJson(presenter));
+        if (presenter != null) {
+            outState.putBoolean(DISCOUNT_ENABLED_BUNDLE, presenter.getDiscountEnabled());
+            outState.putString(PAYMENT_RESULT_BUNDLE, JsonUtil.getInstance().toJson(presenter.getPaymentResult()));
+            outState.putString(SITE_BUNDLE, JsonUtil.getInstance().toJson(presenter.getSite()));
+            outState.putString(AMOUNT_BUNDLE, JsonUtil.getInstance().toJson(presenter.getAmount()));
+            outState.putString(SERVICE_PREFERENCE_BUNDLE, JsonUtil.getInstance().toJson(presenter.getServicePreference()));
 
+        }
         outState.putString(MERCHANT_PUBLIC_KEY_BUNDLE, merchantPublicKey);
         outState.putString(PAYER_ACCESS_TOKEN_BUNDLE, payerAccessToken);
 
@@ -157,7 +164,11 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
 
     @Override
     protected void onRestoreInstanceState(final Bundle savedInstanceState) {
-        presenter = JsonUtil.getInstance().fromJson(savedInstanceState.getString(PRESENTER_BUNDLE), PaymentResultPresenter.class);
+        boolean discountEnabled = savedInstanceState.getBoolean(DISCOUNT_ENABLED_BUNDLE);
+        PaymentResult paymentResult = JsonUtil.getInstance().fromJson(savedInstanceState.getString(PAYMENT_RESULT_BUNDLE), PaymentResult.class);
+        Site site = JsonUtil.getInstance().fromJson(savedInstanceState.getString(SITE_BUNDLE), Site.class);
+        BigDecimal amount = JsonUtil.getInstance().fromJson(savedInstanceState.getString(AMOUNT_BUNDLE), BigDecimal.class);
+        ServicePreference servicePreference = JsonUtil.getInstance().fromJson(savedInstanceState.getString(SERVICE_PREFERENCE_BUNDLE), ServicePreference.class);
 
         merchantPublicKey = savedInstanceState.getString(MERCHANT_PUBLIC_KEY_BUNDLE);
         payerAccessToken = savedInstanceState.getString(PAYER_ACCESS_TOKEN_BUNDLE);
@@ -165,6 +176,20 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         congratsDisplay = savedInstanceState.getInt(CONGRATS_DISPLAY_BUNDLE, -1);
 
         paymentResultScreenPreference = JsonUtil.getInstance().fromJson(savedInstanceState.getString(PAYMENT_RESULT_SCREEN_PREFERENCE_BUNDLE), PaymentResultScreenPreference.class);
+
+        presenter = new PaymentResultPresenter(this);
+        presenter.setDiscountEnabled(discountEnabled);
+        presenter.setPaymentResult(paymentResult);
+        presenter.setSite(site);
+        presenter.setAmount(amount);
+        presenter.setServicePreference(servicePreference);
+        presenter.setPaymentResultScreenPreference(paymentResultScreenPreference);
+
+        final PaymentResultPropsMutator mutator = new PaymentResultPropsMutator();
+        final PaymentResultProvider provider = new PaymentResultProviderImpl(this, merchantPublicKey, payerAccessToken);
+        presenter.attachView(mutator);
+        presenter.attachResourcesProvider(provider);
+
         super.onRestoreInstanceState(savedInstanceState);
     }
 
