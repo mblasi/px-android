@@ -461,6 +461,76 @@ public class PaymentResultTest {
         public String getCardEnabled() {
             return null;
         }
+
+        @Override
+        public String getErrorTitle() {
+            return null;
+        }
+
+        @Override
+        public String getPendingContingencyBodyErrorDescription() {
+            return null;
+        }
+
+        @Override
+        public String getPendingReviewManualBodyErrorDescription() {
+            return null;
+        }
+
+        @Override
+        public String getRejectedCallForAuthBodyErrorDescription() {
+            return null;
+        }
+
+        @Override
+        public String getRejectedCardDisabledBodyErrorDescription() {
+            return null;
+        }
+
+        @Override
+        public String getRejectedInsufficientAmountBodyErrorDescription() {
+            return null;
+        }
+
+        @Override
+        public String getRejectedOtherReasonBodyErrorDescription() {
+            return null;
+        }
+
+        @Override
+        public String getRejectedByBankBodyErrorDescription() {
+            return null;
+        }
+
+        @Override
+        public String getRejectedInsufficientDataBodyErrorDescription() {
+            return null;
+        }
+
+        @Override
+        public String getRejectedDuplicatedPaymentBodyErrorDescription() {
+            return null;
+        }
+
+        @Override
+        public String getRejectedMaxAttemptsBodyErrorDescription() {
+            return null;
+        }
+
+        @Override
+        public String getRejectedHighRiskBodyErrorDescription() {
+            return null;
+        }
+
+        @Override
+        public String getRejectedCallForAuthBodyActionText(String paymentMethodName) {
+            return null;
+        }
+
+        @Override
+        public String getRejectedCallForAuthBodySecondaryTitle() {
+            return null;
+        }
     }
 
     private class MockedNavigator implements PaymentResultNavigator {

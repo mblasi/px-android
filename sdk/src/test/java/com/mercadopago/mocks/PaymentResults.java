@@ -19,8 +19,13 @@ public class PaymentResults {
         return JsonUtil.getInstance().fromJson(json, PaymentResult.class);
     }
 
-    public static PaymentResult getStatusInProcessPaymentResult() {
-        String json = ResourcesUtil.getStringResource("payment_result_in_process.json");
+    public static PaymentResult getStatusInProcessContingencyPaymentResult() {
+        String json = ResourcesUtil.getStringResource("payment_result_in_process_contingency.json");
+        return JsonUtil.getInstance().fromJson(json, PaymentResult.class);
+    }
+
+    public static PaymentResult getStatusInProcessReviewManualPaymentResult() {
+        String json = ResourcesUtil.getStringResource("payment_result_in_process_review_manual.json");
         return JsonUtil.getInstance().fromJson(json, PaymentResult.class);
     }
 
@@ -51,6 +56,11 @@ public class PaymentResults {
 
     public static PaymentResult getStatusRejectedOtherPaymentResult() {
         String json = ResourcesUtil.getStringResource("payment_result_rejected_other.json");
+        return JsonUtil.getInstance().fromJson(json, PaymentResult.class);
+    }
+
+    public static PaymentResult getStatusRejectedDuplicatedPaymentResult() {
+        String json = ResourcesUtil.getStringResource("payment_result_rejected_duplicated.json");
         return JsonUtil.getInstance().fromJson(json, PaymentResult.class);
     }
 

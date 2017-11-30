@@ -15,6 +15,7 @@ import com.mercadopago.components.Renderer;
 import com.mercadopago.components.RendererFactory;
 import com.mercadopago.customviews.MPTextView;
 import com.mercadopago.paymentresult.components.Header;
+import com.mercadopago.paymentresult.props.HeaderProps;
 
 /**
  * Created by vaserber on 10/20/17.
@@ -33,13 +34,12 @@ public class HeaderRenderer extends Renderer<Header> {
         final int background = ContextCompat.getColor(context, component.props.background);
         final int statusBarColor = ContextCompat.getColor(context, component.props.statusBarColor);
 
+        renderHeight(headerContainer);
         headerContainer.setBackgroundColor(background);
         setStatusBarColor(statusBarColor);
         setText(labelTextView, component.props.label);
         renderIcon(iconParentViewGroup);
         renderTitle(titleTextView);
-
-        //TODO: Reimplementar el body height en un componente.
 
         return headerView;
     }
@@ -63,6 +63,14 @@ public class HeaderRenderer extends Renderer<Header> {
             setText(titleTextView, component.props.title);
         } else {
             titleTextView.setText(component.props.amountFormat.formatTextWithAmount(component.props.title));
+        }
+    }
+
+    private void renderHeight(ViewGroup viewGroup) {
+        if (component.props.height.equals(HeaderProps.HEADER_MODE_WRAP)) {
+            wrapHeight(viewGroup);
+        } else if (component.props.height.equals(HeaderProps.HEADER_MODE_STRETCH)) {
+            stretchHeight(viewGroup);
         }
     }
 }

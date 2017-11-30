@@ -13,6 +13,9 @@ import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
 
 public class HeaderProps {
 
+    public static final String HEADER_MODE_WRAP = "wrap";
+    public static final String HEADER_MODE_STRETCH = "stretch";
+
     public final String height;
     public final int background;
     public final int statusBarColor;

@@ -198,7 +198,7 @@ public class PaymentResultProps {
                 new PaymentResultScreenPreference.Builder().build();
 
         public Instruction instruction;
-        public String headerMode = "wrap";
+        public String headerMode = HeaderProps.HEADER_MODE_WRAP;
         public HeaderTitleFormatter amountFormat;
         public boolean loading = true;
         public String processingMode;

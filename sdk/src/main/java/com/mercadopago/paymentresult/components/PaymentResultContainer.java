@@ -63,7 +63,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
     public Header getHeaderComponent() {
 
         final HeaderProps headerProps = new HeaderProps.Builder()
-                .setHeight(props.headerMode)
+                .setHeight(getHeaderMode())
                 .setBackground(getBackground(props.paymentResult))
                 .setStatusBarColor(getStatusBarColor(props.paymentResult))
                 .setIconImage(getIconImage(props))
@@ -76,6 +76,22 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
         return new Header(headerProps, getDispatcher());
     }
 
+    public boolean hasBodyComponent() {
+        boolean hasBody = true;
+        if (props.paymentResult != null) {
+            String status = props.paymentResult.getPaymentStatus();
+            String statusDetail = props.paymentResult.getPaymentStatusDetail();
+            if (status != null && statusDetail != null && status.equals(Payment.StatusCodes.STATUS_REJECTED) &&
+                        (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_CARD_NUMBER) ||
+                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_DATE) ||
+                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_SECURITY_CODE) ||
+                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_OTHER))) {
+                hasBody = false;
+            }
+        }
+        return hasBody;
+    }
+
     public Body getBodyComponent() {
         Body body = null;
         if (props.paymentResult != null) {
@@ -83,8 +99,9 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
                     props.paymentResult.getPaymentStatus(),
                     props.paymentResult.getPaymentStatusDetail(),
                     props.instruction,
+                    props.paymentResult.getPaymentData(),
                     props.processingMode);
-            body = new Body(bodyProps, getDispatcher());
+            body = new Body(bodyProps, getDispatcher(), resourcesProvider);
         }
         return body;
     }
@@ -96,6 +113,16 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
                 getDispatcher(),
                 resourcesProvider
         );
+    }
+
+    private String getHeaderMode() {
+        String headerMode;
+        if (hasBodyComponent()) {
+            headerMode = props.headerMode;
+        } else {
+            headerMode = HeaderProps.HEADER_MODE_STRETCH;
+        }
+        return headerMode;
     }
 
     private int getBackground(@NonNull final PaymentResult paymentResult) {

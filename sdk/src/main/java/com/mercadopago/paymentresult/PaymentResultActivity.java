@@ -19,6 +19,8 @@ import com.mercadopago.model.PaymentResultAction;
 import com.mercadopago.model.Site;
 import com.mercadopago.paymentresult.components.AccreditationComment;
 import com.mercadopago.paymentresult.components.AccreditationTime;
+import com.mercadopago.paymentresult.components.BodyError;
+import com.mercadopago.paymentresult.components.BodyErrorRenderer;
 import com.mercadopago.paymentresult.components.Footer;
 import com.mercadopago.paymentresult.components.FooterContainer;
 import com.mercadopago.paymentresult.components.FooterContainerRenderer;
@@ -51,7 +53,7 @@ import com.mercadopago.paymentresult.components.InstructionsRenderer;
 import com.mercadopago.paymentresult.components.InstructionsSecondaryInfoRenderer;
 import com.mercadopago.paymentresult.components.InstructionsSubtitleRenderer;
 import com.mercadopago.paymentresult.components.InstructionsTertiaryInfoRenderer;
-import com.mercadopago.paymentresult.components.PaymentResultBodyRenderer;
+import com.mercadopago.paymentresult.components.BodyRenderer;
 import com.mercadopago.paymentresult.components.PaymentResultRenderer;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.preferences.ServicePreference;
@@ -103,7 +105,7 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
 
         RendererFactory.register(PaymentResultContainer.class, PaymentResultRenderer.class);
         RendererFactory.register(Header.class, HeaderRenderer.class);
-        RendererFactory.register(Body.class, PaymentResultBodyRenderer.class);
+        RendererFactory.register(Body.class, BodyRenderer.class);
         RendererFactory.register(FooterContainer.class, FooterContainerRenderer.class);
         RendererFactory.register(Footer.class, FooterRenderer.class);
         RendererFactory.register(Icon.class, IconRenderer.class);
@@ -120,6 +122,7 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         RendererFactory.register(InstructionsTertiaryInfo.class, InstructionsTertiaryInfoRenderer.class);
         RendererFactory.register(InstructionsActions.class, InstructionsActionsRenderer.class);
         RendererFactory.register(InstructionsAction.class, InstructionsActionRenderer.class);
+        RendererFactory.register(BodyError.class, BodyErrorRenderer.class);
 
         final Component root = new PaymentResultContainer(componentManager, provider);
         componentManager.setActionsListener(presenter);

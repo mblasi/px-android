@@ -62,7 +62,8 @@
 
     <dimen name="mpsdk_l_alternative_margin">30dp</dimen>
     <dimen name="mpsdk_m_alternative_margin">25dp</dimen>
-    <dimen name="mpsdk_m_alternative_1_margin">20dp</dimen>
+    <dimen name="mpsdk_m_alternative_1_margin">22dp</dimen>
+    <dimen name="mpsdk_m_alternative_2_margin">20dp</dimen>
     <dimen name="mpsdk_s_alternative_margin">15dp</dimen>
     <dimen name="mpsdk_s_alternative_1_margin">14dp</dimen>
     <dimen name="mpsdk_xs_alternative_margin">13dp</dimen>

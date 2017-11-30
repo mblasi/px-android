@@ -53,4 +53,32 @@ public interface PaymentResultProvider extends ResourcesProvider {
     String getRecoverPayment();
 
     String getCardEnabled();
+
+    String getErrorTitle();
+
+    String getPendingContingencyBodyErrorDescription();
+
+    String getPendingReviewManualBodyErrorDescription();
+
+    String getRejectedCallForAuthBodyErrorDescription();
+
+    String getRejectedCardDisabledBodyErrorDescription();
+
+    String getRejectedInsufficientAmountBodyErrorDescription();
+
+    String getRejectedOtherReasonBodyErrorDescription();
+
+    String getRejectedByBankBodyErrorDescription();
+
+    String getRejectedInsufficientDataBodyErrorDescription();
+
+    String getRejectedDuplicatedPaymentBodyErrorDescription();
+
+    String getRejectedMaxAttemptsBodyErrorDescription();
+
+    String getRejectedHighRiskBodyErrorDescription();
+
+    String getRejectedCallForAuthBodyActionText(String paymentMethodName);
+
+    String getRejectedCallForAuthBodySecondaryTitle();
 }
