@@ -155,4 +155,74 @@ public class PaymentResultProviderImpl implements PaymentResultProvider {
     public String getCardEnabled() {
         return context.getString(R.string.mpsdk_text_card_enabled);
     }
+
+    @Override
+    public String getErrorTitle() {
+        return context.getString(R.string.mpsdk_what_can_do);
+    }
+
+    @Override
+    public String getPendingContingencyBodyErrorDescription() {
+        return context.getString(R.string.mpsdk_error_description_contingency);
+    }
+
+    @Override
+    public String getPendingReviewManualBodyErrorDescription() {
+        return context.getString(R.string.mpsdk_error_description_review_manual);
+    }
+
+    @Override
+    public String getRejectedCallForAuthBodyErrorDescription() {
+        return context.getString(R.string.mpsdk_error_description_call);
+    }
+
+    @Override
+    public String getRejectedCardDisabledBodyErrorDescription() {
+        return context.getString(R.string.mpsdk_error_description_card_disabled);
+    }
+
+    @Override
+    public String getRejectedInsufficientAmountBodyErrorDescription() {
+        return context.getString(R.string.mpsdk_error_description_insufficient_amount);
+    }
+
+    @Override
+    public String getRejectedOtherReasonBodyErrorDescription() {
+        return context.getString(R.string.mpsdk_error_description_other_reason);
+    }
+
+    @Override
+    public String getRejectedByBankBodyErrorDescription() {
+        return context.getString(R.string.mpsdk_error_description_by_bank);
+    }
+
+    @Override
+    public String getRejectedInsufficientDataBodyErrorDescription() {
+        return context.getString(R.string.mpsdk_error_description_insufficient_data);
+    }
+
+    @Override
+    public String getRejectedDuplicatedPaymentBodyErrorDescription() {
+        return context.getString(R.string.mpsdk_error_description_duplicated_payment);
+    }
+
+    @Override
+    public String getRejectedMaxAttemptsBodyErrorDescription() {
+        return context.getString(R.string.mpsdk_error_description_max_attempts);
+    }
+
+    @Override
+    public String getRejectedHighRiskBodyErrorDescription() {
+        return context.getString(R.string.mpsdk_error_description_high_risk);
+    }
+
+    @Override
+    public String getRejectedCallForAuthBodyActionText(String paymentMethodName) {
+        return String.format(context.getString(R.string.mpsdk_text_authorized_call_for_authorize), paymentMethodName);
+    }
+
+    @Override
+    public String getRejectedCallForAuthBodySecondaryTitle() {
+        return context.getString(R.string.mpsdk_error_secondary_title_call);
+    }
 }

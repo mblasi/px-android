@@ -103,7 +103,6 @@
     <string name="mpsdk_text_order_call_for_authorize">The phone number is on the back of your card.</string>
     <string name="mpsdk_error_title_activity_call_for_authorize">You must authorize the payment with your card</string>
     <string name="mpsdk_text_authorized_call_for_authorize">Already talked with %1$s and I am authorized</string>
-    <string name="mpsdk_text_question_call_for_authorize">Could not authorize it?</string>
     <string name="mpsdk_text_select_other_payment_method">Choose another payment method</string>
 
     <!-- Pending -->
@@ -133,6 +132,8 @@
     <string name="mpsdk_title_rejection_max_attempts">You reached the limit of attempts allowed</string>
     <string name="mpsdk_subtitle_rejection_max_attempts">Choose another card or another payment method.</string>
     <string name="mpsdk_rejection_label">Something went wrong…</string>
+    <string name="mpsdk_error_secondary_title_call">Could not authorize it?</string>
+
 
     <!-- Error messages -->
     <string name="mpsdk_error_message_invalid_amount">Invalid amount</string>

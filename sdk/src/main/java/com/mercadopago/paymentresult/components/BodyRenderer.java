@@ -14,7 +14,7 @@ import com.mercadopago.paymentresult.components.Body;
  * Created by vaserber on 10/23/17.
  */
 
-public class PaymentResultBodyRenderer extends Renderer<Body> {
+public class BodyRenderer extends Renderer<Body> {
     @Override
     public View render() {
         final View bodyView = LayoutInflater.from(context).inflate(R.layout.mpsdk_payment_result_body, null, false);
@@ -24,6 +24,10 @@ public class PaymentResultBodyRenderer extends Renderer<Body> {
             final Renderer instructionsRenderer = RendererFactory.create(context, component.getInstructionsComponent());
             final View instructions = instructionsRenderer.render();
             bodyViewGroup.addView(instructions);
+        } else if (component.hasBodyError()) {
+            final Renderer bodyErrorRenderer = RendererFactory.create(context, component.getBodyErrorComponent());
+            final View bodyError = bodyErrorRenderer.render();
+            bodyViewGroup.addView(bodyError);
         }
 
         stretchHeight(bodyViewGroup);

@@ -7,6 +7,7 @@ import com.mercadopago.components.MutatorPropsListener;
 import com.mercadopago.model.Instruction;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
+import com.mercadopago.paymentresult.props.HeaderProps;
 import com.mercadopago.paymentresult.props.PaymentResultProps;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.preferences.ServicePreference;
@@ -34,7 +35,7 @@ public class PaymentResultPropsMutator implements Mutator, PaymentResultPropsVie
                                      final boolean showLoading) {
         props = props.toBuilder()
                 .setPaymentResult(paymentResult)
-                .setHeaderMode("wrap")
+                .setHeaderMode(HeaderProps.HEADER_MODE_WRAP)
                 .setAmountFormat(amountFormat)
                 .setLoading(showLoading)
                 .build();

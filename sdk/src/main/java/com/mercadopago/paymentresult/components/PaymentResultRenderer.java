@@ -33,9 +33,11 @@ public class PaymentResultRenderer extends Renderer<PaymentResultContainer> {
             final View header = headerRenderer.render();
             parentViewGroup.addView(header);
 
-            final Renderer bodyRenderer = RendererFactory.create(context, component.getBodyComponent());
-            final View body = bodyRenderer.render();
-            parentViewGroup.addView(body);
+            if (component.hasBodyComponent()) {
+                final Renderer bodyRenderer = RendererFactory.create(context, component.getBodyComponent());
+                final View body = bodyRenderer.render();
+                parentViewGroup.addView(body);
+            }
 
             parentViewGroup.addView(RendererFactory.create(context, component.getFooterContainer()).render());
         }
