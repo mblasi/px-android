@@ -38,6 +38,8 @@ import com.mercadopago.paymentresult.components.InstructionsSecondaryInfo;
 import com.mercadopago.paymentresult.components.InstructionsSubtitle;
 import com.mercadopago.paymentresult.components.InstructionsTertiaryInfo;
 import com.mercadopago.paymentresult.components.Body;
+import com.mercadopago.paymentresult.components.PaymentMethodComponent;
+import com.mercadopago.paymentresult.components.PaymentMethodRenderer;
 import com.mercadopago.paymentresult.components.PaymentResultContainer;
 import com.mercadopago.paymentresult.components.AccreditationCommentRenderer;
 import com.mercadopago.paymentresult.components.AccreditationTimeRenderer;
@@ -55,6 +57,8 @@ import com.mercadopago.paymentresult.components.InstructionsSubtitleRenderer;
 import com.mercadopago.paymentresult.components.InstructionsTertiaryInfoRenderer;
 import com.mercadopago.paymentresult.components.BodyRenderer;
 import com.mercadopago.paymentresult.components.PaymentResultRenderer;
+import com.mercadopago.paymentresult.components.TotalAmountComponent;
+import com.mercadopago.paymentresult.components.TotalAmountRenderer;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.preferences.ServicePreference;
 import com.mercadopago.util.ApiUtil;
@@ -97,9 +101,11 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         presenter = new PaymentResultPresenter(this);
         getActivityParameters();
 
-        final PaymentResultProvider provider = new PaymentResultProviderImpl(this, merchantPublicKey, payerAccessToken);
+        final PaymentResultProvider paymentResultProvider = new PaymentResultProviderImpl(this, merchantPublicKey, payerAccessToken);
+        final PaymentMethodProvider paymentMethodProvider = new PaymentMethodProviderImpl(this);
+
         presenter.attachView(mutator);
-        presenter.attachResourcesProvider(provider);
+        presenter.attachResourcesProvider(paymentResultProvider);
 
         componentManager = new ComponentManager(this);
 
@@ -122,9 +128,11 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         RendererFactory.register(InstructionsTertiaryInfo.class, InstructionsTertiaryInfoRenderer.class);
         RendererFactory.register(InstructionsActions.class, InstructionsActionsRenderer.class);
         RendererFactory.register(InstructionsAction.class, InstructionsActionRenderer.class);
+        RendererFactory.register(PaymentMethodComponent.class, PaymentMethodRenderer.class);
+        RendererFactory.register(TotalAmountComponent.class, TotalAmountRenderer.class);
         RendererFactory.register(BodyError.class, BodyErrorRenderer.class);
 
-        final Component root = new PaymentResultContainer(componentManager, provider);
+        final Component root = new PaymentResultContainer(componentManager, paymentResultProvider, paymentMethodProvider);
         componentManager.setActionsListener(presenter);
         componentManager.setComponent(root);
 

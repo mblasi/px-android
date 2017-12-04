@@ -96,6 +96,9 @@
     <string name="mpsdk_payment_id_description">Comprobante</string>
     <string name="mpsdk_payment_id_description_number">Nº %1$s</string>
     <string name="mpsdk_statement_default">MERCADO PAGO</string>
+    <string name="mpsdk_account_money">Dinero en cuenta</string>
+    <string name="mpsdk_ending_in">terminada en</string>
+    <string name="mpsdk_text_state_acount">En tu estado de cuenta verás el cargo como\n MERCADOPAGO</string>
 
     <!-- CallForAuthorize -->
     <string name="mpsdk_title_activity_call_for_authorize">Debes autorizar ante %1$s el pago de %2$s a Mercado Pago</string>

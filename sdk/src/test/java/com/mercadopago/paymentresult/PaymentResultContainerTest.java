@@ -39,22 +39,24 @@ public class PaymentResultContainerTest {
     private final static String REJECTION_LABEL = "rejection label";
 
     private ActionDispatcher dispatcher;
-    private PaymentResultProvider provider;
+    private PaymentResultProvider paymentResultProvider;
+    private PaymentMethodProvider paymentMethodProvider;
 
     @Before
     public void setup() {
         dispatcher = mock(ActionDispatcher.class);
-        provider = mock(PaymentResultProvider.class);
+        paymentResultProvider = mock(PaymentResultProvider.class);
+        paymentMethodProvider = mock(PaymentMethodProvider.class);
 
-        when(provider.getApprovedTitle()).thenReturn(APPROVED_TITLE);
-        when(provider.getPendingTitle()).thenReturn(PENDING_TITLE);
-        when(provider.getRejectedOtherReasonTitle("Mastercard")).thenReturn(REJECTED_OTHER_REASON_TITLE);
-        when(provider.getRejectedInsufficientAmountTitle("Mastercard")).thenReturn(REJECTED_INSUFFICIENT_AMOUNT_TITLE);
-        when(provider.getRejectedBadFilledCardTitle()).thenReturn(REJECTED_BAD_FILLED_TITLE);
-        when(provider.getRejectedCallForAuthorizeTitle()).thenReturn(REJECTED_CALL_FOR_AUTH_TITLE);
-        when(provider.getEmptyText()).thenReturn(EMPTY_TITLE);
-        when(provider.getPendingLabel()).thenReturn(PENDING_LABEL);
-        when(provider.getRejectionLabel()).thenReturn(REJECTION_LABEL);
+        when(paymentResultProvider.getApprovedTitle()).thenReturn(APPROVED_TITLE);
+        when(paymentResultProvider.getPendingTitle()).thenReturn(PENDING_TITLE);
+        when(paymentResultProvider.getRejectedOtherReasonTitle("Mastercard")).thenReturn(REJECTED_OTHER_REASON_TITLE);
+        when(paymentResultProvider.getRejectedInsufficientAmountTitle("Mastercard")).thenReturn(REJECTED_INSUFFICIENT_AMOUNT_TITLE);
+        when(paymentResultProvider.getRejectedBadFilledCardTitle()).thenReturn(REJECTED_BAD_FILLED_TITLE);
+        when(paymentResultProvider.getRejectedCallForAuthorizeTitle()).thenReturn(REJECTED_CALL_FOR_AUTH_TITLE);
+        when(paymentResultProvider.getEmptyText()).thenReturn(EMPTY_TITLE);
+        when(paymentResultProvider.getPendingLabel()).thenReturn(PENDING_LABEL);
+        when(paymentResultProvider.getRejectionLabel()).thenReturn(REJECTION_LABEL);
     }
 
     @Test
@@ -417,7 +419,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.title, provider.getApprovedTitle());
+        Assert.assertEquals(headerProps.title, paymentResultProvider.getApprovedTitle());
     }
 
     @Test
@@ -425,7 +427,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getStatusInProcessContingencyPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.title, provider.getPendingTitle());
+        Assert.assertEquals(headerProps.title, paymentResultProvider.getPendingTitle());
     }
 
     @Test
@@ -434,7 +436,7 @@ public class PaymentResultContainerTest {
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
         Assert.assertEquals(paymentResult.getPaymentData().getPaymentMethod().getName(), "Mastercard");
-        Assert.assertEquals(headerProps.title, provider.getRejectedOtherReasonTitle("Mastercard"));
+        Assert.assertEquals(headerProps.title, paymentResultProvider.getRejectedOtherReasonTitle("Mastercard"));
     }
 
     @Test
@@ -443,7 +445,7 @@ public class PaymentResultContainerTest {
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
         Assert.assertEquals(paymentResult.getPaymentData().getPaymentMethod().getName(), "Mastercard");
-        Assert.assertEquals(headerProps.title, provider.getRejectedInsufficientAmountTitle("Mastercard"));
+        Assert.assertEquals(headerProps.title, paymentResultProvider.getRejectedInsufficientAmountTitle("Mastercard"));
     }
 
     @Test
@@ -451,7 +453,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getStatusRejectedBadFilledSecuPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.title, provider.getRejectedBadFilledCardTitle(""));
+        Assert.assertEquals(headerProps.title, paymentResultProvider.getRejectedBadFilledCardTitle(""));
     }
 
     @Test
@@ -459,7 +461,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getStatusRejectedBadFilledDatePaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.title, provider.getRejectedBadFilledCardTitle(""));
+        Assert.assertEquals(headerProps.title, paymentResultProvider.getRejectedBadFilledCardTitle(""));
     }
 
     @Test
@@ -467,7 +469,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getStatusRejectedBadFilledFormPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.title, provider.getRejectedBadFilledCardTitle(""));
+        Assert.assertEquals(headerProps.title, paymentResultProvider.getRejectedBadFilledCardTitle(""));
     }
 
     @Test
@@ -475,7 +477,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getStatusCallForAuthPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.title, provider.getRejectedCallForAuthorizeTitle());
+        Assert.assertEquals(headerProps.title, paymentResultProvider.getRejectedCallForAuthorizeTitle());
     }
 
     @Test
@@ -492,7 +494,7 @@ public class PaymentResultContainerTest {
     public void onEmptyPaymentResultGetEmptyTitle() {
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(null);
 
-        Assert.assertEquals(headerProps.title, provider.getEmptyText());
+        Assert.assertEquals(headerProps.title, paymentResultProvider.getEmptyText());
     }
 
     @Test
@@ -501,7 +503,7 @@ public class PaymentResultContainerTest {
 
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.title, provider.getEmptyText());
+        Assert.assertEquals(headerProps.title, paymentResultProvider.getEmptyText());
     }
 
     @Test
@@ -557,7 +559,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.label, provider.getEmptyText());
+        Assert.assertEquals(headerProps.label, paymentResultProvider.getEmptyText());
     }
 
     @Test
@@ -565,7 +567,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getStatusInProcessContingencyPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.label, provider.getEmptyText());
+        Assert.assertEquals(headerProps.label, paymentResultProvider.getEmptyText());
     }
 
     @Test
@@ -573,7 +575,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getPaymentMethodOffPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.label, provider.getPendingLabel());
+        Assert.assertEquals(headerProps.label, paymentResultProvider.getPendingLabel());
     }
 
     @Test
@@ -581,7 +583,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getStatusRejectedBadFilledFormPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.label, provider.getRejectionLabel());
+        Assert.assertEquals(headerProps.label, paymentResultProvider.getRejectionLabel());
     }
 
     @Test
@@ -589,7 +591,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getStatusRejectedInsufficientAmountPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.label, provider.getRejectionLabel());
+        Assert.assertEquals(headerProps.label, paymentResultProvider.getRejectionLabel());
     }
 
     @Test
@@ -597,7 +599,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getStatusRejectedOtherPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.label, provider.getRejectionLabel());
+        Assert.assertEquals(headerProps.label, paymentResultProvider.getRejectionLabel());
     }
 
     @Test
@@ -605,14 +607,14 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getBoletoRejectedPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.label, provider.getRejectionLabel());
+        Assert.assertEquals(headerProps.label, paymentResultProvider.getRejectionLabel());
     }
 
     @Test
     public void onEmptyPaymentResultGetEmptyLabel() {
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(null);
 
-        Assert.assertEquals(headerProps.label, provider.getEmptyText());
+        Assert.assertEquals(headerProps.label, paymentResultProvider.getEmptyText());
     }
 
     @Test
@@ -627,7 +629,7 @@ public class PaymentResultContainerTest {
                 .build();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.label, provider.getEmptyText());
+        Assert.assertEquals(headerProps.label, paymentResultProvider.getEmptyText());
     }
 
     @Test
@@ -661,7 +663,7 @@ public class PaymentResultContainerTest {
                 .disableRejectedLabelText().build();
 
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
-        Assert.assertEquals(headerProps.label, provider.getEmptyText());
+        Assert.assertEquals(headerProps.label, paymentResultProvider.getEmptyText());
     }
 
     @Test
@@ -821,7 +823,7 @@ public class PaymentResultContainerTest {
     }
 
     private PaymentResultContainer getContainer() {
-        return new PaymentResultContainer(dispatcher, provider);
+        return new PaymentResultContainer(dispatcher, paymentResultProvider, paymentMethodProvider);
     }
 
 
