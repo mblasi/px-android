@@ -91,12 +91,13 @@
     <string name="mpsdk_invalid_card_payment_method">Você não pode pagar com este cartão</string>
     <string name="mpsdk_exclusion_one_element">Você só pode pagar com %1$s</string>
 
-
     <!-- Congrats -->
     <string name="mpsdk_title_approved_payment">Pronto! O seu pagamento foi aprovado!</string>
     <string name="mpsdk_subtitle_action_activity_congrats">Enviaremos os dados para\n%1$s</string>
     <string name="mpsdk_text_state_account_activity_congrats">Você verá o pagamento na fatura do seu cartão de crédito como\n %s</string>
     <string name="mpsdk_payment_id_description">Comprovante</string>
+    <string name="mpsdk_account_money">Dinheiro em conta</string>
+    <string name="mpsdk_ending_in">terminado em</string>
 
     <!-- CallForAuthorize -->
     <string name="mpsdk_title_activity_call_for_authorize">Você deve autorizar com %1$s o pagamento de %2$s ao Mercado Pago</string>

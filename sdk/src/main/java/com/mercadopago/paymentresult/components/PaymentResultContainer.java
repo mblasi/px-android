@@ -10,6 +10,7 @@ import com.mercadopago.constants.PaymentMethods;
 import com.mercadopago.constants.PaymentTypes;
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentResult;
+import com.mercadopago.paymentresult.PaymentMethodProvider;
 import com.mercadopago.paymentresult.PaymentResultProvider;
 import com.mercadopago.paymentresult.model.Badge;
 import com.mercadopago.paymentresult.props.HeaderProps;
@@ -44,12 +45,15 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
     public static final int ERROR_BADGE_IMAGE = R.drawable.mpsdk_badge_error;
     public static final int WARNING_BADGE_IMAGE = R.drawable.mpsdk_badge_warning;
 
-    public PaymentResultProvider resourcesProvider;
+    public PaymentResultProvider paymentResultProvider;
+    public PaymentMethodProvider paymentMethodProvider;
 
     public PaymentResultContainer(@NonNull final ActionDispatcher dispatcher,
-                                  @NonNull final PaymentResultProvider provider) {
+                                  @NonNull final PaymentResultProvider paymentResultProvider,
+                                  @NonNull final PaymentMethodProvider paymentMethodProvider) {
         super(new PaymentResultProps.Builder().build(), dispatcher);
-        this.resourcesProvider = provider;
+        this.paymentResultProvider = paymentResultProvider;
+        this.paymentMethodProvider = paymentMethodProvider;
     }
 
     public boolean isLoading() {
@@ -70,7 +74,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
                 .setBadgeImage(getBadgeImage(props))
                 .setTitle(getTitle(props))
                 .setLabel(getLabel(props))
-                .setAmountFormat(props.amountFormat)
+                .setAmountFormat(props.headerAmountFormatter)
                 .build();
 
         return new Header(headerProps, getDispatcher());
@@ -100,8 +104,10 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
                     props.paymentResult.getPaymentStatusDetail(),
                     props.instruction,
                     props.paymentResult.getPaymentData(),
-                    props.processingMode);
-            body = new Body(bodyProps, getDispatcher(), resourcesProvider);
+                    props.paymentResult.getStatementDescription(),
+                    props.processingMode,
+                    props.bodyAmountFormatter);
+            body = new Body(bodyProps, getDispatcher(), paymentResultProvider, paymentMethodProvider);
         }
         return body;
     }
@@ -111,7 +117,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
                 props.paymentResult,
                 props.preferences),
                 getDispatcher(),
-                resourcesProvider
+                paymentResultProvider
         );
     }
 
@@ -236,7 +242,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
                 status.equals(Payment.StatusCodes.STATUS_REJECTED));
     }
 
-    private int getBadgeImage(@NonNull final  PaymentResultProps props) {
+    private int getBadgeImage(@NonNull final PaymentResultProps props) {
         if (props.hasCustomizedBadge()) {
             final String badge = props.getPreferenceBadge();
             if (badge.equals(Badge.CHECK_BADGE_IMAGE)) {
@@ -294,71 +300,71 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
                 statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_REJECTED_HIGH_RISK));
     }
 
-    private String getTitle(@NonNull final  PaymentResultProps props) {
+    private String getTitle(@NonNull final PaymentResultProps props) {
 
         if (props.hasCustomizedTitle()) {
             return props.getPreferenceTitle();
         } else if (props.hasInstructions()) {
             return props.getInstructionsTitle();
         } else if (props.paymentResult == null) {
-            return resourcesProvider.getEmptyText();
+            return paymentResultProvider.getEmptyText();
         } else if (isPaymentMethodOff(props.paymentResult)) {
-            return resourcesProvider.getEmptyText();
+            return paymentResultProvider.getEmptyText();
         } else {
             final String paymentMethodName = props.paymentResult.getPaymentData().getPaymentMethod().getName();
             final String status = props.paymentResult.getPaymentStatus();
             final String statusDetail = props.paymentResult.getPaymentStatusDetail();
 
             if (status.equals(Payment.StatusCodes.STATUS_APPROVED)) {
-                return resourcesProvider.getApprovedTitle();
+                return paymentResultProvider.getApprovedTitle();
             } else if (status.equals(Payment.StatusCodes.STATUS_IN_PROCESS) || status.equals(Payment.StatusCodes.STATUS_PENDING)) {
-                return resourcesProvider.getPendingTitle();
+                return paymentResultProvider.getPendingTitle();
             } else if (status.equals(Payment.StatusCodes.STATUS_REJECTED)) {
                 if (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_OTHER_REASON)) {
-                    return resourcesProvider.getRejectedOtherReasonTitle(paymentMethodName);
+                    return paymentResultProvider.getRejectedOtherReasonTitle(paymentMethodName);
                 } else if (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_INSUFFICIENT_AMOUNT)) {
-                    return resourcesProvider.getRejectedInsufficientAmountTitle(paymentMethodName);
+                    return paymentResultProvider.getRejectedInsufficientAmountTitle(paymentMethodName);
                 } else if (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_DUPLICATED_PAYMENT)) {
-                    return resourcesProvider.getRejectedDuplicatedPaymentTitle(paymentMethodName);
+                    return paymentResultProvider.getRejectedDuplicatedPaymentTitle(paymentMethodName);
                 } else if (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CARD_DISABLED)) {
-                    return resourcesProvider.getRejectedCardDisabledTitle(paymentMethodName);
+                    return paymentResultProvider.getRejectedCardDisabledTitle(paymentMethodName);
                 } else if (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_REJECTED_HIGH_RISK)) {
-                    return resourcesProvider.getRejectedHighRiskTitle();
+                    return paymentResultProvider.getRejectedHighRiskTitle();
                 } else if (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_MAX_ATTEMPTS)) {
-                    return resourcesProvider.getRejectedMaxAttemptsTitle();
+                    return paymentResultProvider.getRejectedMaxAttemptsTitle();
                 } else if (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_OTHER) ||
                         statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_CARD_NUMBER) ||
                         statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_SECURITY_CODE) ||
                         statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_DATE)) {
-                    return resourcesProvider.getRejectedBadFilledCardTitle(paymentMethodName);
+                    return paymentResultProvider.getRejectedBadFilledCardTitle(paymentMethodName);
                 } else if (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_REJECTED_REJECTED_BY_BANK)
                         || statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_REJECTED_REJECTED_INSUFFICIENT_DATA)) {
-                    return resourcesProvider.getRejectedInsufficientDataTitle();
+                    return paymentResultProvider.getRejectedInsufficientDataTitle();
                 } else if (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CALL_FOR_AUTHORIZE)) {
-                    return resourcesProvider.getRejectedCallForAuthorizeTitle();
+                    return paymentResultProvider.getRejectedCallForAuthorizeTitle();
                 } else {
-                    return resourcesProvider.getRejectedBadFilledOther();
+                    return paymentResultProvider.getRejectedBadFilledOther();
                 }
             }
         }
-        return resourcesProvider.getEmptyText();
+        return paymentResultProvider.getEmptyText();
     }
 
-    private String getLabel(@NonNull final  PaymentResultProps props) {
+    private String getLabel(@NonNull final PaymentResultProps props) {
         if (props.hasCustomizedLabel()) {
             return props.getPreferenceLabel();
         } else if (props.paymentResult == null) {
-            return resourcesProvider.getEmptyText();
+            return paymentResultProvider.getEmptyText();
         } else {
             if (isLabelEmpty(props.paymentResult)) {
-                return resourcesProvider.getEmptyText();
+                return paymentResultProvider.getEmptyText();
             } else if (isLabelPending(props.paymentResult)) {
-                return resourcesProvider.getPendingLabel();
+                return paymentResultProvider.getPendingLabel();
             } else if (isLabelError(props.paymentResult)) {
-                return resourcesProvider.getRejectionLabel();
+                return paymentResultProvider.getRejectionLabel();
             }
         }
-        return resourcesProvider.getEmptyText();
+        return paymentResultProvider.getEmptyText();
     }
 
     private boolean isLabelEmpty(@NonNull final PaymentResult paymentResult) {

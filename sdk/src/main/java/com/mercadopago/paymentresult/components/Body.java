@@ -4,10 +4,14 @@ import android.support.annotation.NonNull;
 
 import com.mercadopago.components.ActionDispatcher;
 import com.mercadopago.components.Component;
+import com.mercadopago.constants.PaymentTypes;
 import com.mercadopago.model.Payment;
+import com.mercadopago.model.PaymentMethod;
+import com.mercadopago.paymentresult.PaymentMethodProvider;
 import com.mercadopago.paymentresult.PaymentResultProvider;
 import com.mercadopago.paymentresult.props.BodyErrorProps;
 import com.mercadopago.paymentresult.props.InstructionsProps;
+import com.mercadopago.paymentresult.props.PaymentMethodProps;
 import com.mercadopago.paymentresult.props.PaymentResultBodyProps;
 
 /**
@@ -16,13 +20,16 @@ import com.mercadopago.paymentresult.props.PaymentResultBodyProps;
 
 public class Body extends Component<PaymentResultBodyProps> {
 
-    public PaymentResultProvider resourcesProvider;
+    private PaymentMethodProvider paymentMethodProvider;
+    public PaymentResultProvider paymentResultProvider;
 
     public Body(@NonNull final PaymentResultBodyProps props,
                 @NonNull final ActionDispatcher dispatcher,
-                @NonNull final PaymentResultProvider provider) {
+                @NonNull final PaymentResultProvider paymentResultProvider,
+                @NonNull final PaymentMethodProvider paymentMethodProvider) {
         super(props, dispatcher);
-        this.resourcesProvider = provider;
+        this.paymentResultProvider = paymentResultProvider;
+        this.paymentMethodProvider = paymentMethodProvider;
     }
 
     public boolean hasInstructions() {
@@ -35,6 +42,39 @@ public class Body extends Component<PaymentResultBodyProps> {
                 .setProcessingMode(props.processingMode)
                 .build();
         return new Instructions(instructionsProps, getDispatcher());
+    }
+
+    public boolean hasPaymentMethodDescription() {
+        return props.status != null && props.paymentData != null &&
+                props.status.equals(Payment.StatusCodes.STATUS_APPROVED) &&
+                isPaymentTypeValid(props.paymentData.getPaymentMethod());
+    }
+
+    private boolean isPaymentTypeValid(PaymentMethod paymentMethod) {
+        return isCardType(paymentMethod) || isAccountMoney(paymentMethod);
+    }
+
+    private boolean isCardType(PaymentMethod paymentMethod) {
+        return paymentMethod != null && paymentMethod.getPaymentTypeId() != null &&
+                paymentMethod.getPaymentTypeId().equals(PaymentTypes.CREDIT_CARD) ||
+                paymentMethod.getPaymentTypeId().equals(PaymentTypes.DEBIT_CARD) ||
+                paymentMethod.getPaymentTypeId().equals(PaymentTypes.PREPAID_CARD);
+    }
+
+    private boolean isAccountMoney(PaymentMethod paymentMethod) {
+        return paymentMethod != null && paymentMethod.getPaymentTypeId() != null && paymentMethod.getPaymentTypeId().equals(PaymentTypes.ACCOUNT_MONEY);
+    }
+
+    public PaymentMethodComponent getPaymentMethodComponent() {
+        final PaymentMethodProps paymentMethodProps = new PaymentMethodProps.Builder()
+                .setPaymentMethod(props.paymentData.getPaymentMethod())
+                .setPayerCost(props.paymentData.getPayerCost())
+                .setToken(props.paymentData.getToken())
+                .setIssuer(props.paymentData.getIssuer())
+                .setDisclaimer(props.disclaimer)
+                .setAmountFormatter(props.bodyAmountFormatter)
+                .build();
+        return new PaymentMethodComponent(paymentMethodProps, getDispatcher(), paymentMethodProvider);
     }
 
     public boolean hasBodyError() {
@@ -67,6 +107,6 @@ public class Body extends Component<PaymentResultBodyProps> {
                 .setStatusDetail(props.statusDetail)
                 .setPaymentMethodName(props.paymentData.getPaymentMethod().getName())
                 .build();
-        return new BodyError(bodyErrorProps, getDispatcher(), resourcesProvider);
+        return new BodyError(bodyErrorProps, getDispatcher(), paymentResultProvider);
     }
 }

@@ -6,11 +6,12 @@ import com.mercadopago.components.Mutator;
 import com.mercadopago.components.MutatorPropsListener;
 import com.mercadopago.model.Instruction;
 import com.mercadopago.model.PaymentResult;
+import com.mercadopago.paymentresult.components.Body;
+import com.mercadopago.paymentresult.formatter.BodyAmountFormatter;
 import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
 import com.mercadopago.paymentresult.props.HeaderProps;
 import com.mercadopago.paymentresult.props.PaymentResultProps;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
-import com.mercadopago.preferences.ServicePreference;
 
 /**
  * Created by vaserber on 10/20/17.
@@ -28,15 +29,17 @@ public class PaymentResultPropsMutator implements Mutator, PaymentResultPropsVie
         this.propsListener = listener;
     }
 
-    //amountFormat can be null
+    //headerAmountFormatter can be null
     @Override
     public void setPropPaymentResult(@NonNull final PaymentResult paymentResult,
-                                     final HeaderTitleFormatter amountFormat,
+                                     final HeaderTitleFormatter headerAmountFormatter,
+                                     final BodyAmountFormatter bodyAmountFormatter,
                                      final boolean showLoading) {
         props = props.toBuilder()
                 .setPaymentResult(paymentResult)
                 .setHeaderMode(HeaderProps.HEADER_MODE_WRAP)
-                .setAmountFormat(amountFormat)
+                .setHeaderAmountFormatter(headerAmountFormatter)
+                .setBodyAmountFormatter(bodyAmountFormatter)
                 .setLoading(showLoading)
                 .build();
     }
@@ -55,7 +58,7 @@ public class PaymentResultPropsMutator implements Mutator, PaymentResultPropsVie
                                    @NonNull final String processingMode) {
         props = props.toBuilder()
                 .setInstruction(instruction)
-                .setAmountFormat(amountFormat)
+                .setHeaderAmountFormatter(amountFormat)
                 .setLoading(showLoading)
                 .setProcessingMode(processingMode)
                 .build();

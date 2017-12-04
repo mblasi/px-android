@@ -8,7 +8,6 @@ import android.widget.FrameLayout;
 import com.mercadopago.R;
 import com.mercadopago.components.Renderer;
 import com.mercadopago.components.RendererFactory;
-import com.mercadopago.paymentresult.components.Body;
 
 /**
  * Created by vaserber on 10/23/17.
@@ -24,6 +23,10 @@ public class BodyRenderer extends Renderer<Body> {
             final Renderer instructionsRenderer = RendererFactory.create(context, component.getInstructionsComponent());
             final View instructions = instructionsRenderer.render();
             bodyViewGroup.addView(instructions);
+        } else if (component.hasPaymentMethodDescription()) {
+            final Renderer paymentMethodRenderer = RendererFactory.create(context, component.getPaymentMethodComponent());
+            final View paymentMethod = paymentMethodRenderer.render();
+            bodyViewGroup.addView(paymentMethod);
         } else if (component.hasBodyError()) {
             final Renderer bodyErrorRenderer = RendererFactory.create(context, component.getBodyErrorComponent());
             final View bodyError = bodyErrorRenderer.render();

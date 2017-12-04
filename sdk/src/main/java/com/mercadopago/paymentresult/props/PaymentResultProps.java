@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.mercadopago.model.Instruction;
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentResult;
+import com.mercadopago.paymentresult.formatter.BodyAmountFormatter;
 import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
 
@@ -18,7 +19,8 @@ public class PaymentResultProps {
     public final PaymentResultScreenPreference preferences;
     public final Instruction instruction;
     public final String headerMode;
-    public final HeaderTitleFormatter amountFormat;
+    public final HeaderTitleFormatter headerAmountFormatter;
+    public final BodyAmountFormatter bodyAmountFormatter;
     public final boolean loading;
     public final String processingMode;
 
@@ -27,7 +29,8 @@ public class PaymentResultProps {
         this.headerMode = builder.headerMode;
         this.preferences = builder.preferences;
         this.instruction = builder.instruction;
-        this.amountFormat = builder.amountFormat;
+        this.headerAmountFormatter = builder.headerAmountFormatter;
+        this.bodyAmountFormatter = builder.bodyAmountFormatter;
         this.loading = builder.loading;
         this.processingMode = builder.processingMode;
     }
@@ -38,7 +41,8 @@ public class PaymentResultProps {
                 .setPaymentResultScreenPreference(this.preferences)
                 .setHeaderMode(this.headerMode)
                 .setInstruction(this.instruction)
-                .setAmountFormat(this.amountFormat)
+                .setHeaderAmountFormatter(this.headerAmountFormatter)
+                .setBodyAmountFormatter(this.bodyAmountFormatter)
                 .setLoading(this.loading)
                 .setProcessingMode(this.processingMode);
     }
@@ -199,7 +203,8 @@ public class PaymentResultProps {
 
         public Instruction instruction;
         public String headerMode = HeaderProps.HEADER_MODE_WRAP;
-        public HeaderTitleFormatter amountFormat;
+        public HeaderTitleFormatter headerAmountFormatter;
+        public BodyAmountFormatter bodyAmountFormatter;
         public boolean loading = true;
         public String processingMode;
 
@@ -223,8 +228,13 @@ public class PaymentResultProps {
             return this;
         }
 
-        public Builder setAmountFormat(@NonNull final HeaderTitleFormatter amountFormat) {
-            this.amountFormat = amountFormat;
+        public Builder setHeaderAmountFormatter(@NonNull final HeaderTitleFormatter headerAmountFormatter) {
+            this.headerAmountFormatter = headerAmountFormatter;
+            return this;
+        }
+
+        public Builder setBodyAmountFormatter(@NonNull final BodyAmountFormatter bodyAmountFormatter) {
+            this.bodyAmountFormatter = bodyAmountFormatter;
             return this;
         }
 

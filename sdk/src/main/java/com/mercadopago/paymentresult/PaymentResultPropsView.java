@@ -5,13 +5,15 @@ import android.support.annotation.NonNull;
 import com.mercadopago.model.Instruction;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.mvp.MvpView;
+import com.mercadopago.paymentresult.formatter.AmountFormat;
+import com.mercadopago.paymentresult.formatter.BodyAmountFormatter;
 import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.preferences.ServicePreference;
 
 public interface PaymentResultPropsView extends MvpView {
 
-    void setPropPaymentResult(@NonNull final PaymentResult paymentResult, final HeaderTitleFormatter amountFormat, final boolean showLoading);
+    void setPropPaymentResult(@NonNull final PaymentResult paymentResult, final HeaderTitleFormatter headerTitleFormatter, BodyAmountFormatter bodyAmountFormatter, final boolean showLoading);
 
     void setPaymentResultScreenPreference(@NonNull final PaymentResultScreenPreference paymentResultScreenPreference);
 

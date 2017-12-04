@@ -18,8 +18,9 @@ import com.mercadopago.model.PaymentResult;
 import com.mercadopago.model.Site;
 import com.mercadopago.mvp.MvpPresenter;
 import com.mercadopago.mvp.OnResourcesRetrievedCallback;
-import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
+import com.mercadopago.paymentresult.formatter.BodyAmountFormatter;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
+import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
 import com.mercadopago.preferences.ServicePreference;
 import com.mercadopago.util.ApiUtil;
 
@@ -67,15 +68,19 @@ public class PaymentResultPresenter extends MvpPresenter<PaymentResultPropsView,
     }
 
     protected void onValidStart() {
-        HeaderTitleFormatter amountFormat = null;
+        HeaderTitleFormatter headerAmountFormatter = null;
+        BodyAmountFormatter bodyAmountFormatter = null;
+
         if (isCallForAuthorize()) {
-            amountFormat = new HeaderTitleFormatter(site.getCurrencyId(), amount, paymentResult.getPaymentData().getPaymentMethod().getName());
+            headerAmountFormatter = new HeaderTitleFormatter(site.getCurrencyId(), amount, paymentResult.getPaymentData().getPaymentMethod().getName());
+        } else {
+            bodyAmountFormatter = new BodyAmountFormatter(site.getCurrencyId(), amount);
         }
         boolean showLoading = false;
         if (hasToAskForInstructions()) {
             showLoading = true;
         }
-        getView().setPropPaymentResult(paymentResult, amountFormat, showLoading);
+        getView().setPropPaymentResult(paymentResult, headerAmountFormatter, bodyAmountFormatter, showLoading);
         checkGetInstructions();
     }
 
