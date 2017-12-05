@@ -62,7 +62,7 @@ public interface PaymentResultProvider extends ResourcesProvider {
 
     String getRejectedCallForAuthBodyErrorDescription();
 
-    String getRejectedCardDisabledBodyErrorDescription();
+    String getRejectedCardDisabledBodyErrorDescription(String paymentMethodName);
 
     String getRejectedInsufficientAmountBodyErrorDescription();
 

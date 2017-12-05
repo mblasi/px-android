@@ -113,6 +113,8 @@
     <string name="mpsdk_title_pending_payment">We are processing the payment</string>
     <string name="mpsdk_title_pending">We are processing\n the payment</string>
     <string name="mpsdk_subtitle_pending_contingency">In less than an hour we will send you the result by e-mail.</string>
+    <string name="mpsdk_error_description_contingency">In a few hours we will notify you via e-mail if it is accredited.</string>
+    <string name="mpsdk_error_description_review_manual">Within the next 24 hours we will notify you via e-mail if it was accredited.</string>
 
     <!-- Rejection -->
     <string name="mpsdk_text_other_payment_method_button_rejection">Use another payment method</string>
@@ -137,6 +139,15 @@
     <string name="mpsdk_subtitle_rejection_max_attempts">Choose another card or another payment method.</string>
     <string name="mpsdk_rejection_label">Something went wrong…</string>
     <string name="mpsdk_error_secondary_title_call">Could not authorize it?</string>
+    <string name="mpsdk_error_description_call">The phone number is on the back of your card.</string>
+    <string name="mpsdk_error_description_card_disabled">Use another payment method or call %1$s to activate your card.</string>
+    <string name="mpsdk_error_description_insufficient_amount">Do not be discouraged! Recharge it in any bank or from your internet banking and try again.\nOr if you prefer, you can choose another payment method.</string>
+    <string name="mpsdk_error_description_other_reason">Use another card or other payment method.</string>
+    <string name="mpsdk_error_description_by_bank">Please try to pay with other payment method.</string>
+    <string name="mpsdk_error_description_insufficient_data">Please try to pay with other payment method.</string>
+    <string name="mpsdk_error_description_duplicated_payment">Don\'t worry, your previous payment was approved.</string>
+    <string name="mpsdk_error_description_max_attempts">As you reached the limit of attempts with this card, use another payment method.</string>
+    <string name="mpsdk_error_description_high_risk">Use a payment method other than a card.</string>
 
 
     <!-- Error messages -->
