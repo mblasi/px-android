@@ -99,14 +99,17 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
     public Body getBodyComponent() {
         Body body = null;
         if (props.paymentResult != null) {
-            final PaymentResultBodyProps bodyProps = new PaymentResultBodyProps(
-                    props.paymentResult.getPaymentStatus(),
-                    props.paymentResult.getPaymentStatusDetail(),
-                    props.instruction,
-                    props.paymentResult.getPaymentData(),
-                    props.paymentResult.getStatementDescription(),
-                    props.processingMode,
-                    props.bodyAmountFormatter);
+            final PaymentResultBodyProps bodyProps = new PaymentResultBodyProps.Builder()
+                    .setStatus(props.paymentResult.getPaymentStatus())
+                    .setStatusDetail(props.paymentResult.getPaymentStatusDetail())
+                    .setInstruction(props.instruction)
+                    .setPaymentData(props.paymentResult.getPaymentData())
+                    .setDisclaimer(props.paymentResult.getStatementDescription())
+                    .setProcessingMode(props.processingMode)
+                    .setPaymentId(props.paymentResult.getPaymentId())
+                    .setBodyAmountFormatter(props.bodyAmountFormatter)
+                    .setPaymentResultScreenPreference(props.preferences)
+                    .build();
             body = new Body(bodyProps, getDispatcher(), paymentResultProvider, paymentMethodProvider);
         }
         return body;

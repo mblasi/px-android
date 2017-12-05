@@ -11,6 +11,7 @@ import com.mercadopago.paymentresult.PaymentMethodProvider;
 import com.mercadopago.paymentresult.PaymentResultProvider;
 import com.mercadopago.paymentresult.props.BodyErrorProps;
 import com.mercadopago.paymentresult.props.InstructionsProps;
+import com.mercadopago.paymentresult.props.ReceiptProps;
 import com.mercadopago.paymentresult.props.PaymentMethodProps;
 import com.mercadopago.paymentresult.props.PaymentResultBodyProps;
 
@@ -45,23 +46,22 @@ public class Body extends Component<PaymentResultBodyProps> {
     }
 
     public boolean hasPaymentMethodDescription() {
-        return props.status != null && props.paymentData != null &&
-                props.status.equals(Payment.StatusCodes.STATUS_APPROVED) &&
-                isPaymentTypeValid(props.paymentData.getPaymentMethod());
+        return props.paymentData != null && isStatusApproved() &&
+                isPaymentTypeOn(props.paymentData.getPaymentMethod());
     }
 
-    private boolean isPaymentTypeValid(PaymentMethod paymentMethod) {
+    private boolean isPaymentTypeOn(final PaymentMethod paymentMethod) {
         return isCardType(paymentMethod) || isAccountMoney(paymentMethod);
     }
 
-    private boolean isCardType(PaymentMethod paymentMethod) {
+    private boolean isCardType(final PaymentMethod paymentMethod) {
         return paymentMethod != null && paymentMethod.getPaymentTypeId() != null &&
                 paymentMethod.getPaymentTypeId().equals(PaymentTypes.CREDIT_CARD) ||
                 paymentMethod.getPaymentTypeId().equals(PaymentTypes.DEBIT_CARD) ||
                 paymentMethod.getPaymentTypeId().equals(PaymentTypes.PREPAID_CARD);
     }
 
-    private boolean isAccountMoney(PaymentMethod paymentMethod) {
+    private boolean isAccountMoney(final PaymentMethod paymentMethod) {
         return paymentMethod != null && paymentMethod.getPaymentTypeId() != null && paymentMethod.getPaymentTypeId().equals(PaymentTypes.ACCOUNT_MONEY);
     }
 
@@ -101,6 +101,10 @@ public class Body extends Component<PaymentResultBodyProps> {
                         props.statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_INSUFFICIENT_AMOUNT)));
     }
 
+    private boolean isStatusApproved() {
+        return props.status != null && props.status.equals(Payment.StatusCodes.STATUS_APPROVED);
+    }
+
     public BodyError getBodyErrorComponent() {
         final BodyErrorProps bodyErrorProps = new BodyErrorProps.Builder()
                 .setStatus(props.status)
@@ -108,5 +112,17 @@ public class Body extends Component<PaymentResultBodyProps> {
                 .setPaymentMethodName(props.paymentData.getPaymentMethod().getName())
                 .build();
         return new BodyError(bodyErrorProps, getDispatcher(), paymentResultProvider);
+    }
+
+    public boolean hasReceipt() {
+        return props.paymentId != null && props.isReceiptEnabled() && props.paymentData != null
+                && isStatusApproved() && isPaymentTypeOn(props.paymentData.getPaymentMethod());
+    }
+
+    public Receipt getReceiptComponent() {
+        final ReceiptProps receiptProps = new ReceiptProps.Builder()
+                .setReceiptId(props.paymentId)
+                .build();
+        return new Receipt(receiptProps, getDispatcher(), paymentResultProvider);
     }
 }

@@ -99,6 +99,8 @@
     <string name="mpsdk_payment_id_description_number">Nº %1$s</string>
     <string name="mpsdk_account_money">Account money</string>
     <string name="mpsdk_ending_in">ending in</string>
+    <string name="mpsdk_receipt">Transaction number %1$s</string>
+    <string name="mpsdk_date_divider">of</string>
 
     <!-- CallForAuthorize -->
     <string name="mpsdk_title_activity_call_for_authorize">You must authorize with %1$s the payment of %2$s to Mercado Pago</string>

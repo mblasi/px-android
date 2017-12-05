@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/mpsdk_xxxs_height"
             android:layout_gravity="bottom"
-            android:background="@color/mpsdk_divider_gray" />
+            android:background="@color/mpsdk_med_light_gray" />
     </FrameLayout>
 
 </LinearLayout>

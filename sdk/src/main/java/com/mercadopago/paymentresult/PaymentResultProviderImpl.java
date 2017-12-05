@@ -217,12 +217,21 @@ public class PaymentResultProviderImpl implements PaymentResultProvider {
     }
 
     @Override
-    public String getRejectedCallForAuthBodyActionText(String paymentMethodName) {
+    public String getRejectedCallForAuthBodyActionText(final String paymentMethodName) {
         return String.format(context.getString(R.string.mpsdk_text_authorized_call_for_authorize), paymentMethodName);
     }
 
     @Override
     public String getRejectedCallForAuthBodySecondaryTitle() {
         return context.getString(R.string.mpsdk_error_secondary_title_call);
+    }
+
+    @Override
+    public String getReceiptDescription(final Long receiptId) {
+        String description = "";
+        if (receiptId != null) {
+            description = context.getResources().getString(R.string.mpsdk_receipt, String.valueOf(receiptId));
+        }
+        return description;
     }
 }

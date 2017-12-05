@@ -98,6 +98,8 @@
     <string name="mpsdk_payment_id_description">Comprovante</string>
     <string name="mpsdk_account_money">Dinheiro em conta</string>
     <string name="mpsdk_ending_in">terminado em</string>
+    <string name="mpsdk_receipt">Número da operação %1$s</string>
+    <string name="mpsdk_date_divider">de</string>
 
     <!-- CallForAuthorize -->
     <string name="mpsdk_title_activity_call_for_authorize">Você deve autorizar com %1$s o pagamento de %2$s ao Mercado Pago</string>

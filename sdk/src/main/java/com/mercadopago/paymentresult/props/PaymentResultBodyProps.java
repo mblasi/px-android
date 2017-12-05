@@ -6,6 +6,7 @@ import com.mercadopago.model.Instruction;
 import com.mercadopago.model.PaymentData;
 import com.mercadopago.paymentresult.formatter.BodyAmountFormatter;
 import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
+import com.mercadopago.preferences.PaymentResultScreenPreference;
 
 /**
  * Created by vaserber on 10/23/17.
@@ -19,19 +20,9 @@ public class PaymentResultBodyProps {
     public final PaymentData paymentData;
     public final String processingMode;
     public final String disclaimer;
+    public final Long paymentId;
     public final BodyAmountFormatter bodyAmountFormatter;
-
-    public PaymentResultBodyProps(String status, String statusDetail,
-                                  Instruction instruction, PaymentData paymentData, String disclaimer,
-                                  String processingMode, BodyAmountFormatter bodyAmountFormatter) {
-        this.status = status;
-        this.statusDetail = statusDetail;
-        this.instruction = instruction;
-        this.paymentData = paymentData;
-        this.disclaimer = disclaimer;
-        this.processingMode = processingMode;
-        this.bodyAmountFormatter = bodyAmountFormatter;
-    }
+    public final PaymentResultScreenPreference preferences;
 
     public PaymentResultBodyProps(@NonNull final Builder builder) {
         this.status = builder.status;
@@ -40,7 +31,9 @@ public class PaymentResultBodyProps {
         this.paymentData = builder.paymentData;
         this.disclaimer = builder.disclaimer;
         this.processingMode = builder.processingMode;
+        this.paymentId = builder.paymentId;
         this.bodyAmountFormatter = builder.bodyAmountFormatter;
+        this.preferences = builder.preferences;
     }
 
     public Builder toBuilder() {
@@ -51,7 +44,13 @@ public class PaymentResultBodyProps {
                 .setPaymentData(this.paymentData)
                 .setDisclaimer(this.disclaimer)
                 .setProcessingMode(this.processingMode)
-                .setBodyAmountFormatter(this.bodyAmountFormatter);
+                .setPaymentId(this.paymentId)
+                .setBodyAmountFormatter(this.bodyAmountFormatter)
+                .setPaymentResultScreenPreference(this.preferences);
+    }
+
+    public boolean isReceiptEnabled() {
+        return preferences == null || preferences.isApprovedReceiptEnabled();
     }
 
     public static class Builder {
@@ -62,7 +61,10 @@ public class PaymentResultBodyProps {
         public PaymentData paymentData;
         public String disclaimer;
         public String processingMode;
+        public Long paymentId;
         public BodyAmountFormatter bodyAmountFormatter;
+        public PaymentResultScreenPreference preferences =
+                new PaymentResultScreenPreference.Builder().build();
 
         public Builder setStatus(@NonNull final String status) {
             this.status = status;
@@ -94,8 +96,18 @@ public class PaymentResultBodyProps {
             return this;
         }
 
+        public Builder setPaymentId(Long paymentId) {
+            this.paymentId = paymentId;
+            return this;
+        }
+
         public Builder setBodyAmountFormatter(BodyAmountFormatter bodyAmountFormatter) {
             this.bodyAmountFormatter = bodyAmountFormatter;
+            return this;
+        }
+
+        public Builder setPaymentResultScreenPreference(@NonNull final PaymentResultScreenPreference paymentResultScreenPreference) {
+            this.preferences = paymentResultScreenPreference;
             return this;
         }
 

@@ -2,6 +2,7 @@ package com.mercadopago.paymentresult.components;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -17,12 +18,13 @@ import com.mercadopago.customviews.MPTextView;
 public class PaymentMethodRenderer extends Renderer<PaymentMethodComponent> {
     @Override
     public View render() {
-        final View bodyView = LayoutInflater.from(context).inflate(R.layout.mpsdk_payment_method_component, null, false);
-        final ImageView imageView = bodyView.findViewById(R.id.mpsdkPaymentMethodIcon);
-        final MPTextView descriptionTextView = bodyView.findViewById(R.id.mpsdkPaymentMethodDescription);
-        final MPTextView detailTextView = bodyView.findViewById(R.id.mpsdkPaymentMethodDetail);
-        final MPTextView statementDescriptionTextView = bodyView.findViewById(R.id.mpsdkStatementDescription);
-        final FrameLayout totalAmountContainer = bodyView.findViewById(R.id.mpsdkTotalAmountContainer);
+        final View paymentMethodView = LayoutInflater.from(context).inflate(R.layout.mpsdk_payment_method_component, null, false);
+        final ViewGroup paymentMethodViewGroup = paymentMethodView.findViewById(R.id.mpsdkPaymentMethodContainer);
+        final ImageView imageView = paymentMethodView.findViewById(R.id.mpsdkPaymentMethodIcon);
+        final MPTextView descriptionTextView = paymentMethodView.findViewById(R.id.mpsdkPaymentMethodDescription);
+        final MPTextView detailTextView = paymentMethodView.findViewById(R.id.mpsdkPaymentMethodDetail);
+        final MPTextView statementDescriptionTextView = paymentMethodView.findViewById(R.id.mpsdkStatementDescription);
+        final FrameLayout totalAmountContainer = paymentMethodView.findViewById(R.id.mpsdkTotalAmountContainer);
 
         imageView.setImageDrawable(component.getImage());
 
@@ -34,6 +36,7 @@ public class PaymentMethodRenderer extends Renderer<PaymentMethodComponent> {
         setText(detailTextView, component.getDetail());
         setText(statementDescriptionTextView, component.getDisclaimer());
 
-        return bodyView;
+        stretchHeight(paymentMethodViewGroup);
+        return paymentMethodView;
     }
 }

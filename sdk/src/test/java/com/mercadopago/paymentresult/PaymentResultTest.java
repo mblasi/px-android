@@ -525,12 +525,17 @@ public class PaymentResultTest {
         }
 
         @Override
-        public String getRejectedCallForAuthBodyActionText(String paymentMethodName) {
+        public String getRejectedCallForAuthBodyActionText(final String paymentMethodName) {
             return null;
         }
 
         @Override
         public String getRejectedCallForAuthBodySecondaryTitle() {
+            return null;
+        }
+
+        @Override
+        public String getReceiptDescription(final Long receiptId) {
             return null;
         }
     }
