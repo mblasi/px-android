@@ -43,7 +43,7 @@ public class BodyError extends Component<BodyErrorProps> {
             if (props.statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CALL_FOR_AUTHORIZE)) {
                 description = resourcesProvider.getRejectedCallForAuthBodyErrorDescription();
             } else if (props.statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CARD_DISABLED)) {
-                description = resourcesProvider.getRejectedCardDisabledBodyErrorDescription();
+                description = resourcesProvider.getRejectedCardDisabledBodyErrorDescription(props.paymentMethodName);
             } else if (props.statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_INSUFFICIENT_AMOUNT)) {
                 description = resourcesProvider.getRejectedInsufficientAmountBodyErrorDescription();
             } else if (props.statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_OTHER_REASON)) {

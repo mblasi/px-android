@@ -177,8 +177,8 @@ public class PaymentResultProviderImpl implements PaymentResultProvider {
     }
 
     @Override
-    public String getRejectedCardDisabledBodyErrorDescription() {
-        return context.getString(R.string.mpsdk_error_description_card_disabled);
+    public String getRejectedCardDisabledBodyErrorDescription(String paymentMethodName) {
+        return context.getString(R.string.mpsdk_error_description_card_disabled, paymentMethodName);
     }
 
     @Override

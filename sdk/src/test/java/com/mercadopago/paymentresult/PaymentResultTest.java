@@ -485,7 +485,7 @@ public class PaymentResultTest {
         }
 
         @Override
-        public String getRejectedCardDisabledBodyErrorDescription() {
+        public String getRejectedCardDisabledBodyErrorDescription(String paymentMethodName) {
             return null;
         }
 
