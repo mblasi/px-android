@@ -58,7 +58,7 @@
         android:id="@+id/bodyErrorMiddleDivider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mpsdk_xxxs_height"
-        android:background="@color/mpsdk_divider_gray"
+        android:background="@color/mpsdk_med_light_gray"
         android:visibility="gone"/>
 
     <com.mercadopago.customviews.MPTextView
@@ -82,7 +82,7 @@
         android:id="@+id/bodyErrorBottomDivider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mpsdk_xxxs_height"
-        android:background="@color/mpsdk_divider_gray"
+        android:background="@color/mpsdk_med_light_gray"
         android:visibility="gone"/>
 
 </LinearLayout>

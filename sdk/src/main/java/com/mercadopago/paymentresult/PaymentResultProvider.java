@@ -78,7 +78,9 @@ public interface PaymentResultProvider extends ResourcesProvider {
 
     String getRejectedHighRiskBodyErrorDescription();
 
-    String getRejectedCallForAuthBodyActionText(String paymentMethodName);
+    String getRejectedCallForAuthBodyActionText(final String paymentMethodName);
 
     String getRejectedCallForAuthBodySecondaryTitle();
+
+    String getReceiptDescription(final Long receiptId);
 }

@@ -38,6 +38,8 @@ import com.mercadopago.paymentresult.components.InstructionsSecondaryInfo;
 import com.mercadopago.paymentresult.components.InstructionsSubtitle;
 import com.mercadopago.paymentresult.components.InstructionsTertiaryInfo;
 import com.mercadopago.paymentresult.components.Body;
+import com.mercadopago.paymentresult.components.Receipt;
+import com.mercadopago.paymentresult.components.ReceiptRenderer;
 import com.mercadopago.paymentresult.components.PaymentMethodComponent;
 import com.mercadopago.paymentresult.components.PaymentMethodRenderer;
 import com.mercadopago.paymentresult.components.PaymentResultContainer;
@@ -107,6 +109,8 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         presenter.attachView(mutator);
         presenter.attachResourcesProvider(paymentResultProvider);
 
+        presenter.setPaymentResultScreenPreference(paymentResultScreenPreference);
+
         componentManager = new ComponentManager(this);
 
         RendererFactory.register(PaymentResultContainer.class, PaymentResultRenderer.class);
@@ -131,6 +135,7 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         RendererFactory.register(PaymentMethodComponent.class, PaymentMethodRenderer.class);
         RendererFactory.register(TotalAmountComponent.class, TotalAmountRenderer.class);
         RendererFactory.register(BodyError.class, BodyErrorRenderer.class);
+        RendererFactory.register(Receipt.class, ReceiptRenderer.class);
 
         final Component root = new PaymentResultContainer(componentManager, paymentResultProvider, paymentMethodProvider);
         componentManager.setActionsListener(presenter);
@@ -194,13 +199,14 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         presenter.setSite(site);
         presenter.setAmount(amount);
         presenter.setServicePreference(servicePreference);
-        presenter.setPaymentResultScreenPreference(paymentResultScreenPreference);
 
         final PaymentResultPropsMutator mutator = new PaymentResultPropsMutator();
         final PaymentResultProvider provider = new PaymentResultProviderImpl(this, merchantPublicKey, payerAccessToken);
         presenter.attachView(mutator);
         presenter.attachResourcesProvider(provider);
 
+        presenter.setPaymentResultScreenPreference(paymentResultScreenPreference);
+        
         super.onRestoreInstanceState(savedInstanceState);
     }
 
@@ -226,7 +232,6 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         paymentResultScreenPreference = JsonUtil.getInstance().fromJson(getIntent().getExtras().getString("paymentResultScreenPreference"), PaymentResultScreenPreference.class);
 
         presenter.setServicePreference(servicePreference);
-        presenter.setPaymentResultScreenPreference(paymentResultScreenPreference);
     }
 
     @Override

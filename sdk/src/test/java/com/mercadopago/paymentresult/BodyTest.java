@@ -9,6 +9,7 @@ import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.paymentresult.components.Body;
 import com.mercadopago.paymentresult.components.BodyError;
+import com.mercadopago.paymentresult.components.Receipt;
 import com.mercadopago.paymentresult.props.PaymentResultBodyProps;
 
 import junit.framework.Assert;
@@ -148,11 +149,32 @@ public class BodyTest {
         Assert.assertEquals(bodyError.props.paymentMethodName, paymentResult.getPaymentData().getPaymentMethod().getName());
     }
 
+    @Test
+    public void testBodyHasReceipt() {
+        final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
+        final Body body = new Body(getBodyPropsForOnPayment(paymentResult),
+                dispatcher, paymentResultProvider, paymentMethodProvider);
+
+        Assert.assertTrue(body.hasReceipt());
+    }
+
+    @Test
+    public void testBodyReceiptHasValidProps() {
+        final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
+        final Body body = new Body(getBodyPropsForOnPayment(paymentResult),
+                dispatcher, paymentResultProvider, paymentMethodProvider);
+
+        Receipt receipt = body.getReceiptComponent();
+        Assert.assertEquals(receipt.props.receiptId, paymentResult.getPaymentId());
+    }
+
+
     private PaymentResultBodyProps getBodyPropsForOnPayment(PaymentResult paymentResult) {
         return new PaymentResultBodyProps.Builder()
                 .setStatus(paymentResult.getPaymentStatus())
                 .setStatusDetail(paymentResult.getPaymentStatusDetail())
                 .setPaymentData(paymentResult.getPaymentData())
+                .setPaymentId(paymentResult.getPaymentId())
                 .build();
     }
 }
