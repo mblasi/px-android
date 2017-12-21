@@ -26,6 +26,7 @@ public class BodyErrorTest {
     private static final String REVIEW_MANUAL_DESCRIPTION = "review_manual_description";
     private static final String CALL_FOR_AUTH_DESCRIPTION = "call_for_auth_description";
     private static final String INSUFFICIENT_AMOUNT_DESCRIPTION = "insufficient_amount_description";
+    private static final String INSUFFICIENT_AMOUNT_SECOND_DESCRIPTION = "insufficient_amount_second_description";
     private static final String REJECTED_OTHER_REASON_DESCRIPTION = "rejected_other_reason_description";
     private static final String REJECTED_INSUFFICIENT_DATA = "insufficient_data_description";
     private static final String DUPLICATED_DESCRIPTION = "duplicated_description";
@@ -45,6 +46,7 @@ public class BodyErrorTest {
         when(provider.getPendingReviewManualBodyErrorDescription()).thenReturn(REVIEW_MANUAL_DESCRIPTION);
         when(provider.getRejectedCallForAuthBodyErrorDescription()).thenReturn(CALL_FOR_AUTH_DESCRIPTION);
         when(provider.getRejectedInsufficientAmountBodyErrorDescription()).thenReturn(INSUFFICIENT_AMOUNT_DESCRIPTION);
+        when(provider.getRejectedInsufficientAmountBodyErrorSecondDescription()).thenReturn(INSUFFICIENT_AMOUNT_SECOND_DESCRIPTION);
         when(provider.getRejectedOtherReasonBodyErrorDescription()).thenReturn(REJECTED_OTHER_REASON_DESCRIPTION);
         when(provider.getRejectedInsufficientDataBodyErrorDescription()).thenReturn(REJECTED_INSUFFICIENT_DATA);
         when(provider.getRejectedDuplicatedPaymentBodyErrorDescription()).thenReturn(DUPLICATED_DESCRIPTION);
@@ -142,6 +144,14 @@ public class BodyErrorTest {
     }
 
     @Test
+    public void testBodyErrorSecondDescriptionForRejectedInsufficientAmount() {
+        final PaymentResult paymentResult = PaymentResults.getStatusRejectedInsufficientAmountPaymentResult();
+        final BodyError bodyError = new BodyError(getBodyErrorProps(paymentResult), dispatcher, provider);
+
+        Assert.assertEquals(bodyError.getSecondDescription(), INSUFFICIENT_AMOUNT_SECOND_DESCRIPTION);
+    }
+
+    @Test
     public void testBodyErrorDescriptionForRejectedOtherReason() {
         final PaymentResult paymentResult = PaymentResults.getStatusRejectedOtherPaymentResult();
         final BodyError bodyError = new BodyError(getBodyErrorProps(paymentResult), dispatcher, provider);
@@ -171,6 +181,14 @@ public class BodyErrorTest {
         final BodyError bodyError = new BodyError(getBodyErrorProps(paymentResult), dispatcher, provider);
 
         Assert.assertEquals(bodyError.getDescription(), "");
+    }
+
+    @Test
+    public void testBodyErrorSecondDescriptionOnEmptyCase() {
+        final PaymentResult paymentResult = PaymentResults.getStatusRejectedBadFilledFormPaymentResult();
+        final BodyError bodyError = new BodyError(getBodyErrorProps(paymentResult), dispatcher, provider);
+
+        Assert.assertEquals(bodyError.getSecondDescription(), "");
     }
 
     @Test

@@ -124,6 +124,13 @@ public class FooterContainer extends Component<FooterContainer.Props> {
                 linkAction = new Footer.FooterAction(resourcesProvider.getChangePaymentMethodLabel(),
                         new ChangePaymentMethodAction());
 
+            } else if (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_DUPLICATED_PAYMENT
+                    .equals(props.paymentResult.getPaymentStatusDetail())) {
+
+                buttonAction = null;
+
+                linkAction = new Footer.FooterAction(resourcesProvider.getContinueShopping());
+
             } else {
 
                 buttonAction = new Footer.FooterAction(

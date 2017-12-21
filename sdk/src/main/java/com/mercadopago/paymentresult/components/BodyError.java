@@ -64,6 +64,15 @@ public class BodyError extends Component<BodyErrorProps> {
         return description;
     }
 
+    public String getSecondDescription() {
+        String secondDescription = "";
+        if (props.status.equals(Payment.StatusCodes.STATUS_REJECTED) &&
+                props.statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_INSUFFICIENT_AMOUNT)) {
+            secondDescription = resourcesProvider.getRejectedInsufficientAmountBodyErrorSecondDescription();
+        }
+        return secondDescription;
+    }
+
     private boolean isRejectedWithTitle() {
         return (props.status.equals(Payment.StatusCodes.STATUS_REJECTED) &&
                 (props.statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CALL_FOR_AUTHORIZE) ||

@@ -41,6 +41,17 @@
             tools:text="Description" />
 
         <com.mercadopago.customviews.MPTextView
+            android:id="@+id/paymentResultBodyErrorSecondDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/mpsdk_xs_margin"
+            android:gravity="center_horizontal"
+            android:textColor="@color/mpsdk_brownish_grey"
+            android:textSize="@dimen/mpsdk_s_text"
+            tools:text="Description" />
+
+        <com.mercadopago.customviews.MPTextView
             android:id="@+id/paymentResultBodyErrorAction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,8 +62,8 @@
             android:paddingTop="@dimen/mpsdk_s_margin"
             android:textColor="@color/mpsdk_blue_MP"
             android:textSize="@dimen/mpsdk_s_text"
-            tools:text="Action"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:text="Action" />
     </LinearLayout>
 
     <View
@@ -60,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/mpsdk_xxxs_height"
         android:background="@color/mpsdk_med_light_gray"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.mercadopago.customviews.MPTextView
         android:id="@+id/bodyErrorSecondaryTitle"
@@ -76,14 +87,14 @@
         android:paddingTop="@dimen/mpsdk_l_margin"
         android:textColor="@color/mpsdk_black"
         android:textSize="@dimen/mpsdk_l_text"
-        tools:text="¿No pudiste autorizarlo?"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:text="¿No pudiste autorizarlo?" />
 
     <View
         android:id="@+id/bodyErrorBottomDivider"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mpsdk_xxxs_height"
         android:background="@color/mpsdk_med_light_gray"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </LinearLayout>

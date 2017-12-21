@@ -92,7 +92,7 @@
     <string name="mpsdk_exclusion_one_element">You can only pay with %1$s</string>
 
     <!-- Congrats -->
-    <string name="mpsdk_title_approved_payment">Done, your payment was accredited!</string>
+    <string name="mpsdk_title_approved_payment">Done! Your payment was accredited</string>
     <string name="mpsdk_subtitle_action_activity_congrats">We will send you the data to\n%1$s</string>
     <string name="mpsdk_text_state_account_activity_congrats">On your statement you will see the charge as\n %s</string>
     <string name="mpsdk_payment_id_description">Ticket</string>
@@ -124,7 +124,7 @@
     <string name="mpsdk_title_other_reason_rejection">%1$s did not process the payment</string>
     <string name="mpsdk_text_select_other_rejection">Use another card or another payment method</string>
     <string name="mpsdk_title_bad_filled_other">Oops, we could not process your payment</string>
-    <string name="mpsdk_text_some_card_data_is_incorrect">Any datum of your %1$s is incorrect.</string>
+    <string name="mpsdk_text_some_card_data_is_incorrect">Any datum of your %1$s is incorrect</string>
     <string name="mpsdk_text_some_number">Some number of your %1$s is incorrect.</string>
     <string name="mpsdk_text_insufficient_amount">Yours %1$s has insufficient funds</string>
     <string name="mpsdk_subtitle_rejection_insufficient_amount">Don\'t worry! Recharge at any bank or from your electronic banking and try again. Or if you prefer, you can choose another payment method.</string>
@@ -141,7 +141,8 @@
     <string name="mpsdk_error_secondary_title_call">Could not authorize it?</string>
     <string name="mpsdk_error_description_call">The phone number is on the back of your card.</string>
     <string name="mpsdk_error_description_card_disabled">Use another payment method or call %1$s to activate your card.</string>
-    <string name="mpsdk_error_description_insufficient_amount">Do not be discouraged! Recharge it in any bank or from your internet banking and try again.\nOr if you prefer, you can choose another payment method.</string>
+    <string name="mpsdk_error_description_insufficient_amount">Do not be discouraged! Recharge it in any bank or from your internet banking and try again.</string>
+    <string name="mpsdk_error_description_second_insufficient_amount">Or if you prefer, you can choose another payment method.</string>
     <string name="mpsdk_error_description_other_reason">Use another card or other payment method.</string>
     <string name="mpsdk_error_description_by_bank">Please try to pay with other payment method.</string>
     <string name="mpsdk_error_description_insufficient_data">Please try to pay with other payment method.</string>
