@@ -488,6 +488,11 @@ public class PaymentResultTest {
         }
 
         @Override
+        public String getRejectedInsufficientAmountBodyErrorSecondDescription() {
+            return null;
+        }
+
+        @Override
         public String getRejectedOtherReasonBodyErrorDescription() {
             return null;
         }

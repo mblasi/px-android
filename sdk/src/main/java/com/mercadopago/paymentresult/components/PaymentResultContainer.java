@@ -41,7 +41,8 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
     //armar componente Badge que va como hijo
     public static final int DEFAULT_BADGE_IMAGE = 0;
     public static final int CHECK_BADGE_IMAGE = R.drawable.mpsdk_badge_check;
-    public static final int PENDING_BADGE_IMAGE = R.drawable.mpsdk_badge_pending;
+    public static final int PENDING_BADGE_GREEN_IMAGE = R.drawable.mpsdk_badge_pending;
+    public static final int PENDING_BADGE_ORANGE_IMAGE = R.drawable.mpsdk_badge_pending_orange;
     public static final int ERROR_BADGE_IMAGE = R.drawable.mpsdk_badge_error;
     public static final int WARNING_BADGE_IMAGE = R.drawable.mpsdk_badge_warning;
 
@@ -86,10 +87,10 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
             String status = props.paymentResult.getPaymentStatus();
             String statusDetail = props.paymentResult.getPaymentStatusDetail();
             if (status != null && statusDetail != null && status.equals(Payment.StatusCodes.STATUS_REJECTED) &&
-                        (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_CARD_NUMBER) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_DATE) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_SECURITY_CODE) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_OTHER))) {
+                    (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_CARD_NUMBER) ||
+                            statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_DATE) ||
+                            statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_SECURITY_CODE) ||
+                            statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_OTHER))) {
                 hasBody = false;
             }
         }
@@ -162,8 +163,9 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
 
     private boolean isGreenBackground(@NonNull final PaymentResult paymentResult) {
         return (paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_APPROVED) ||
-                paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_IN_PROCESS) ||
-                paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_PENDING));
+                ((paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_IN_PROCESS) ||
+                        paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_PENDING)) &&
+                        paymentResult.getPaymentStatusDetail().equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_WAITING_PAYMENT)));
     }
 
     private boolean isRedBackground(@NonNull final PaymentResult paymentResult) {
@@ -182,15 +184,19 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
     private boolean isOrangeBackground(@NonNull final PaymentResult paymentResult) {
         final String status = paymentResult.getPaymentStatus();
         final String statusDetail = paymentResult.getPaymentStatusDetail();
-        return status.equals(Payment.StatusCodes.STATUS_REJECTED) &&
-                (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_INVALID_ESC) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CALL_FOR_AUTHORIZE) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_CARD_NUMBER) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_DATE) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_SECURITY_CODE) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_OTHER) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CARD_DISABLED) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_INSUFFICIENT_AMOUNT));
+        return ((status.equals(Payment.StatusCodes.STATUS_PENDING) ||
+                status.equals(Payment.StatusCodes.STATUS_IN_PROCESS)) &&
+                (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_CONTINGENCY) ||
+                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_REVIEW_MANUAL))) ||
+                (status.equals(Payment.StatusCodes.STATUS_REJECTED) &&
+                        (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_INVALID_ESC) ||
+                                statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CALL_FOR_AUTHORIZE) ||
+                                statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_CARD_NUMBER) ||
+                                statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_DATE) ||
+                                statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_SECURITY_CODE) ||
+                                statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_OTHER) ||
+                                statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CARD_DISABLED) ||
+                                statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_INSUFFICIENT_AMOUNT)));
 
     }
 
@@ -249,7 +255,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
             if (badge.equals(Badge.CHECK_BADGE_IMAGE)) {
                 return CHECK_BADGE_IMAGE;
             } else if (badge.equals(Badge.PENDING_BADGE_IMAGE)) {
-                return PENDING_BADGE_IMAGE;
+                return PENDING_BADGE_GREEN_IMAGE;
             } else {
                 return DEFAULT_BADGE_IMAGE;
             }
@@ -257,8 +263,10 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
             return DEFAULT_BADGE_IMAGE;
         } else if (isCheckBagdeImage(props.paymentResult)) {
             return CHECK_BADGE_IMAGE;
-        } else if (isPendingBadgeImage(props.paymentResult)) {
-            return PENDING_BADGE_IMAGE;
+        } else if (isPendingGreenBadgeImage(props.paymentResult)) {
+            return PENDING_BADGE_GREEN_IMAGE;
+        } else if (isPendingOrangeBadgeImage(props.paymentResult)) {
+            return PENDING_BADGE_ORANGE_IMAGE;
         } else if (isWarningBadgeImage(props.paymentResult)) {
             return WARNING_BADGE_IMAGE;
         } else if (isErrorBadgeImage(props.paymentResult)) {
@@ -272,9 +280,17 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
         return paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_APPROVED);
     }
 
-    private boolean isPendingBadgeImage(@NonNull final PaymentResult paymentResult) {
-        return paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_PENDING) ||
-                paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_IN_PROCESS);
+    private boolean isPendingGreenBadgeImage(@NonNull final PaymentResult paymentResult) {
+        return (paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_PENDING) ||
+                paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_IN_PROCESS)) &&
+                paymentResult.getPaymentStatusDetail().equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_WAITING_PAYMENT);
+    }
+
+    private boolean isPendingOrangeBadgeImage(@NonNull final PaymentResult paymentResult) {
+        return (paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_PENDING) ||
+                paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_IN_PROCESS)) &&
+                (paymentResult.getPaymentStatusDetail().equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_CONTINGENCY) ||
+                        paymentResult.getPaymentStatusDetail().equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_REVIEW_MANUAL));
     }
 
     private boolean isWarningBadgeImage(@NonNull final PaymentResult paymentResult) {

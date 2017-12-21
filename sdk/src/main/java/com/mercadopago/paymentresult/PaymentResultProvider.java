@@ -66,6 +66,8 @@ public interface PaymentResultProvider extends ResourcesProvider {
 
     String getRejectedInsufficientAmountBodyErrorDescription();
 
+    String getRejectedInsufficientAmountBodyErrorSecondDescription();
+
     String getRejectedOtherReasonBodyErrorDescription();
 
     String getRejectedByBankBodyErrorDescription();

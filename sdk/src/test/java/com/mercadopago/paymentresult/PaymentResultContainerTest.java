@@ -76,7 +76,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getStatusInProcessContingencyPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.background, PaymentResultContainer.GREEN_BACKGROUND_COLOR);
+        Assert.assertEquals(headerProps.background, PaymentResultContainer.ORANGE_BACKGROUND_COLOR);
     }
 
     @Test
@@ -311,7 +311,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getStatusInProcessContingencyPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.badgeImage, PaymentResultContainer.PENDING_BADGE_IMAGE);
+        Assert.assertEquals(headerProps.badgeImage, PaymentResultContainer.PENDING_BADGE_ORANGE_IMAGE);
     }
 
     @Test
@@ -319,7 +319,7 @@ public class PaymentResultContainerTest {
         final PaymentResult paymentResult = PaymentResults.getPaymentMethodOffPaymentResult();
         final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
-        Assert.assertEquals(headerProps.badgeImage, PaymentResultContainer.PENDING_BADGE_IMAGE);
+        Assert.assertEquals(headerProps.badgeImage, PaymentResultContainer.PENDING_BADGE_GREEN_IMAGE);
     }
 
     @Test
@@ -394,7 +394,7 @@ public class PaymentResultContainerTest {
     @Test
     public void onCustomizedBadgeOnApprovedStatusThenShowIt() {
         final String customizedBadge = Badge.PENDING_BADGE_IMAGE;
-        final int badgeImage = PaymentResultContainer.PENDING_BADGE_IMAGE;
+        final int badgeImage = PaymentResultContainer.PENDING_BADGE_GREEN_IMAGE;
 
         final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
         new PaymentResultScreenPreference.Builder()

@@ -187,6 +187,11 @@ public class PaymentResultProviderImpl implements PaymentResultProvider {
     }
 
     @Override
+    public String getRejectedInsufficientAmountBodyErrorSecondDescription() {
+        return context.getString(R.string.mpsdk_error_description_second_insufficient_amount);
+    }
+
+    @Override
     public String getRejectedOtherReasonBodyErrorDescription() {
         return context.getString(R.string.mpsdk_error_description_other_reason);
     }

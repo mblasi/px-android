@@ -92,7 +92,7 @@
     <string name="mpsdk_exclusion_one_element">Você só pode pagar com %1$s</string>
 
     <!-- Congrats -->
-    <string name="mpsdk_title_approved_payment">Pronto! O seu pagamento foi aprovado!</string>
+    <string name="mpsdk_title_approved_payment">Pronto! O seu pagamento foi aprovado</string>
     <string name="mpsdk_subtitle_action_activity_congrats">Enviaremos os dados para\n%1$s</string>
     <string name="mpsdk_text_state_account_activity_congrats">Você verá o pagamento na fatura do seu cartão de crédito como\n %s</string>
     <string name="mpsdk_payment_id_description">Comprovante</string>
@@ -123,7 +123,7 @@
     <string name="mpsdk_title_other_reason_rejection">%1$s não processou o pagamento</string>
     <string name="mpsdk_text_select_other_rejection">Use outro cartão ou outro meio de pagamento</string>
     <string name="mpsdk_title_bad_filled_other">Ops! Não foi possível processar o seu pagamento</string>
-    <string name="mpsdk_text_some_card_data_is_incorrect">Qualquer dado de seu %1$s é incorreto.</string>
+    <string name="mpsdk_text_some_card_data_is_incorrect">Qualquer dado de seu %1$s é incorreto</string>
     <string name="mpsdk_text_insufficient_amount">O seu %1$s não possui saldo suficiente</string>
     <string name="mpsdk_subtitle_rejection_insufficient_amount">Não se preocupe! Recarregue-o em qualquer banco ou pelo Internet Banking e tente novamente. Se preferir, você pode escolher outro meio de pagamento.</string>
     <string name="mpsdk_subtitle_rejection_duplicated_payment">Se você precisar pagar novamente, use outro cartão ou outro meio de pagamento.</string>
@@ -139,7 +139,8 @@
 
     <string name="mpsdk_error_description_call">O telefone do banco está no verso do seu cartão.</string>
     <string name="mpsdk_error_description_card_disabled">Use outro meio de pagamento ou ligue para %1$s e desbloqueie o cartão.</string>
-    <string name="mpsdk_error_description_insufficient_amount">Não se preocupe! Recarregue-o em qualquer banco ou pelo Internet Banking e tente novamente.\nSe preferir, você pode escolher outro meio de pagamento.</string>
+    <string name="mpsdk_error_description_insufficient_amount">Não se preocupe! Recarregue-o em qualquer banco ou pelo Internet Banking e tente novamente.</string>
+    <string name="mpsdk_error_description_second_insufficient_amount">Se preferir, você pode escolher outro meio de pagamento.</string>
     <string name="mpsdk_error_description_other_reason">Use outro cartão ou outro meio de pagamento.</string>
     <string name="mpsdk_error_description_by_bank">Por favor, tente pagar de outra forma.</string>
     <string name="mpsdk_error_description_insufficient_data">Por favor, tente pagar de outra forma.</string>
