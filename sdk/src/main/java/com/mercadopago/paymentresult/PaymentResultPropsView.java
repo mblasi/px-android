@@ -15,8 +15,6 @@ public interface PaymentResultPropsView extends MvpView {
 
     void setPropPaymentResult(@NonNull final PaymentResult paymentResult, final HeaderTitleFormatter headerTitleFormatter, BodyAmountFormatter bodyAmountFormatter, final boolean showLoading);
 
-    void setPaymentResultScreenPreference(@NonNull final PaymentResultScreenPreference paymentResultScreenPreference);
-
     void setPropInstruction(@NonNull final Instruction instruction, @NonNull final HeaderTitleFormatter amountFormat, final boolean showLoading, @NonNull final String processingMode);
 
     void notifyPropsChanged();

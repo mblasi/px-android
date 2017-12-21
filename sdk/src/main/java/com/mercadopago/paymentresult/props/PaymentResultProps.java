@@ -2,6 +2,7 @@ package com.mercadopago.paymentresult.props;
 
 import android.support.annotation.NonNull;
 
+import com.mercadopago.core.CheckoutSessionStore;
 import com.mercadopago.model.Instruction;
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentResult;
@@ -16,7 +17,6 @@ import com.mercadopago.preferences.PaymentResultScreenPreference;
 public class PaymentResultProps {
 
     public final PaymentResult paymentResult;
-    public final PaymentResultScreenPreference preferences;
     public final Instruction instruction;
     public final String headerMode;
     public final HeaderTitleFormatter headerAmountFormatter;
@@ -27,7 +27,6 @@ public class PaymentResultProps {
     public PaymentResultProps(@NonNull final Builder builder) {
         this.paymentResult = builder.paymentResult;
         this.headerMode = builder.headerMode;
-        this.preferences = builder.preferences;
         this.instruction = builder.instruction;
         this.headerAmountFormatter = builder.headerAmountFormatter;
         this.bodyAmountFormatter = builder.bodyAmountFormatter;
@@ -38,7 +37,6 @@ public class PaymentResultProps {
     public Builder toBuilder() {
         return new Builder()
                 .setPaymentResult(this.paymentResult)
-                .setPaymentResultScreenPreference(this.preferences)
                 .setHeaderMode(this.headerMode)
                 .setInstruction(this.instruction)
                 .setHeaderAmountFormatter(this.headerAmountFormatter)
@@ -48,6 +46,7 @@ public class PaymentResultProps {
     }
 
     public boolean hasCustomizedTitle() {
+        PaymentResultScreenPreference preferences = CheckoutSessionStore.getInstance().getPaymentResultScreenPreference();
         if (preferences != null) {
             if (isApprovedTitleValidState()) {
                 return preferences.getApprovedTitle() != null && !preferences.getApprovedTitle().isEmpty();
@@ -61,6 +60,7 @@ public class PaymentResultProps {
     }
 
     public String getPreferenceTitle() {
+        PaymentResultScreenPreference preferences = CheckoutSessionStore.getInstance().getPaymentResultScreenPreference();
         if (preferences != null) {
             if (isApprovedTitleValidState()) {
                 return preferences.getApprovedTitle();
@@ -96,6 +96,7 @@ public class PaymentResultProps {
     }
 
     public boolean hasCustomizedLabel() {
+        PaymentResultScreenPreference preferences = CheckoutSessionStore.getInstance().getPaymentResultScreenPreference();
         if (preferences != null) {
             if (isApprovedLabelValidState()) {
                 return preferences.getApprovedLabelText() != null && !preferences.getApprovedLabelText().isEmpty();
@@ -107,6 +108,7 @@ public class PaymentResultProps {
     }
 
     public String getPreferenceLabel() {
+        PaymentResultScreenPreference preferences = CheckoutSessionStore.getInstance().getPaymentResultScreenPreference();
         if (preferences != null) {
             if (isApprovedLabelValidState()) {
                 return preferences.getApprovedLabelText();
@@ -126,6 +128,7 @@ public class PaymentResultProps {
     }
 
     public boolean hasCustomizedBadge() {
+        PaymentResultScreenPreference preferences = CheckoutSessionStore.getInstance().getPaymentResultScreenPreference();
         if (preferences != null && isApprovedBadgeValidState()) {
             return preferences.getApprovedBadge() != null && !preferences.getApprovedBadge().isEmpty();
         }
@@ -133,6 +136,7 @@ public class PaymentResultProps {
     }
 
     public String getPreferenceBadge() {
+        PaymentResultScreenPreference preferences = CheckoutSessionStore.getInstance().getPaymentResultScreenPreference();
         if (preferences != null && isApprovedBadgeValidState()) {
             return preferences.getApprovedBadge();
         }
@@ -144,6 +148,7 @@ public class PaymentResultProps {
     }
 
     public boolean hasCustomizedIcon() {
+        PaymentResultScreenPreference preferences = CheckoutSessionStore.getInstance().getPaymentResultScreenPreference();
         if (preferences != null) {
             if (isApprovedIconValidState()) {
                 return preferences.getApprovedIcon() != null;
@@ -157,6 +162,7 @@ public class PaymentResultProps {
     }
 
     public int getPreferenceIcon() {
+        PaymentResultScreenPreference preferences = CheckoutSessionStore.getInstance().getPaymentResultScreenPreference();
         if (preferences != null) {
             if (isApprovedIconValidState()) {
                 return preferences.getApprovedIcon();
@@ -197,10 +203,6 @@ public class PaymentResultProps {
     public static class Builder {
 
         public PaymentResult paymentResult;
-
-        public PaymentResultScreenPreference preferences =
-                new PaymentResultScreenPreference.Builder().build();
-
         public Instruction instruction;
         public String headerMode = HeaderProps.HEADER_MODE_WRAP;
         public HeaderTitleFormatter headerAmountFormatter;
@@ -215,11 +217,6 @@ public class PaymentResultProps {
 
         public Builder setHeaderMode(@NonNull final String headerMode) {
             this.headerMode = headerMode;
-            return this;
-        }
-
-        public Builder setPaymentResultScreenPreference(@NonNull final PaymentResultScreenPreference paymentResultScreenPreference) {
-            this.preferences = paymentResultScreenPreference;
             return this;
         }
 

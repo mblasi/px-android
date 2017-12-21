@@ -21,6 +21,12 @@ public class Component<T> {
         setProps(props);
     }
 
+    public Component(@NonNull final T props) {
+        this.props = props;
+        this.dispatcher = null;
+        setProps(props);
+    }
+
     public ActionDispatcher getDispatcher() {
         return dispatcher;
     }

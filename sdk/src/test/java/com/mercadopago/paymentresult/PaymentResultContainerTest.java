@@ -57,6 +57,8 @@ public class PaymentResultContainerTest {
         when(paymentResultProvider.getEmptyText()).thenReturn(EMPTY_TITLE);
         when(paymentResultProvider.getPendingLabel()).thenReturn(PENDING_LABEL);
         when(paymentResultProvider.getRejectionLabel()).thenReturn(REJECTION_LABEL);
+
+        new PaymentResultScreenPreference.Builder().build();
     }
 
     @Test
@@ -251,10 +253,10 @@ public class PaymentResultContainerTest {
         final int customizedIcon = 1;
 
         final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
-        final PaymentResultScreenPreference preference = new PaymentResultScreenPreference.Builder()
+        new PaymentResultScreenPreference.Builder()
                 .setApprovedHeaderIcon(customizedIcon).build();
 
-        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
+        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
         Assert.assertEquals(headerProps.iconImage, customizedIcon);
     }
 
@@ -263,10 +265,10 @@ public class PaymentResultContainerTest {
         final int customizedIcon = 2;
 
         final PaymentResult paymentResult = PaymentResults.getPaymentMethodOffPaymentResult();
-        final PaymentResultScreenPreference preference = new PaymentResultScreenPreference.Builder()
+        new PaymentResultScreenPreference.Builder()
                 .setPendingHeaderIcon(customizedIcon).build();
 
-        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
+        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
         Assert.assertEquals(headerProps.iconImage, customizedIcon);
     }
 
@@ -275,10 +277,10 @@ public class PaymentResultContainerTest {
         final int customizedIcon = 3;
 
         final PaymentResult paymentResult = PaymentResults.getStatusRejectedOtherPaymentResult();
-        final PaymentResultScreenPreference preference = new PaymentResultScreenPreference.Builder()
+        new PaymentResultScreenPreference.Builder()
                 .setRejectedHeaderIcon(customizedIcon).build();
 
-        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
+        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
         Assert.assertEquals(headerProps.iconImage, customizedIcon);
     }
 
@@ -287,10 +289,10 @@ public class PaymentResultContainerTest {
         final int customizedIcon = 4;
 
         final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
-        final PaymentResultScreenPreference preference = new PaymentResultScreenPreference.Builder()
+        new PaymentResultScreenPreference.Builder()
                 .setRejectedHeaderIcon(customizedIcon).build();
 
-        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
+        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
 
         Assert.assertNotSame(headerProps.iconImage, customizedIcon);
         Assert.assertEquals(headerProps.iconImage, PaymentResultContainer.ITEM_ICON_IMAGE);
@@ -395,10 +397,10 @@ public class PaymentResultContainerTest {
         final int badgeImage = PaymentResultContainer.PENDING_BADGE_IMAGE;
 
         final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
-        final PaymentResultScreenPreference preference = new PaymentResultScreenPreference.Builder()
+        new PaymentResultScreenPreference.Builder()
                 .setBadgeApproved(customizedBadge).build();
 
-        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
+        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
         Assert.assertEquals(headerProps.badgeImage, badgeImage);
     }
 
@@ -407,10 +409,10 @@ public class PaymentResultContainerTest {
         final String customizedBadge = "";
 
         final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
-        final PaymentResultScreenPreference preference = new PaymentResultScreenPreference.Builder()
+        new PaymentResultScreenPreference.Builder()
                 .setBadgeApproved(customizedBadge).build();
 
-        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
+        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
         Assert.assertEquals(headerProps.badgeImage, PaymentResultContainer.CHECK_BADGE_IMAGE);
     }
 
@@ -511,10 +513,10 @@ public class PaymentResultContainerTest {
         final String customizedTitle = "customized approved";
 
         final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
-        final PaymentResultScreenPreference preference = new PaymentResultScreenPreference.Builder()
+        new PaymentResultScreenPreference.Builder()
                 .setApprovedTitle(customizedTitle).build();
 
-        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
+        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
         Assert.assertEquals(headerProps.title, customizedTitle);
     }
 
@@ -523,10 +525,10 @@ public class PaymentResultContainerTest {
         final String customizedTitle = "customized pending";
 
         final PaymentResult paymentResult = PaymentResults.getStatusInProcessContingencyPaymentResult();
-        final PaymentResultScreenPreference preference = new PaymentResultScreenPreference.Builder()
+        new PaymentResultScreenPreference.Builder()
                 .setPendingTitle(customizedTitle).build();
 
-        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
+        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
         Assert.assertEquals(headerProps.title, customizedTitle);
     }
 
@@ -535,10 +537,10 @@ public class PaymentResultContainerTest {
         final String customizedTitle = "customized instructions";
 
         final PaymentResult paymentResult = PaymentResults.getPaymentMethodOffPaymentResult();
-        final PaymentResultScreenPreference preference = new PaymentResultScreenPreference.Builder()
+        new PaymentResultScreenPreference.Builder()
                 .setPendingTitle(customizedTitle).build();
 
-        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
+        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
         Assert.assertNotSame(headerProps.title, customizedTitle);
     }
 
@@ -547,10 +549,10 @@ public class PaymentResultContainerTest {
         final String customizedTitle = "customized rejected";
 
         final PaymentResult paymentResult = PaymentResults.getStatusRejectedOtherPaymentResult();
-        final PaymentResultScreenPreference preference = new PaymentResultScreenPreference.Builder()
+        new PaymentResultScreenPreference.Builder()
                 .setRejectedTitle(customizedTitle).build();
 
-        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
+        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
         Assert.assertEquals(headerProps.title, customizedTitle);
     }
 
@@ -637,10 +639,10 @@ public class PaymentResultContainerTest {
         final String customizedLabel = "customized approved label";
 
         final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
-        final PaymentResultScreenPreference preference = new PaymentResultScreenPreference.Builder()
+        new PaymentResultScreenPreference.Builder()
                 .setApprovedLabelText(customizedLabel).build();
 
-        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
+        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
         Assert.assertEquals(headerProps.label, customizedLabel);
     }
 
@@ -648,10 +650,10 @@ public class PaymentResultContainerTest {
     public void onCustomizedDisabledLabelOnRejectedStatusThenHideIt() {
 
         final PaymentResult paymentResult = PaymentResults.getStatusRejectedOtherPaymentResult();
-        final PaymentResultScreenPreference preference = new PaymentResultScreenPreference.Builder()
+        new PaymentResultScreenPreference.Builder()
                 .disableRejectedLabelText().build();
 
-        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
+        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
         Assert.assertEquals(headerProps.label, "");
     }
 
@@ -659,10 +661,10 @@ public class PaymentResultContainerTest {
     public void onCustomizedDisabledLabelOnInvalidStatusThenShowDefaultLabel() {
 
         final PaymentResult paymentResult = PaymentResults.getStatusInProcessContingencyPaymentResult();
-        final PaymentResultScreenPreference preference = new PaymentResultScreenPreference.Builder()
+        new PaymentResultScreenPreference.Builder()
                 .disableRejectedLabelText().build();
 
-        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult, preference);
+        final HeaderProps headerProps = getHeaderPropsFromContainerWith(paymentResult);
         Assert.assertEquals(headerProps.label, paymentResultProvider.getEmptyText());
     }
 
@@ -806,17 +808,6 @@ public class PaymentResultContainerTest {
         final PaymentResultProps paymentResultProps = new PaymentResultProps.Builder()
                 .setPaymentResult(paymentResult)
                 .setInstruction(instruction)
-                .build();
-        container.setProps(paymentResultProps);
-        return container.getHeaderComponent().props;
-    }
-
-    private HeaderProps getHeaderPropsFromContainerWith(PaymentResult paymentResult, PaymentResultScreenPreference preference) {
-        final PaymentResultContainer container = getContainer();
-
-        final PaymentResultProps paymentResultProps = new PaymentResultProps.Builder()
-                .setPaymentResult(paymentResult)
-                .setPaymentResultScreenPreference(preference)
                 .build();
         container.setProps(paymentResultProps);
         return container.getHeaderComponent().props;

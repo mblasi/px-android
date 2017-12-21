@@ -2,6 +2,7 @@ package com.mercadopago.paymentresult.props;
 
 import android.support.annotation.NonNull;
 
+import com.mercadopago.core.CheckoutSessionStore;
 import com.mercadopago.model.Instruction;
 import com.mercadopago.model.PaymentData;
 import com.mercadopago.paymentresult.formatter.BodyAmountFormatter;
@@ -22,7 +23,6 @@ public class PaymentResultBodyProps {
     public final String disclaimer;
     public final Long paymentId;
     public final BodyAmountFormatter bodyAmountFormatter;
-    public final PaymentResultScreenPreference preferences;
 
     public PaymentResultBodyProps(@NonNull final Builder builder) {
         this.status = builder.status;
@@ -33,7 +33,6 @@ public class PaymentResultBodyProps {
         this.processingMode = builder.processingMode;
         this.paymentId = builder.paymentId;
         this.bodyAmountFormatter = builder.bodyAmountFormatter;
-        this.preferences = builder.preferences;
     }
 
     public Builder toBuilder() {
@@ -45,12 +44,12 @@ public class PaymentResultBodyProps {
                 .setDisclaimer(this.disclaimer)
                 .setProcessingMode(this.processingMode)
                 .setPaymentId(this.paymentId)
-                .setBodyAmountFormatter(this.bodyAmountFormatter)
-                .setPaymentResultScreenPreference(this.preferences);
+                .setBodyAmountFormatter(this.bodyAmountFormatter);
     }
 
     public boolean isReceiptEnabled() {
-        return preferences == null || preferences.isApprovedReceiptEnabled();
+        return CheckoutSessionStore.getInstance().getPaymentResultScreenPreference() == null ||
+                CheckoutSessionStore.getInstance().getPaymentResultScreenPreference().isApprovedReceiptEnabled();
     }
 
     public static class Builder {
@@ -63,8 +62,6 @@ public class PaymentResultBodyProps {
         public String processingMode;
         public Long paymentId;
         public BodyAmountFormatter bodyAmountFormatter;
-        public PaymentResultScreenPreference preferences =
-                new PaymentResultScreenPreference.Builder().build();
 
         public Builder setStatus(@NonNull final String status) {
             this.status = status;
@@ -103,11 +100,6 @@ public class PaymentResultBodyProps {
 
         public Builder setBodyAmountFormatter(BodyAmountFormatter bodyAmountFormatter) {
             this.bodyAmountFormatter = bodyAmountFormatter;
-            return this;
-        }
-
-        public Builder setPaymentResultScreenPreference(@NonNull final PaymentResultScreenPreference paymentResultScreenPreference) {
-            this.preferences = paymentResultScreenPreference;
             return this;
         }
 

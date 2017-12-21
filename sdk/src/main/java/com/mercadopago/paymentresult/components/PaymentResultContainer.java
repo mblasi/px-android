@@ -108,7 +108,6 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
                     .setProcessingMode(props.processingMode)
                     .setPaymentId(props.paymentResult.getPaymentId())
                     .setBodyAmountFormatter(props.bodyAmountFormatter)
-                    .setPaymentResultScreenPreference(props.preferences)
                     .build();
             body = new Body(bodyProps, getDispatcher(), paymentResultProvider, paymentMethodProvider);
         }
@@ -117,8 +116,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
 
     public FooterContainer getFooterContainer() {
         return new FooterContainer(new FooterContainer.Props(
-                props.paymentResult,
-                props.preferences),
+                props.paymentResult),
                 getDispatcher(),
                 paymentResultProvider
         );

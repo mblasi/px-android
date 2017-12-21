@@ -7,6 +7,7 @@ import com.mercadopago.components.ChangePaymentMethodAction;
 import com.mercadopago.components.Component;
 import com.mercadopago.components.RecoverPaymentAction;
 import com.mercadopago.components.ResultCodeAction;
+import com.mercadopago.core.CheckoutSessionStore;
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.paymentresult.PaymentResultProvider;
@@ -30,7 +31,7 @@ public class FooterContainer extends Component<FooterContainer.Props> {
 
     private Footer.Props getFooterProps() {
 
-        final PaymentResultScreenPreference preferences = props.preferences;
+        final PaymentResultScreenPreference preferences = CheckoutSessionStore.getInstance().getPaymentResultScreenPreference();
 
         Footer.FooterAction buttonAction = null;
         Footer.FooterAction linkAction = null;
@@ -147,11 +148,9 @@ public class FooterContainer extends Component<FooterContainer.Props> {
     public static class Props {
 
         public final PaymentResult paymentResult;
-        public final PaymentResultScreenPreference preferences;
 
-        public Props(PaymentResult paymentResult, PaymentResultScreenPreference preferences) {
+        public Props(PaymentResult paymentResult) {
             this.paymentResult = paymentResult;
-            this.preferences = preferences;
         }
     }
 }
