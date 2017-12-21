@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.mercadopago.components.ActionDispatcher;
 import com.mercadopago.components.Component;
 import com.mercadopago.constants.PaymentTypes;
+import com.mercadopago.core.CheckoutSessionStore;
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.paymentresult.PaymentMethodProvider;
@@ -124,5 +125,17 @@ public class Body extends Component<PaymentResultBodyProps> {
                 .setReceiptId(props.paymentId)
                 .build();
         return new Receipt(receiptProps, getDispatcher(), paymentResultProvider);
+    }
+
+    public boolean hasTopCustomComponent() {
+        return hasPaymentResultScreenPreference() && CheckoutSessionStore.getInstance().getPaymentResultScreenPreference().getApprovedTopCustomComponent() != null;
+    }
+
+    public boolean hasBottomCustomComponent() {
+        return hasPaymentResultScreenPreference() && CheckoutSessionStore.getInstance().getPaymentResultScreenPreference().getApprovedBottomCustomComponent() != null;
+    }
+
+    private boolean hasPaymentResultScreenPreference() {
+        return CheckoutSessionStore.getInstance().getPaymentResultScreenPreference() != null;
     }
 }

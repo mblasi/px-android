@@ -45,13 +45,6 @@ public class PaymentResultPropsMutator implements Mutator, PaymentResultPropsVie
     }
 
     @Override
-    public void setPaymentResultScreenPreference(@NonNull final PaymentResultScreenPreference preferences) {
-        props = props.toBuilder()
-                .setPaymentResultScreenPreference(preferences)
-                .build();
-    }
-
-    @Override
     public void setPropInstruction(@NonNull final Instruction instruction,
                                    @NonNull final HeaderTitleFormatter amountFormat,
                                    final boolean showLoading,

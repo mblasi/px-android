@@ -1,7 +1,9 @@
 package com.mercadopago.paymentresult;
 
 import com.mercadopago.components.ActionDispatcher;
+import com.mercadopago.components.CustomComponent;
 import com.mercadopago.constants.ProcessingModes;
+import com.mercadopago.core.CheckoutSessionStore;
 import com.mercadopago.mocks.Instructions;
 import com.mercadopago.mocks.PaymentResults;
 import com.mercadopago.model.Instruction;
@@ -11,6 +13,7 @@ import com.mercadopago.paymentresult.components.Body;
 import com.mercadopago.paymentresult.components.BodyError;
 import com.mercadopago.paymentresult.components.Receipt;
 import com.mercadopago.paymentresult.props.PaymentResultBodyProps;
+import com.mercadopago.preferences.PaymentResultScreenPreference;
 
 import junit.framework.Assert;
 
@@ -34,6 +37,8 @@ public class BodyTest {
         dispatcher = mock(ActionDispatcher.class);
         paymentResultProvider = mock(PaymentResultProvider.class);
         paymentMethodProvider = mock(PaymentMethodProvider.class);
+
+        new PaymentResultScreenPreference.Builder().build();
     }
 
     @Test
@@ -168,6 +173,49 @@ public class BodyTest {
         Assert.assertEquals(receipt.props.receiptId, paymentResult.getPaymentId());
     }
 
+    @Test
+    public void testBodyHasCustomTopComponent() {
+        new PaymentResultScreenPreference.Builder()
+                .setApprovedTopCustomComponent(new CustomComponent())
+                .build();
+
+        final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
+        final Body body = new Body(getBodyPropsForOnPayment(paymentResult),
+                dispatcher, paymentResultProvider, paymentMethodProvider);
+
+        Assert.assertTrue(body.hasTopCustomComponent());
+        Assert.assertNotNull(CheckoutSessionStore.getInstance().getPaymentResultScreenPreference().getApprovedTopCustomComponent());
+    }
+
+    @Test
+    public void testBodyHasCustomBottomComponent() {
+        new PaymentResultScreenPreference.Builder()
+                .setApprovedBottomCustomComponent(new CustomComponent())
+                .build();
+
+        final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
+        final Body body = new Body(getBodyPropsForOnPayment(paymentResult),
+                dispatcher, paymentResultProvider, paymentMethodProvider);
+
+        Assert.assertTrue(body.hasBottomCustomComponent());
+        Assert.assertNotNull(CheckoutSessionStore.getInstance().getPaymentResultScreenPreference().getApprovedBottomCustomComponent());
+    }
+
+    @Test
+    public void testBodyHasBothCustomComponent() {
+        new PaymentResultScreenPreference.Builder()
+                .setApprovedBottomCustomComponent(new CustomComponent())
+                .setApprovedTopCustomComponent(new CustomComponent())
+                .build();
+
+        final PaymentResult paymentResult = PaymentResults.getStatusApprovedPaymentResult();
+        final Body body = new Body(getBodyPropsForOnPayment(paymentResult),
+                dispatcher, paymentResultProvider, paymentMethodProvider);
+
+        Assert.assertTrue(body.hasBottomCustomComponent() && body.hasTopCustomComponent());
+        Assert.assertNotNull(CheckoutSessionStore.getInstance().getPaymentResultScreenPreference().getApprovedBottomCustomComponent());
+        Assert.assertNotNull(CheckoutSessionStore.getInstance().getPaymentResultScreenPreference().getApprovedTopCustomComponent());
+    }
 
     private PaymentResultBodyProps getBodyPropsForOnPayment(PaymentResult paymentResult) {
         return new PaymentResultBodyProps.Builder()

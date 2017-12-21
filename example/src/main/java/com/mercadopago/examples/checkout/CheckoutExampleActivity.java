@@ -22,10 +22,8 @@ import com.mercadopago.hooks.ExampleHooks;
 import com.mercadopago.model.Payment;
 import com.mercadopago.plugins.SamplePaymentMethodPlugin;
 import com.mercadopago.plugins.SamplePaymentPlugin;
-import com.mercadopago.paymentresult.model.Badge;
 import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.preferences.DecorationPreference;
-import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 
