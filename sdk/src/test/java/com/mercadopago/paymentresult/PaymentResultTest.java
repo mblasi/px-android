@@ -14,6 +14,7 @@ import com.mercadopago.model.PaymentResult;
 import com.mercadopago.mvp.OnResourcesRetrievedCallback;
 import com.mercadopago.paymentresult.formatter.BodyAmountFormatter;
 import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
+import com.mercadopago.tracking.model.ScreenViewEvent;
 
 import junit.framework.Assert;
 
@@ -570,6 +571,11 @@ public class PaymentResultTest {
         @Override
         public void recoverPayment() {
 
+        }
+
+        @Override
+        public void trackScreen(ScreenViewEvent event) {
+            
         }
     }
 }

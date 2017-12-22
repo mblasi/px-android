@@ -21,6 +21,8 @@ import com.mercadopago.mvp.OnResourcesRetrievedCallback;
 import com.mercadopago.paymentresult.formatter.BodyAmountFormatter;
 import com.mercadopago.paymentresult.formatter.HeaderTitleFormatter;
 import com.mercadopago.preferences.ServicePreference;
+import com.mercadopago.tracking.model.ScreenViewEvent;
+import com.mercadopago.tracking.utils.TrackingUtil;
 import com.mercadopago.util.ApiUtil;
 
 import java.math.BigDecimal;
@@ -65,6 +67,7 @@ public class PaymentResultPresenter extends MvpPresenter<PaymentResultPropsView,
     }
 
     protected void onValidStart() {
+        initializeTracking();
         HeaderTitleFormatter headerAmountFormatter = null;
         BodyAmountFormatter bodyAmountFormatter = null;
 
@@ -81,9 +84,76 @@ public class PaymentResultPresenter extends MvpPresenter<PaymentResultPropsView,
         checkGetInstructions();
     }
 
+    private void initializeTracking() {
+        ScreenViewEvent.Builder builder = new ScreenViewEvent.Builder()
+                .setScreenId(getScreenId())
+                .setScreenName(getScreenName())
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_IS_EXPRESS, TrackingUtil.IS_EXPRESS_DEFAULT_VALUE)
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_TYPE_ID, paymentResult.getPaymentData().getPaymentMethod().getPaymentTypeId())
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_METHOD_ID, paymentResult.getPaymentData().getPaymentMethod().getId())
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_STATUS, paymentResult.getPaymentStatus())
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_STATUS_DETAIL, paymentResult.getPaymentStatusDetail())
+                .addMetaData(TrackingUtil.METADATA_PAYMENT_ID, String.valueOf(paymentResult.getPaymentId()));
+        if (paymentResult.getPaymentData().getIssuer() != null && paymentResult.getPaymentData().getIssuer().getId() != null) {
+            builder.addMetaData(TrackingUtil.METADATA_ISSUER_ID, String.valueOf(paymentResult.getPaymentData().getIssuer().getId()));
+        }
+        if (navigator != null) {
+            navigator.trackScreen(builder.build());
+        }
+    }
+
+    private String getScreenId() {
+        String screenId = "";
+        if (isApproved()) {
+            screenId = TrackingUtil.SCREEN_ID_PAYMENT_RESULT_APPROVED;
+        } else if (isRejected()) {
+            screenId = TrackingUtil.SCREEN_ID_PAYMENT_RESULT_REJECTED;
+        } else if (isInstructions()) {
+            screenId = TrackingUtil.SCREEN_ID_PAYMENT_RESULT_INSTRUCTIONS;
+        } else if (isPending()) {
+            screenId = TrackingUtil.SCREEN_ID_PAYMENT_RESULT_PENDING;
+        }
+        return screenId;
+    }
+
+    private String getScreenName() {
+        String screenName = "";
+        if (isApproved()) {
+            screenName = TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_APPROVED;
+        } else if (isCallForAuthorize()) {
+            screenName = TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_CALL_FOR_AUTH;
+        } else if (isRejected()) {
+            screenName = TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_REJECTED;
+        } else if (isInstructions()) {
+            screenName = TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_INSTRUCTIONS;
+        } else if (isPending()) {
+            screenName = TrackingUtil.SCREEN_NAME_PAYMENT_RESULT_PENDING;
+        }
+        return screenName;
+    }
+
+    private boolean isApproved() {
+        return paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_APPROVED);
+    }
+
+    private boolean isRejected() {
+        return paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_REJECTED);
+    }
+
     private boolean isCallForAuthorize() {
         return paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_REJECTED) &&
                 paymentResult.getPaymentStatusDetail().equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CALL_FOR_AUTHORIZE);
+    }
+
+    private boolean isInstructions() {
+        return (paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_PENDING) ||
+                paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_IN_PROCESS)) &&
+                paymentResult.getPaymentStatusDetail().equals(Payment.StatusCodes.STATUS_DETAIL_PENDING_WAITING_PAYMENT);
+    }
+
+    private boolean isPending() {
+        return paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_PENDING) ||
+                paymentResult.getPaymentStatus().equals(Payment.StatusCodes.STATUS_IN_PROCESS);
     }
 
     private boolean isPaymentResultValid() {
