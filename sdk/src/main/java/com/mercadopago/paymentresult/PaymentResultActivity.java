@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.mercadopago.BuildConfig;
 import com.mercadopago.components.Component;
 import com.mercadopago.components.ComponentManager;
 import com.mercadopago.components.LoadingComponent;
@@ -63,6 +64,9 @@ import com.mercadopago.paymentresult.components.TotalAmountComponent;
 import com.mercadopago.paymentresult.components.TotalAmountRenderer;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.preferences.ServicePreference;
+import com.mercadopago.tracker.MPTrackingContext;
+import com.mercadopago.tracking.model.ScreenViewEvent;
+import com.mercadopago.tracking.utils.TrackingUtil;
 import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.ErrorUtil;
 import com.mercadopago.util.JsonUtil;
@@ -303,5 +307,15 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         returnIntent.putExtra(EXTRA_NEXT_ACTION, action);
         setResult(RESULT_CANCELED, returnIntent);
         finish();
+    }
+
+    @Override
+    public void trackScreen(ScreenViewEvent event) {
+        MPTrackingContext mpTrackingContext = new MPTrackingContext.Builder(this, merchantPublicKey)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setTrackingStrategy(TrackingUtil.FORCED_STRATEGY)
+                .build();
+
+        mpTrackingContext.trackEvent(event);
     }
 }
