@@ -8,6 +8,7 @@ import com.mercadopago.components.Action;
 import com.mercadopago.components.ActionsListener;
 import com.mercadopago.components.LinkAction;
 import com.mercadopago.components.ChangePaymentMethodAction;
+import com.mercadopago.components.NextAction;
 import com.mercadopago.components.RecoverPaymentAction;
 import com.mercadopago.components.ResultCodeAction;
 import com.mercadopago.exceptions.MercadoPagoError;
@@ -289,7 +290,7 @@ public class PaymentResultPresenter extends MvpPresenter<PaymentResultPropsView,
 
     @Override
     public void onAction(@NonNull final Action action) {
-        if (Action.TYPE_CONTINUE == action.type) {
+        if (action instanceof NextAction) {
             navigator.finishWithResult(Activity.RESULT_OK);
         } else if (action instanceof ResultCodeAction) {
             navigator.finishWithResult(((ResultCodeAction) action).resultCode);

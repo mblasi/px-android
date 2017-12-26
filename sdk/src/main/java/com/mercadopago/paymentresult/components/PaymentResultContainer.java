@@ -62,7 +62,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
     }
 
     public LoadingComponent getLoadingComponent() {
-        return new LoadingComponent(getDispatcher());
+        return new LoadingComponent();
     }
 
     public Header getHeaderComponent() {

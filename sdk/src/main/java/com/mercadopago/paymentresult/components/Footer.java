@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.mercadopago.components.Action;
 import com.mercadopago.components.ActionDispatcher;
 import com.mercadopago.components.Component;
+import com.mercadopago.components.NextAction;
 
 public class Footer extends Component<Footer.Props> {
 
@@ -30,7 +31,7 @@ public class Footer extends Component<Footer.Props> {
         public final Action action;
 
         public FooterAction(final String label) {
-            this(label, Action.continueAction());
+            this(label, new NextAction());
         }
 
         public FooterAction(final String label, final Action action) {

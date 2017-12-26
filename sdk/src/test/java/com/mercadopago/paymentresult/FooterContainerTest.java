@@ -3,6 +3,7 @@ package com.mercadopago.paymentresult;
 import com.mercadopago.components.Action;
 import com.mercadopago.components.ActionDispatcher;
 import com.mercadopago.components.ChangePaymentMethodAction;
+import com.mercadopago.components.NextAction;
 import com.mercadopago.components.RecoverPaymentAction;
 import com.mercadopago.mocks.PaymentResults;
 import com.mercadopago.model.PaymentResult;
@@ -16,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -58,7 +60,7 @@ public class FooterContainerTest {
         Assert.assertNotNull(footer.props.linkAction);
         Assert.assertEquals(footer.props.linkAction.label, LABEL_KEEP_SHOPPING);
         Assert.assertNotNull(footer.props.linkAction.action);
-        Assert.assertEquals(footer.props.linkAction.action.type, Action.TYPE_CONTINUE);
+        assertThat(footer.props.linkAction.action, is(instanceOf(NextAction.class)));
     }
 
     @Test
@@ -79,7 +81,7 @@ public class FooterContainerTest {
         Assert.assertNotNull(footer.props.linkAction);
         Assert.assertEquals(footer.props.linkAction.label, EXIT_TITLE);
         Assert.assertNotNull(footer.props.linkAction.action);
-        Assert.assertEquals(footer.props.linkAction.action.type, Action.TYPE_CONTINUE);
+        assertThat(footer.props.linkAction.action, is(instanceOf(NextAction.class)));
     }
 
     @Test
@@ -119,7 +121,7 @@ public class FooterContainerTest {
         Assert.assertNotNull(footer.props.linkAction);
         Assert.assertEquals(footer.props.linkAction.label, LABEL_CANCEL_PAYMENT);
         Assert.assertNotNull(footer.props.linkAction.action);
-        Assert.assertEquals(footer.props.linkAction.action.type, Action.TYPE_CONTINUE);
+        assertThat(footer.props.linkAction.action, is(instanceOf(NextAction.class)));
     }
 
     @Test
@@ -139,7 +141,7 @@ public class FooterContainerTest {
         Assert.assertNotNull(footer.props.linkAction);
         Assert.assertEquals(footer.props.linkAction.label, LABEL_CANCEL_PAYMENT);
         Assert.assertNotNull(footer.props.linkAction.action);
-        Assert.assertEquals(footer.props.linkAction.action.type, Action.TYPE_CONTINUE);
+        assertThat(footer.props.linkAction.action, is(instanceOf(NextAction.class)));
     }
 
     @Test
@@ -159,6 +161,6 @@ public class FooterContainerTest {
         Assert.assertNotNull(footer.props.linkAction);
         Assert.assertEquals(footer.props.linkAction.label, LABEL_CANCEL_PAYMENT);
         Assert.assertNotNull(footer.props.linkAction.action);
-        Assert.assertEquals(footer.props.linkAction.action.type, Action.TYPE_CONTINUE);
+        assertThat(footer.props.linkAction.action, is(instanceOf(NextAction.class)));
     }
 }
