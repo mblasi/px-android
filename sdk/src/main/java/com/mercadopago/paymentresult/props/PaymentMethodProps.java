@@ -2,6 +2,7 @@ package com.mercadopago.paymentresult.props;
 
 import android.support.annotation.NonNull;
 
+import com.mercadopago.model.Discount;
 import com.mercadopago.model.Issuer;
 import com.mercadopago.model.PayerCost;
 import com.mercadopago.model.PaymentMethod;
@@ -20,19 +21,23 @@ public class PaymentMethodProps {
     public final Token token;
     public final String disclaimer;
     public final BodyAmountFormatter amountFormatter;
+    public final Discount discount;
 
     public PaymentMethodProps(@NonNull final PaymentMethod paymentMethod,
                               @NonNull final PayerCost payerCost,
                               @NonNull final Issuer issuer,
                               @NonNull final Token token,
                               @NonNull final String disclaimer,
-                              @NonNull final BodyAmountFormatter amountFormatter) {
+                              @NonNull final BodyAmountFormatter amountFormatter,
+                              final Discount discount) {
+
         this.paymentMethod = paymentMethod;
         this.payerCost = payerCost;
         this.issuer = issuer;
         this.token = token;
         this.disclaimer = disclaimer;
         this.amountFormatter = amountFormatter;
+        this.discount = discount;
     }
 
     public PaymentMethodProps(@NonNull final Builder builder) {
@@ -42,6 +47,7 @@ public class PaymentMethodProps {
         this.token = builder.token;
         this.disclaimer = builder.disclaimer;
         this.amountFormatter = builder.amountFormatter;
+        this.discount = builder.discount;
     }
 
     public Builder toBuilder() {
@@ -51,7 +57,8 @@ public class PaymentMethodProps {
                 .setIssuer(this.issuer)
                 .setToken(this.token)
                 .setDisclaimer(this.disclaimer)
-                .setAmountFormatter(this.amountFormatter);
+                .setAmountFormatter(this.amountFormatter)
+                .setDiscount(this.discount);
     }
 
     public static class Builder {
@@ -62,6 +69,7 @@ public class PaymentMethodProps {
         public Token token;
         public String disclaimer;
         public BodyAmountFormatter amountFormatter;
+        public Discount discount;
 
         public Builder setPaymentMethod(PaymentMethod paymentMethod) {
             this.paymentMethod = paymentMethod;
@@ -90,6 +98,11 @@ public class PaymentMethodProps {
 
         public Builder setAmountFormatter(BodyAmountFormatter amountFormatter) {
             this.amountFormatter = amountFormatter;
+            return this;
+        }
+
+        public Builder setDiscount(Discount discount) {
+            this.discount = discount;
             return this;
         }
 
