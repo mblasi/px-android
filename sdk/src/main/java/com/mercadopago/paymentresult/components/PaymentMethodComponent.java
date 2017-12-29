@@ -81,7 +81,8 @@ public class PaymentMethodComponent extends Component<PaymentMethodProps> {
     public TotalAmountComponent getTotalAmountComponent() {
         final TotalAmountProps totalAmountProps = new TotalAmountProps(
                 props.amountFormatter,
-                props.payerCost);
+                props.payerCost,
+                props.discount);
 
         return new TotalAmountComponent(totalAmountProps, getDispatcher());
     }

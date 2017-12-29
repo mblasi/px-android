@@ -74,6 +74,7 @@ public class Body extends Component<PaymentResultBodyProps> {
                 .setIssuer(props.paymentData.getIssuer())
                 .setDisclaimer(props.disclaimer)
                 .setAmountFormatter(props.bodyAmountFormatter)
+                .setDiscount(props.paymentData.getDiscount())
                 .build();
         return new PaymentMethodComponent(paymentMethodProps, getDispatcher(), paymentMethodProvider);
     }
