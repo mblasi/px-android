@@ -21,8 +21,15 @@ public class PaymentMethodProviderImpl implements PaymentMethodProvider {
 
     @Override
     public Drawable getImage(PaymentMethod paymentMethod) {
-        final @DrawableRes int image = getPaymentMethodIcon(context, paymentMethod.getId());
-        return ContextCompat.getDrawable(context, image);
+        final @DrawableRes int drawable;
+
+        if (paymentMethod.getIcon() != R.drawable.mpsdk_none) {
+            drawable = paymentMethod.getIcon();
+        } else {
+            drawable = getPaymentMethodIcon(context, paymentMethod.getId());
+        }
+
+        return ContextCompat.getDrawable(context, drawable);
     }
 
     @Override
