@@ -1,6 +1,7 @@
 package com.mercadopago.paymentresult;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
@@ -21,15 +22,15 @@ public class PaymentMethodProviderImpl implements PaymentMethodProvider {
 
     @Override
     public Drawable getImage(PaymentMethod paymentMethod) {
-        final @DrawableRes int drawable;
-
-        if (paymentMethod.getIcon() != R.drawable.mpsdk_none) {
-            drawable = paymentMethod.getIcon();
-        } else {
-            drawable = getPaymentMethodIcon(context, paymentMethod.getId());
+        Drawable drawable = null;
+        try {
+            final @DrawableRes int image = getPaymentMethodIcon(context, paymentMethod.getId());
+            drawable = ContextCompat.getDrawable(context, image);
+        } catch (final Resources.NotFoundException e) {
+            // Avoid crashes if the image doesn exist return empty default one.
+            drawable = ContextCompat.getDrawable(context, R.drawable.mpsdk_none);
         }
-
-        return ContextCompat.getDrawable(context, drawable);
+        return drawable;
     }
 
     @Override

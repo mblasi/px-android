@@ -181,11 +181,11 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
 
     @Override
     protected void onRestoreInstanceState(final Bundle savedInstanceState) {
-        boolean discountEnabled = savedInstanceState.getBoolean(DISCOUNT_ENABLED_BUNDLE);
-        PaymentResult paymentResult = JsonUtil.getInstance().fromJson(savedInstanceState.getString(PAYMENT_RESULT_BUNDLE), PaymentResult.class);
-        Site site = JsonUtil.getInstance().fromJson(savedInstanceState.getString(SITE_BUNDLE), Site.class);
-        BigDecimal amount = JsonUtil.getInstance().fromJson(savedInstanceState.getString(AMOUNT_BUNDLE), BigDecimal.class);
-        ServicePreference servicePreference = JsonUtil.getInstance().fromJson(savedInstanceState.getString(SERVICE_PREFERENCE_BUNDLE), ServicePreference.class);
+        final boolean discountEnabled = savedInstanceState.getBoolean(DISCOUNT_ENABLED_BUNDLE);
+        final PaymentResult paymentResult = JsonUtil.getInstance().fromJson(savedInstanceState.getString(PAYMENT_RESULT_BUNDLE), PaymentResult.class);
+        final Site site = JsonUtil.getInstance().fromJson(savedInstanceState.getString(SITE_BUNDLE), Site.class);
+        final BigDecimal amount = JsonUtil.getInstance().fromJson(savedInstanceState.getString(AMOUNT_BUNDLE), BigDecimal.class);
+        final ServicePreference servicePreference = JsonUtil.getInstance().fromJson(savedInstanceState.getString(SERVICE_PREFERENCE_BUNDLE), ServicePreference.class);
 
         merchantPublicKey = savedInstanceState.getString(MERCHANT_PUBLIC_KEY_BUNDLE);
         payerAccessToken = savedInstanceState.getString(PAYER_ACCESS_TOKEN_BUNDLE);

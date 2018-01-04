@@ -22,8 +22,12 @@ import com.mercadopago.hooks.ExampleHooks;
 import com.mercadopago.model.Payment;
 import com.mercadopago.plugins.SamplePaymentMethodPlugin;
 import com.mercadopago.plugins.SamplePaymentPlugin;
+import com.mercadopago.paymentresult.model.Badge;
+import com.mercadopago.plugins.SamplePaymentMethodPlugin;
+import com.mercadopago.plugins.SamplePaymentPlugin;
 import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.preferences.DecorationPreference;
+import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 
@@ -84,14 +88,21 @@ public class CheckoutExampleActivity extends AppCompatActivity {
 
     private void startMercadoPagoCheckout() {
 
+        final PaymentResultScreenPreference paymentResultScreenPreference =
+                new PaymentResultScreenPreference.Builder()
+                        .disableRejectedLabelText()
+                        .setBadgeApproved(Badge.PENDING_BADGE_IMAGE)
+                        .build();
+
         final MercadoPagoCheckout.Builder builder = new MercadoPagoCheckout.Builder()
                 .setActivity(this)
                 .setPublicKey(mPublicKey)
                 .setCheckoutPreference(getCheckoutPreference())
                 .setDecorationPreference(getCurrentDecorationPreference())
                 .addPaymentMethodPlugin("sample",
-                        new SamplePaymentMethodPlugin(this),
-                        new SamplePaymentPlugin());
+                    new SamplePaymentMethodPlugin(this),
+                    new SamplePaymentPlugin()
+                );
 
         if (mHooksEnabled.isChecked()) {
             builder.setCheckoutHooks(new ExampleHooks());

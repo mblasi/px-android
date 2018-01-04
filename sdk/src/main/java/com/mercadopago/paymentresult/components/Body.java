@@ -64,12 +64,13 @@ public class Body extends Component<PaymentResultBodyProps> {
                 paymentMethod.getPaymentTypeId().equals(PaymentTypes.PREPAID_CARD);
     }
 
-    private boolean isPluginType(final PaymentMethod paymentMethod) {
-        return PaymentTypes.PLUGIN.equalsIgnoreCase(paymentMethod.getPaymentTypeId());
+    private boolean isAccountMoney(final PaymentMethod paymentMethod) {
+        return paymentMethod != null && paymentMethod.getPaymentTypeId() != null
+                && paymentMethod.getPaymentTypeId().equals(PaymentTypes.ACCOUNT_MONEY);
     }
 
-    private boolean isAccountMoney(final PaymentMethod paymentMethod) {
-        return paymentMethod != null && paymentMethod.getPaymentTypeId() != null && paymentMethod.getPaymentTypeId().equals(PaymentTypes.ACCOUNT_MONEY);
+    private boolean isPluginType(final PaymentMethod paymentMethod) {
+        return PaymentTypes.PLUGIN.equalsIgnoreCase(paymentMethod.getPaymentTypeId());
     }
 
     public PaymentMethodComponent getPaymentMethodComponent() {
@@ -136,11 +137,13 @@ public class Body extends Component<PaymentResultBodyProps> {
     }
 
     public boolean hasTopCustomComponent() {
-        return hasPaymentResultScreenPreference() && CheckoutSessionStore.getInstance().getPaymentResultScreenPreference().getApprovedTopCustomComponent() != null;
+        return hasPaymentResultScreenPreference() && CheckoutSessionStore.getInstance()
+                .getPaymentResultScreenPreference().getApprovedTopCustomComponent() != null;
     }
 
     public boolean hasBottomCustomComponent() {
-        return hasPaymentResultScreenPreference() && CheckoutSessionStore.getInstance().getPaymentResultScreenPreference().getApprovedBottomCustomComponent() != null;
+        return hasPaymentResultScreenPreference() && CheckoutSessionStore.getInstance()
+                .getPaymentResultScreenPreference().getApprovedBottomCustomComponent() != null;
     }
 
     private boolean hasPaymentResultScreenPreference() {
