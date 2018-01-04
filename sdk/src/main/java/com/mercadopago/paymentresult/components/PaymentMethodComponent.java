@@ -37,6 +37,8 @@ public class PaymentMethodComponent extends Component<PaymentMethodProps> {
             description = props.paymentMethod.getName() + " " + provider.getLastDigitsText() + " " + props.token.getLastFourDigits();
         } else if (isAccountMoneyPaymentMethod()) {
             description = provider.getAccountMoneyText();
+        } else {
+            description = props.paymentMethod.getName();
         }
 
         return description;
