@@ -11,6 +11,7 @@ import com.mercadopago.plugins.PaymentMethodPlugin;
 import com.mercadopago.plugins.PaymentPlugin;
 import com.mercadopago.plugins.model.PaymentMethodInfo;
 import com.mercadopago.preferences.DecorationPreference;
+import com.mercadopago.preferences.PaymentResultScreenPreference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +22,11 @@ public class CheckoutStore {
 
     private static final CheckoutStore INSTANCE = new CheckoutStore();
 
+    //Prefefences
+    private DecorationPreference decorationPreference = new DecorationPreference();
+    private PaymentResultScreenPreference paymentResultScreenPreference = new PaymentResultScreenPreference();
+
     //Read only data
-    private DecorationPreference decorationPreference;
     private List<PaymentMethodPlugin> paymentMethodPluginList = new ArrayList<>();
     private Map<String, PaymentPlugin> paymentPlugins = new HashMap<>();
     private CheckoutHooks checkoutHooks;
@@ -51,6 +55,14 @@ public class CheckoutStore {
 
     public void setDecorationPreference(@NonNull final DecorationPreference decorationPreference) {
         this.decorationPreference = decorationPreference;
+    }
+
+    public PaymentResultScreenPreference getPaymentResultScreenPreference() {
+        return paymentResultScreenPreference;
+    }
+
+    public void setPaymentResultScreenPreference(@NonNull final PaymentResultScreenPreference paymentResultScreenPreference) {
+        this.paymentResultScreenPreference = paymentResultScreenPreference;
     }
 
     public List<PaymentMethodPlugin> getPaymentMethodPluginList() {

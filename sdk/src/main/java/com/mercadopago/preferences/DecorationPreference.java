@@ -21,7 +21,11 @@ public class DecorationPreference {
     private String mRegularFontPath;
     private String mLightFontPath;
 
-    private DecorationPreference(Builder builder) {
+    public DecorationPreference() {
+
+    }
+
+    private DecorationPreference(final Builder builder) {
         this.lighterColor = builder.lighterColor;
         this.baseColor = builder.baseColor;
         this.darkFontEnabled = builder.darkFontEnabled;

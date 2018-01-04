@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import com.mercadopago.callbacks.CallbackHolder;
 import com.mercadopago.callbacks.PaymentResultCallback;
 import com.mercadopago.constants.ContentLocation;
-import com.mercadopago.core.CheckoutSessionStore;
+import com.mercadopago.core.CheckoutStore;
 import com.mercadopago.model.Reviewable;
 import com.mercadopago.components.CustomComponent;
 import com.mercadopago.paymentresult.model.Badge;
@@ -68,7 +68,11 @@ public class PaymentResultScreenPreference {
     private CustomComponent approvedTopCustomComponent;
     private CustomComponent approvedBottomCustomComponent;
 
-    private PaymentResultScreenPreference(Builder builder) {
+    public PaymentResultScreenPreference() {
+
+    }
+
+    private PaymentResultScreenPreference(final Builder builder) {
         this.titleBackgroundColor = builder.titleBackgroundColor;
         this.approvedTitle = builder.approvedTitle;
         this.approvedSubtitle = builder.approvedSubtitle;
@@ -117,7 +121,7 @@ public class PaymentResultScreenPreference {
         this.approvedBottomCustomComponent = builder.approvedBottomCustomComponent;
         this.approvedTopCustomComponent = builder.approvedTopCustomComponent;
 
-        CheckoutSessionStore.getInstance().setPaymentResultScreenPreference(this);
+        CheckoutStore.getInstance().setPaymentResultScreenPreference(this);
     }
 
     public CustomComponent getApprovedTopCustomComponent() {
