@@ -27,6 +27,7 @@ public class PaymentMethodComponent extends Component<PaymentMethodProps> {
     }
 
     public Drawable getImage() {
+
         return provider.getImage(props.paymentMethod);
     }
 
@@ -37,7 +38,7 @@ public class PaymentMethodComponent extends Component<PaymentMethodProps> {
             description = props.paymentMethod.getName() + " " + provider.getLastDigitsText() + " " + props.token.getLastFourDigits();
         } else if (isAccountMoneyPaymentMethod()) {
             description = provider.getAccountMoneyText();
-        } else {
+        } else if (props.paymentMethod != null) {
             description = props.paymentMethod.getName();
         }
 

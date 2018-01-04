@@ -83,7 +83,7 @@ public class PaymentMethodTest {
         final com.mercadopago.paymentresult.components.PaymentMethodComponent component =
                 getPaymentMethodComponent(paymentMethod, payerCost, token, issuer, DISCLAIMER_TEXT, amountFormatter);
 
-        Assert.assertTrue(component.getDescription().equals(""));
+        Assert.assertTrue(component.getDescription().equals("Visa"));
     }
 
     @Test

@@ -86,7 +86,11 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
         if (props.paymentResult != null) {
             String status = props.paymentResult.getPaymentStatus();
             String statusDetail = props.paymentResult.getPaymentStatusDetail();
-            if (status != null && statusDetail != null && status.equals(Payment.StatusCodes.STATUS_REJECTED) &&
+
+            if (Payment.StatusCodes.STATUS_REJECTED.equals(status)
+                    && Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_PLUGIN_PM.equals(statusDetail)) {
+                hasBody = false;
+            } else if (status != null && statusDetail != null && status.equals(Payment.StatusCodes.STATUS_REJECTED) &&
                     (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_CARD_NUMBER) ||
                             statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_DATE) ||
                             statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_SECURITY_CODE) ||
@@ -171,14 +175,14 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
     private boolean isRedBackground(@NonNull final PaymentResult paymentResult) {
         final String status = paymentResult.getPaymentStatus();
         final String statusDetail = paymentResult.getPaymentStatusDetail();
-        return status.equals(Payment.StatusCodes.STATUS_REJECTED) &&
-                (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_OTHER_REASON) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_REJECTED_REJECTED_BY_BANK) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_REJECTED_REJECTED_INSUFFICIENT_DATA) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_DUPLICATED_PAYMENT) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_MAX_ATTEMPTS) ||
-                        statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_REJECTED_HIGH_RISK));
-
+        return Payment.StatusCodes.STATUS_REJECTED.equals(status) &&
+                (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_OTHER_REASON.equals(statusDetail) ||
+                        Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_PLUGIN_PM.equals(statusDetail) ||
+                        Payment.StatusCodes.STATUS_DETAIL_REJECTED_REJECTED_BY_BANK.equals(statusDetail) ||
+                        Payment.StatusCodes.STATUS_DETAIL_REJECTED_REJECTED_INSUFFICIENT_DATA.equals(statusDetail) ||
+                        Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_DUPLICATED_PAYMENT.equals(statusDetail) ||
+                        Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_MAX_ATTEMPTS.equals(statusDetail) ||
+                        Payment.StatusCodes.STATUS_DETAIL_REJECTED_HIGH_RISK.equals(statusDetail));
     }
 
     private boolean isOrangeBackground(@NonNull final PaymentResult paymentResult) {
@@ -250,7 +254,13 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
     }
 
     private int getBadgeImage(@NonNull final PaymentResultProps props) {
-        if (props.hasCustomizedBadge()) {
+        if (props.isPluginPaymentResult(props.paymentResult)) {
+            if (props.paymentResult != null && props.paymentResult.isStatusApproved()) {
+                return CHECK_BADGE_IMAGE;
+            } else {
+                return ERROR_BADGE_IMAGE;
+            }
+        } else if (props.hasCustomizedBadge()) {
             final String badge = props.getPreferenceBadge();
             if (badge.equals(Badge.CHECK_BADGE_IMAGE)) {
                 return CHECK_BADGE_IMAGE;
@@ -309,7 +319,9 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
     private boolean isErrorBadgeImage(@NonNull final PaymentResult paymentResult) {
         final String status = paymentResult.getPaymentStatus();
         final String statusDetail = paymentResult.getPaymentStatusDetail();
-        return status.equals(Payment.StatusCodes.STATUS_REJECTED) && (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_OTHER_REASON) ||
+        return status.equals(Payment.StatusCodes.STATUS_REJECTED) && (
+                statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_OTHER_REASON) ||
+                statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_PLUGIN_PM) ||
                 statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_REJECTED_REJECTED_BY_BANK) ||
                 statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_REJECTED_REJECTED_INSUFFICIENT_DATA) ||
                 statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_DUPLICATED_PAYMENT) ||
@@ -319,7 +331,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
 
     private String getTitle(@NonNull final PaymentResultProps props) {
 
-        if (props.hasCustomizedTitle()) {
+        if (!props.isPluginPaymentResult(props.paymentResult) && props.hasCustomizedTitle()) {
             return props.getPreferenceTitle();
         } else if (props.hasInstructions()) {
             return props.getInstructionsTitle();
@@ -337,7 +349,9 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
             } else if (status.equals(Payment.StatusCodes.STATUS_IN_PROCESS) || status.equals(Payment.StatusCodes.STATUS_PENDING)) {
                 return paymentResultProvider.getPendingTitle();
             } else if (status.equals(Payment.StatusCodes.STATUS_REJECTED)) {
-                if (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_OTHER_REASON)) {
+
+                if (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_OTHER_REASON.equals(statusDetail)
+                        || Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_PLUGIN_PM.equals(statusDetail)) {
                     return paymentResultProvider.getRejectedOtherReasonTitle(paymentMethodName);
                 } else if (statusDetail.equals(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_INSUFFICIENT_AMOUNT)) {
                     return paymentResultProvider.getRejectedInsufficientAmountTitle(paymentMethodName);
@@ -368,7 +382,7 @@ public class PaymentResultContainer extends Component<PaymentResultProps> {
     }
 
     private String getLabel(@NonNull final PaymentResultProps props) {
-        if (props.hasCustomizedLabel()) {
+        if (!props.isPluginPaymentResult(props.paymentResult) && props.hasCustomizedLabel()) {
             return props.getPreferenceLabel();
         } else if (props.paymentResult == null) {
             return paymentResultProvider.getEmptyText();

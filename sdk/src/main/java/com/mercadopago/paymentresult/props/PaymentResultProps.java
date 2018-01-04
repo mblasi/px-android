@@ -1,6 +1,7 @@
 package com.mercadopago.paymentresult.props;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.mercadopago.core.CheckoutSessionStore;
 import com.mercadopago.model.Instruction;
@@ -46,7 +47,8 @@ public class PaymentResultProps {
     }
 
     public boolean hasCustomizedTitle() {
-        PaymentResultScreenPreference preferences = CheckoutSessionStore.getInstance().getPaymentResultScreenPreference();
+        final PaymentResultScreenPreference preferences = CheckoutSessionStore.getInstance()
+                .getPaymentResultScreenPreference();
         if (preferences != null) {
             if (isApprovedTitleValidState()) {
                 return preferences.getApprovedTitle() != null && !preferences.getApprovedTitle().isEmpty();
@@ -57,6 +59,12 @@ public class PaymentResultProps {
             }
         }
         return false;
+    }
+
+    public boolean isPluginPaymentResult(@Nullable final PaymentResult paymentResult) {
+        return paymentResult != null &&
+                (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_PLUGIN_PM.equals(paymentResult.getPaymentStatusDetail())
+                        || Payment.StatusCodes.STATUS_DETAIL_APPROVED_PLUGIN_PM.equals(paymentResult.getPaymentStatusDetail()));
     }
 
     public String getPreferenceTitle() {
@@ -96,7 +104,7 @@ public class PaymentResultProps {
     }
 
     public boolean hasCustomizedLabel() {
-        PaymentResultScreenPreference preferences = CheckoutSessionStore.getInstance().getPaymentResultScreenPreference();
+        final PaymentResultScreenPreference preferences = CheckoutSessionStore.getInstance().getPaymentResultScreenPreference();
         if (preferences != null) {
             if (isApprovedLabelValidState()) {
                 return preferences.getApprovedLabelText() != null && !preferences.getApprovedLabelText().isEmpty();

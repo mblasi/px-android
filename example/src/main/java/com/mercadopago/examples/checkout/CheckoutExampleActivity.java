@@ -21,6 +21,8 @@ import com.mercadopago.exceptions.MercadoPagoError;
 import com.mercadopago.hooks.ExampleHooks;
 import com.mercadopago.model.Payment;
 import com.mercadopago.paymentresult.model.Badge;
+import com.mercadopago.plugins.SamplePaymentMethodPlugin;
+import com.mercadopago.plugins.SamplePaymentPlugin;
 import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.preferences.DecorationPreference;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
@@ -99,7 +101,12 @@ public class CheckoutExampleActivity extends AppCompatActivity {
                 .setPublicKey(mPublicKey)
                 .setPaymentResultScreenPreference(paymentResultScreenPreference)
                 .setCheckoutPreference(getCheckoutPreference())
-                .setDecorationPreference(getCurrentDecorationPreference());
+                .setDecorationPreference(getCurrentDecorationPreference())
+                .addPaymentMethodPlugin(
+                    "sample",
+                    new SamplePaymentMethodPlugin(this),
+                    new SamplePaymentPlugin()
+                );
 
         if (mHooksEnabled.isChecked()) {
             builder.setCheckoutHooks(new ExampleHooks());
