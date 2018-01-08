@@ -11,7 +11,7 @@ import com.mercadopago.customviews.MPTextView;
  * Created by mromar on 11/27/17.
  */
 
-public class TotalAmountRenderer extends Renderer<TotalAmountComponent> {
+public class TotalAmountRenderer extends Renderer<TotalAmount> {
 
     @Override
     public View render() {
