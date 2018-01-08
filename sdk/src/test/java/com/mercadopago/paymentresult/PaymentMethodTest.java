@@ -50,7 +50,7 @@ public class PaymentMethodTest {
         final Issuer issuer = Issuers.getIssuerMLA();
         final BodyAmountFormatter amountFormatter = new BodyAmountFormatter("ARS", new BigDecimal(1000));
 
-        final com.mercadopago.paymentresult.components.PaymentMethodComponent component =
+        final com.mercadopago.paymentresult.components.PaymentMethod component =
                 getPaymentMethodComponent(paymentMethod, payerCost, token, issuer, DISCLAIMER_TEXT, amountFormatter);
 
         String cardPaymentMethod = component.props.paymentMethod.getName() + " " + provider.getLastDigitsText() + " " + component.props.token.getLastFourDigits();
@@ -66,7 +66,7 @@ public class PaymentMethodTest {
         final Issuer issuer = Issuers.getIssuerMLA();
         final BodyAmountFormatter amountFormatter = new BodyAmountFormatter("ARS", new BigDecimal(1000));
 
-        final com.mercadopago.paymentresult.components.PaymentMethodComponent component =
+        final com.mercadopago.paymentresult.components.PaymentMethod component =
                 getPaymentMethodComponent(paymentMethod, payerCost, token, issuer, DISCLAIMER_TEXT, amountFormatter);
 
         Assert.assertTrue(component.getDescription().equals(""));
@@ -80,7 +80,7 @@ public class PaymentMethodTest {
         final Issuer issuer = Issuers.getIssuerMLA();
         final BodyAmountFormatter amountFormatter = new BodyAmountFormatter("ARS", new BigDecimal(1000));
 
-        final com.mercadopago.paymentresult.components.PaymentMethodComponent component =
+        final com.mercadopago.paymentresult.components.PaymentMethod component =
                 getPaymentMethodComponent(paymentMethod, payerCost, token, issuer, DISCLAIMER_TEXT, amountFormatter);
 
         Assert.assertTrue(component.getDescription().equals("Visa"));
@@ -94,7 +94,7 @@ public class PaymentMethodTest {
         final Issuer issuer = Issuers.getIssuerMLA();
         final BodyAmountFormatter amountFormatter = new BodyAmountFormatter("ARS", new BigDecimal(1000));
 
-        final com.mercadopago.paymentresult.components.PaymentMethodComponent component =
+        final com.mercadopago.paymentresult.components.PaymentMethod component =
                 getPaymentMethodComponent(paymentMethod, payerCost, token, issuer, DISCLAIMER_TEXT, amountFormatter);
 
         Assert.assertTrue(component.getDetail().equals(issuer.getName()));
@@ -108,7 +108,7 @@ public class PaymentMethodTest {
         final Issuer issuer = null;
         final BodyAmountFormatter amountFormatter = new BodyAmountFormatter("ARS", new BigDecimal(1000));
 
-        final com.mercadopago.paymentresult.components.PaymentMethodComponent component =
+        final com.mercadopago.paymentresult.components.PaymentMethod component =
                 getPaymentMethodComponent(paymentMethod, payerCost, token, issuer, DISCLAIMER_TEXT, amountFormatter);
 
         Assert.assertTrue(component.getDetail().equals(""));
@@ -122,7 +122,7 @@ public class PaymentMethodTest {
         final Issuer issuer = Issuers.getIssuerMLA();
         final BodyAmountFormatter amountFormatter = new BodyAmountFormatter("ARS", new BigDecimal(1000));
 
-        final com.mercadopago.paymentresult.components.PaymentMethodComponent component =
+        final com.mercadopago.paymentresult.components.PaymentMethod component =
                 getPaymentMethodComponent(paymentMethod, payerCost, token, issuer, DISCLAIMER_TEXT, amountFormatter);
 
         Assert.assertTrue(component.getDisclaimer().equals(STATE_ACCOUNT_TEXT + DISCLAIMER_TEXT));
@@ -137,7 +137,7 @@ public class PaymentMethodTest {
         final BodyAmountFormatter amountFormatter = new BodyAmountFormatter("ARS", new BigDecimal(1000));
         final String disclaimer = null;
 
-        final com.mercadopago.paymentresult.components.PaymentMethodComponent component =
+        final com.mercadopago.paymentresult.components.PaymentMethod component =
                 getPaymentMethodComponent(paymentMethod, payerCost, token, issuer, disclaimer, amountFormatter);
 
         Assert.assertNull(component.getDisclaimer());
@@ -152,13 +152,13 @@ public class PaymentMethodTest {
         final BodyAmountFormatter amountFormatter = new BodyAmountFormatter("ARS", new BigDecimal(1000));
         final String disclaimer = "";
 
-        final com.mercadopago.paymentresult.components.PaymentMethodComponent component =
+        final com.mercadopago.paymentresult.components.PaymentMethod component =
                 getPaymentMethodComponent(paymentMethod, payerCost, token, issuer, disclaimer, amountFormatter);
 
         Assert.assertNull(component.getDisclaimer());
     }
 
-    private com.mercadopago.paymentresult.components.PaymentMethodComponent getPaymentMethodComponent(PaymentMethod paymentMethod, PayerCost payerCost, Token token, Issuer issuer, String disclaimer, BodyAmountFormatter amountFormatter) {
+    private com.mercadopago.paymentresult.components.PaymentMethod getPaymentMethodComponent(PaymentMethod paymentMethod, PayerCost payerCost, Token token, Issuer issuer, String disclaimer, BodyAmountFormatter amountFormatter) {
         final PaymentMethodProps props = new PaymentMethodProps.Builder()
                 .setPaymentMethod(paymentMethod)
                 .setPayerCost(payerCost)
@@ -168,8 +168,8 @@ public class PaymentMethodTest {
                 .setAmountFormatter(amountFormatter)
                 .build();
 
-        final com.mercadopago.paymentresult.components.PaymentMethodComponent component =
-                new com.mercadopago.paymentresult.components.PaymentMethodComponent(props, dispatcher, provider);
+        final com.mercadopago.paymentresult.components.PaymentMethod component =
+                new com.mercadopago.paymentresult.components.PaymentMethod(props, dispatcher, provider);
 
         return component;
     }

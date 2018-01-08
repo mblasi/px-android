@@ -16,10 +16,10 @@ import java.text.DecimalFormatSymbols;
  * Created by mromar on 11/28/17.
  */
 
-public class TotalAmountComponent extends Component<TotalAmountProps> {
+public class TotalAmount extends Component<TotalAmountProps> {
 
-    public TotalAmountComponent(@NonNull final TotalAmountProps props,
-                                @NonNull final ActionDispatcher dispatcher) {
+    public TotalAmount(@NonNull final TotalAmountProps props,
+                       @NonNull final ActionDispatcher dispatcher) {
         super(props, dispatcher);
     }
 

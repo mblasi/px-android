@@ -14,13 +14,13 @@ import com.mercadopago.paymentresult.props.TotalAmountProps;
  * Created by mromar on 11/22/17.
  */
 
-public class PaymentMethodComponent extends Component<PaymentMethodProps> {
+public class PaymentMethod extends Component<PaymentMethodProps> {
 
     private PaymentMethodProvider provider;
 
-    public PaymentMethodComponent(@NonNull final PaymentMethodProps props,
-                                  @NonNull final ActionDispatcher dispatcher,
-                                  @NonNull final PaymentMethodProvider provider) {
+    public PaymentMethod(@NonNull final PaymentMethodProps props,
+                         @NonNull final ActionDispatcher dispatcher,
+                         @NonNull final PaymentMethodProvider provider) {
         super(props, dispatcher);
 
         this.provider = provider;
@@ -81,12 +81,12 @@ public class PaymentMethodComponent extends Component<PaymentMethodProps> {
                 props.paymentMethod.getPaymentTypeId().equals(PaymentTypes.ACCOUNT_MONEY);
     }
 
-    public TotalAmountComponent getTotalAmountComponent() {
+    public TotalAmount getTotalAmountComponent() {
         final TotalAmountProps totalAmountProps = new TotalAmountProps(
                 props.amountFormatter,
                 props.payerCost,
                 props.discount);
 
-        return new TotalAmountComponent(totalAmountProps, getDispatcher());
+        return new TotalAmount(totalAmountProps, getDispatcher());
     }
 }

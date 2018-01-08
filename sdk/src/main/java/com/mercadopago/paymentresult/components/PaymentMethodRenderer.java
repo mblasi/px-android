@@ -15,7 +15,7 @@ import com.mercadopago.customviews.MPTextView;
  * Created by mromar on 11/22/17.
  */
 
-public class PaymentMethodRenderer extends Renderer<PaymentMethodComponent> {
+public class PaymentMethodRenderer extends Renderer<PaymentMethod> {
     @Override
     public View render() {
         final View paymentMethodView = LayoutInflater.from(context).inflate(R.layout.mpsdk_payment_method_component, null, false);

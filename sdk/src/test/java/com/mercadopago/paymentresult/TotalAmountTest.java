@@ -1,14 +1,9 @@
 package com.mercadopago.paymentresult;
 
 import com.mercadopago.components.ActionDispatcher;
-import com.mercadopago.mocks.Issuers;
 import com.mercadopago.mocks.PayerCosts;
-import com.mercadopago.mocks.PaymentMethods;
-import com.mercadopago.mocks.Tokens;
-import com.mercadopago.model.Issuer;
 import com.mercadopago.model.PayerCost;
-import com.mercadopago.model.PaymentMethod;
-import com.mercadopago.model.Token;
+import com.mercadopago.paymentresult.components.TotalAmount;
 import com.mercadopago.paymentresult.formatter.BodyAmountFormatter;
 import com.mercadopago.paymentresult.props.TotalAmountProps;
 
@@ -39,7 +34,7 @@ public class TotalAmountTest {
         String amountTitle;
         final PayerCost payerCost = PayerCosts.getPayerCost();
         final BodyAmountFormatter amountFormatter = new BodyAmountFormatter("ARS", new BigDecimal(1000));
-        final com.mercadopago.paymentresult.components.TotalAmountComponent component = getTotalAmountComponent(payerCost, amountFormatter);
+        final TotalAmount component = getTotalAmountComponent(payerCost, amountFormatter);
 
         amountTitle = component.props.payerCost.getInstallments() + "x " + component.props.amountFormatter.formatNumber(component.props.payerCost.getInstallmentAmount(), component.props.amountFormatter.getCurrencyId());
         Assert.assertTrue(component.getAmountTitle().equals(amountTitle));
@@ -50,7 +45,7 @@ public class TotalAmountTest {
         String amountTitle;
         final PayerCost payerCost = PayerCosts.getPayerCostWithoutInstallments();
         final BodyAmountFormatter amountFormatter = new BodyAmountFormatter("ARS", new BigDecimal(1000));
-        final com.mercadopago.paymentresult.components.TotalAmountComponent component = getTotalAmountComponent(payerCost, amountFormatter);
+        final TotalAmount component = getTotalAmountComponent(payerCost, amountFormatter);
 
         amountTitle = component.props.amountFormatter.formatNumber(component.props.amountFormatter.getAmount(), component.props.amountFormatter.getCurrencyId());
         Assert.assertTrue(component.getAmountTitle().equals(amountTitle));
@@ -60,7 +55,7 @@ public class TotalAmountTest {
     public void getEmptyAmountTitleWhenComponentHasNotPayerCost() {
         final PayerCost payerCost = null;
         final BodyAmountFormatter amountFormatter = new BodyAmountFormatter("ARS", new BigDecimal(1000));
-        final com.mercadopago.paymentresult.components.TotalAmountComponent component = getTotalAmountComponent(payerCost, amountFormatter);
+        final TotalAmount component = getTotalAmountComponent(payerCost, amountFormatter);
 
         Assert.assertTrue(component.getAmountDetail().equals(""));
     }
@@ -71,7 +66,7 @@ public class TotalAmountTest {
         final PayerCost payerCost = PayerCosts.getPayerCost();
         final BodyAmountFormatter amountFormatter = new BodyAmountFormatter("ARS", new BigDecimal(1000));
 
-        final com.mercadopago.paymentresult.components.TotalAmountComponent component =
+        final TotalAmount component =
                 getTotalAmountComponent(payerCost, amountFormatter);
 
         amountDetail = "(" + component.props.amountFormatter.formatNumber(component.props.payerCost.getTotalAmount(), component.props.amountFormatter.getCurrencyId()) + ")";
@@ -84,18 +79,18 @@ public class TotalAmountTest {
         final PayerCost payerCost = null;
         final BodyAmountFormatter amountFormatter = new BodyAmountFormatter("ARS", new BigDecimal(1000));
 
-        final com.mercadopago.paymentresult.components.TotalAmountComponent component =
+        final TotalAmount component =
                 getTotalAmountComponent(payerCost, amountFormatter);
 
         Assert.assertTrue(component.getAmountDetail().equals(""));
     }
 
-    private com.mercadopago.paymentresult.components.TotalAmountComponent getTotalAmountComponent(PayerCost payerCost, BodyAmountFormatter amountFormatter) {
+    private TotalAmount getTotalAmountComponent(PayerCost payerCost, BodyAmountFormatter amountFormatter) {
         final TotalAmountProps props = new TotalAmountProps.Builder()
                 .setPayerCost(payerCost)
                 .setAmountFormatter(amountFormatter)
                 .build();
 
-        return new com.mercadopago.paymentresult.components.TotalAmountComponent(props, dispatcher);
+        return new TotalAmount(props, dispatcher);
     }
 }
