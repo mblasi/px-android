@@ -19,7 +19,7 @@ public class ReviewItemTest {
 
     public final static String ITEM_TITLE = "Title";
     public final static String ITEM_DESCRIPTION = "Description";
-    public final static String ITEM_PICTURE_URL = "https://imgur.com/a/0QITs";
+    public final static String ITEM_PICTURE_URL = "https://i.imgur.com/5lY7FPW.jpg";
 
     @Test
     public void testItemWithImageUrl() {
