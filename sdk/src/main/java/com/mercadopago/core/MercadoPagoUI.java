@@ -22,6 +22,7 @@ import com.mercadopago.model.Site;
 import com.mercadopago.preferences.DecorationPreference;
 import com.mercadopago.preferences.PaymentPreference;
 import com.mercadopago.preferences.ReviewScreenPreference;
+import com.mercadopago.reviewconfirm.ReviewConfirmActivity;
 import com.mercadopago.uicontrollers.discounts.DiscountRowView;
 import com.mercadopago.uicontrollers.installments.InstallmentsReviewView;
 import com.mercadopago.uicontrollers.reviewandconfirm.ReviewItemsView;
@@ -246,7 +247,7 @@ public class MercadoPagoUI {
             }
 
             private void startReviewAndConfirmActivity() {
-                Intent intent = new Intent(activity, ReviewAndConfirmActivity.class);
+                Intent intent = new Intent(activity, ReviewConfirmActivity.class);
                 intent.putExtra("editionEnabled", editionEnabled);
                 intent.putExtra("amount", amount.toString());
                 intent.putExtra("site", JsonUtil.getInstance().toJson(site));

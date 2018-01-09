@@ -59,6 +59,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class ReviewAndConfirmActivity extends MercadoPagoBaseActivity implements TimerObserver, ReviewAndConfirmView, ReviewSubscriber {
 
     public static final int RESULT_CHANGE_PAYMENT_METHOD = 3;
@@ -107,7 +108,7 @@ public class ReviewAndConfirmActivity extends MercadoPagoBaseActivity implements
             setTheme(R.style.Theme_MercadoPagoTheme_NoActionBar);
         }
 
-        setContentView(R.layout.mpsdk_activity_review_confirm);
+        setContentView(R.layout.mpsdk_activity_review_confirm_deprecated);
         initializeControls();
         showTimer();
         setListeners();

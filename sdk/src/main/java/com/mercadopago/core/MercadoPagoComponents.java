@@ -50,6 +50,7 @@ import com.mercadopago.preferences.PaymentPreference;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.preferences.ReviewScreenPreference;
 import com.mercadopago.preferences.ServicePreference;
+import com.mercadopago.reviewconfirm.ReviewConfirmActivity;
 import com.mercadopago.uicontrollers.discounts.DiscountRowView;
 import com.mercadopago.uicontrollers.reviewandconfirm.ReviewItemsView;
 import com.mercadopago.uicontrollers.reviewandconfirm.ReviewPaymentOffView;
@@ -441,7 +442,7 @@ public class MercadoPagoComponents {
             }
 
             private void startReviewAndConfirmActivity() {
-                Intent intent = new Intent(activity, ReviewAndConfirmActivity.class);
+                Intent intent = new Intent(activity, ReviewConfirmActivity.class);
                 intent.putExtra("merchantPublicKey", merchantPublicKey);
                 intent.putExtra("editionEnabled", editionEnabled);
                 intent.putExtra("amount", amount.toString());
