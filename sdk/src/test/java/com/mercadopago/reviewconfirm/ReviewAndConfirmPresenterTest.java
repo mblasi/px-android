@@ -1,4 +1,4 @@
-package com.mercadopago.reviewandconfirm;
+package com.mercadopago.reviewconfirm;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
