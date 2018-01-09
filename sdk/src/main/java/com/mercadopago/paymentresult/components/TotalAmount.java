@@ -27,9 +27,9 @@ public class TotalAmount extends Component<TotalAmountProps> {
         String amountTitle;
 
         if (hasPayerCost() && props.payerCost.getInstallments() > 1) {
-            amountTitle = props.payerCost.getInstallments() + "x " + props.amountFormatter.formatNumber(props.payerCost.getInstallmentAmount(), props.amountFormatter.getCurrencyId());
+            amountTitle = props.payerCost.getInstallments() + "x " + props.amountFormatter.formatNumber(props.payerCost.getInstallmentAmount());
         } else {
-            amountTitle = props.amountFormatter.formatNumber(getAmount(), props.amountFormatter.getCurrencyId());
+            amountTitle = props.amountFormatter.formatNumber(getAmount());
         }
 
         return amountTitle;
@@ -39,7 +39,7 @@ public class TotalAmount extends Component<TotalAmountProps> {
         String amountDetail = "";
 
         if (hasPayerCost() && props.payerCost.getInstallments() > 1) {
-            amountDetail = "(" + props.amountFormatter.formatNumber(props.payerCost.getTotalAmount(), props.amountFormatter.getCurrencyId()) + ")";
+            amountDetail = "(" + props.amountFormatter.formatNumber(props.payerCost.getTotalAmount()) + ")";
         }
 
         return amountDetail;

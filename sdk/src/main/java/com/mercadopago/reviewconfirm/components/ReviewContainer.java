@@ -11,8 +11,11 @@ import com.mercadopago.model.PayerCost;
 import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.model.Site;
 import com.mercadopago.model.Token;
+import com.mercadopago.paymentresult.formatter.BodyAmountFormatter;
+import com.mercadopago.reviewconfirm.props.ItemProps;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +26,7 @@ public class ReviewContainer extends Component<ReviewContainer.Props> {
 
     static {
         RendererFactory.register(ReviewContainer.class, ReviewRenderer.class);
+        RendererFactory.register(ReviewItem.class, ReviewItemRenderer.class);
     }
 
     public ReviewContainer(@NonNull Props props) {
@@ -32,6 +36,23 @@ public class ReviewContainer extends Component<ReviewContainer.Props> {
     public Summary getSummary() {
         final Summary.Props props = new Summary.Props();
         return new Summary(props);
+    }
+
+    public List<ReviewItem> getItemComponents() {
+        List<ReviewItem> componentList = new ArrayList<>();
+
+        for (Item item: props.items) {
+            final ItemProps itemProps = new ItemProps.Builder()
+                    .setItem(item)
+                    .setAmountFormatter(new BodyAmountFormatter(props.site.getCurrencyId(), item.getUnitPrice()))
+                    .build();
+
+            final ReviewItem component = new ReviewItem(itemProps);
+
+            componentList.add(component);
+        }
+
+        return componentList;
     }
 
     public static class Props {

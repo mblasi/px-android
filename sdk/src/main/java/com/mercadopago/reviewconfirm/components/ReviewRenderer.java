@@ -8,6 +8,8 @@ import com.mercadopago.R;
 import com.mercadopago.components.Renderer;
 import com.mercadopago.components.RendererFactory;
 
+import java.util.List;
+
 /**
  * Created by nfortuna on 1/3/18.
  */
@@ -26,6 +28,12 @@ public class ReviewRenderer extends Renderer<ReviewContainer> {
 
         //Render item componente
         // ...
+        List<ReviewItem> itemComponentList = component.getItemComponents();
+        for (ReviewItem component: itemComponentList) {
+            final Renderer itemRenderer = RendererFactory.create(context, component);
+            final View item = itemRenderer.render();
+            view.addView(item);
+        }
 
 
         //Render payment method componente

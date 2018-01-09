@@ -3,6 +3,7 @@ package com.mercadopago.preferences;
 import android.support.annotation.NonNull;
 
 import com.mercadopago.constants.ReviewKeys;
+import com.mercadopago.core.CheckoutSessionStore;
 import com.mercadopago.model.Reviewable;
 
 import java.math.BigDecimal;
@@ -60,6 +61,8 @@ public class ReviewScreenPreference {
         this.amountTitle = builder.amountTitle;
         this.showQuantityRow = builder.showQuantityRow;
         this.showAmountTitle = builder.showAmountTitle;
+
+        CheckoutSessionStore.getInstance().setReviewScreenPreference(this);
     }
 
     public boolean hasCustomReviewables() {

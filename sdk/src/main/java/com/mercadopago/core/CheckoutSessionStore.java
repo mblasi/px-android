@@ -1,6 +1,7 @@
 package com.mercadopago.core;
 
 import com.mercadopago.preferences.PaymentResultScreenPreference;
+import com.mercadopago.preferences.ReviewScreenPreference;
 
 /**
  * Created by mromar on 12/12/17.
@@ -10,6 +11,7 @@ public class CheckoutSessionStore {
 
     private static CheckoutSessionStore INSTANCE;
     private static PaymentResultScreenPreference paymentResultScreenPreference;
+    private static ReviewScreenPreference reviewScreenPreference;
 
     private CheckoutSessionStore() {
     }
@@ -30,5 +32,16 @@ public class CheckoutSessionStore {
             setPaymentResultScreenPreference(new PaymentResultScreenPreference.Builder().build());
         }
         return this.paymentResultScreenPreference;
+    }
+
+    public void setReviewScreenPreference(ReviewScreenPreference reviewScreenPreference) {
+        this.reviewScreenPreference = reviewScreenPreference;
+    }
+
+    public ReviewScreenPreference getReviewScreenPreference() {
+        if (this.reviewScreenPreference == null) {
+            setReviewScreenPreference(new ReviewScreenPreference.Builder().build());
+        }
+        return this.reviewScreenPreference;
     }
 }

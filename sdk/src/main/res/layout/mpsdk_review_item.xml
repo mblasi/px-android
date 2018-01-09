@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/mpsdk_light_gray"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/mpsdk_l_margin"
+    android:paddingEnd="@dimen/mpsdk_m_margin"
+    android:paddingStart="@dimen/mpsdk_m_margin"
+    android:paddingTop="@dimen/mpsdk_l_margin">
+
+    <ImageView
+        android:id="@+id/itemImage"
+        android:layout_width="@dimen/mpsdk_xxl_height"
+        android:layout_height="@dimen/mpsdk_xxl_height"
+        android:layout_gravity="center_horizontal" />
+
+    <com.mercadopago.customviews.MPTextView
+        android:id="@+id/itemTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/mpsdk_s_margin"
+        android:textColor="@color/mpsdk_black"
+        android:textSize="@dimen/mpsdk_l_text"
+        tools:text="Titulo" />
+
+    <com.mercadopago.customviews.MPTextView
+        android:id="@+id/itemDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/mpsdk_xxs_alternative_margin"
+        android:textColor="@color/mpsdk_brownish_grey"
+        android:textSize="@dimen/mpsdk_xs_text"
+        tools:text="Descripcion" />
+
+    <com.mercadopago.customviews.MPTextView
+        android:id="@+id/itemQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/mpsdk_s_margin"
+        android:textColor="@color/mpsdk_brownish_grey"
+        android:textSize="@dimen/mpsdk_s_text"
+        tools:text="Cantidad: 1" />
+
+    <com.mercadopago.customviews.MPTextView
+        android:id="@+id/itemAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/mpsdk_brownish_grey"
+        android:textSize="@dimen/mpsdk_s_text"
+        tools:text="Precio unitario: $1234" />
+
+</LinearLayout>
