@@ -3,7 +3,6 @@ package com.mercadopago.presenters;
 import android.support.annotation.NonNull;
 
 import com.mercadopago.callbacks.FailureRecovery;
-import com.mercadopago.constants.PaymentMethods;
 import com.mercadopago.core.CheckoutStore;
 import com.mercadopago.core.MercadoPagoCheckout;
 import com.mercadopago.core.MercadoPagoComponents;
@@ -753,18 +752,16 @@ public class CheckoutPresenter extends MvpPresenter<CheckoutView, CheckoutProvid
     }
 
     public boolean isUniquePaymentMethod() {
-        return isOnlyUniquePaymentMethodAvailable() || isOnlyAccountMoneyEnabled();
-    }
+        final CheckoutStore store = CheckoutStore.getInstance();
+        int itemCount = 0;
+        int pluginCount = 0;
 
-    private boolean isOnlyUniquePaymentMethodAvailable() {
-        return mPaymentMethodSearch != null && mPaymentMethodSearch.hasSearchItems() && mPaymentMethodSearch.getGroups().size() == 1 && mPaymentMethodSearch.getGroups().get(0).isPaymentMethod() && !mPaymentMethodSearch.hasCustomSearchItems();
-    }
+        if (mPaymentMethodSearch != null && mPaymentMethodSearch.hasSearchItems()) {
+            itemCount = mPaymentMethodSearch.getGroups().size();
+        }
 
-    private boolean isOnlyAccountMoneyEnabled() {
-        return mPaymentMethodSearch.hasCustomSearchItems()
-                && mPaymentMethodSearch.getCustomSearchItems().size() == 1
-                && mPaymentMethodSearch.getCustomSearchItems().get(0).getId().equals(PaymentMethods.ACCOUNT_MONEY)
-                && (mPaymentMethodSearch.getGroups() == null || mPaymentMethodSearch.getGroups().isEmpty());
+        pluginCount = store.getPaymenthMethodPluginCount();
+        return itemCount + pluginCount == 1;
     }
 
     private PaymentResult createPaymentResult(final Payment payment, final PaymentData paymentData) {

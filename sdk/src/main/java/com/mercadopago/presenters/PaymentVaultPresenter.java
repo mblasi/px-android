@@ -3,6 +3,7 @@ package com.mercadopago.presenters;
 import com.mercadopago.callbacks.FailureRecovery;
 import com.mercadopago.callbacks.OnSelectedCallback;
 import com.mercadopago.constants.PaymentMethods;
+import com.mercadopago.constants.PaymentTypes;
 import com.mercadopago.core.CheckoutStore;
 import com.mercadopago.core.MercadoPagoComponents;
 import com.mercadopago.exceptions.MercadoPagoError;
@@ -34,7 +35,6 @@ import java.util.Map;
 
 public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, PaymentVaultProvider> {
 
-    private static final String ACCOUNT_MONEY_ID = "account_money";
     private static final String MISMATCHING_PAYMENT_METHOD_ERROR = "Payment method in search not found";
 
     private Site mSite;
@@ -302,18 +302,15 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     }
 
     private void resolveAvailablePaymentMethods() {
-
-        final CheckoutStore store = CheckoutStore.getInstance();
-
         if (isViewAttached()) {
-
             if (noPaymentMethodsAvailable()) {
                 showEmptyPaymentMethodsError();
-            } else if (isOnlyUniqueSearchSelectionAvailable() && mSelectAutomatically
-                    && !store.hasEnabledPaymenthMethodPlugin()) {
-                selectItem(mPaymentMethodSearch.getGroups().get(0), true);
-            } else if (isOnlyAccountMoneyEnabled() && mSelectAutomatically) {
-                selectAccountMoney(mPaymentMethodSearch.getCustomSearchItems().get(0));
+            } else if (mSelectAutomatically && isOnlyOneItemAvailable()) {
+                if (CheckoutStore.getInstance().hasEnabledPaymenthMethodPlugin()) {
+                    selectPluginPaymentMethod(CheckoutStore.getInstance().getFirstEnabledPluginId());
+                } else {
+                    selectItem(mPaymentMethodSearch.getGroups().get(0), true);
+                }
             } else {
                 showAvailableOptions();
                 getView().hideProgress();
@@ -325,13 +322,13 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
      *
      * @deprecated Account money is a plugin now.
      */
-    @Deprecated
-    public boolean isOnlyAccountMoneyEnabled() {
-        return mPaymentMethodSearch.hasCustomSearchItems()
-                && mPaymentMethodSearch.getCustomSearchItems().size() == 1
-                && mPaymentMethodSearch.getCustomSearchItems().get(0).getId().equals(ACCOUNT_MONEY_ID)
-                && (mPaymentMethodSearch.getGroups() == null || mPaymentMethodSearch.getGroups().isEmpty());
-    }
+//    @Deprecated
+//    public boolean isOnlyAccountMoneyEnabled() {
+//        return mPaymentMethodSearch.hasCustomSearchItems()
+//                && mPaymentMethodSearch.getCustomSearchItems().size() == 1
+//                && mPaymentMethodSearch.getCustomSearchItems().get(0).getId().equals(ACCOUNT_MONEY_ID)
+//                && (mPaymentMethodSearch.getGroups() == null || mPaymentMethodSearch.getGroups().isEmpty());
+//    }
 
     private void selectItem(PaymentMethodSearchItem item) {
         selectItem(item, false);
@@ -372,19 +369,6 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
 
         getView().showPluginOptions(pluginUpItems);
 
-        if (mPaymentMethodSearch.hasCustomSearchItems()) {
-            List<CustomSearchItem> shownCustomItems;
-
-            if (mShowAllSavedCardsEnabled) {
-                shownCustomItems = mPaymentMethodSearch.getCustomSearchItems();
-            } else {
-                shownCustomItems = getLimitedCustomOptions(mPaymentMethodSearch.getCustomSearchItems(), mMaxSavedCards);
-            }
-
-
-            getView().showCustomOptions(shownCustomItems, getCustomOptionCallback());
-        }
-
         if (searchItemsAvailable()) {
             getView().showSearchItems(mPaymentMethodSearch.getGroups(), getPaymentMethodSearchItemSelectionCallback());
         }
@@ -408,25 +392,18 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
                 if (MercadoPagoUtil.isCard(searchItem.getType())) {
                     Card card = getCardWithPaymentMethod(searchItem);
                     selectCard(card);
-                } else if (ACCOUNT_MONEY_ID.equals(searchItem.getPaymentMethodId())) {
-                    selectAccountMoney(searchItem);
                 }
             }
         };
     }
 
-    /**
-     *
-     * @deprecated Account money is a plugin now.
-     */
-    @Deprecated
-    private void selectAccountMoney(CustomSearchItem searchItem) {
-        accountMoneyPaymentMethod = new PaymentMethod();
-        accountMoneyPaymentMethod.setId(ACCOUNT_MONEY_ID);
-        accountMoneyPaymentMethod.setName(searchItem.getDescription());
-        accountMoneyPaymentMethod.setPaymentTypeId(searchItem.getType());
-        if (!showHook1(ACCOUNT_MONEY_ID, MercadoPagoComponents.Activities.HOOK_1_ACCOUNT_MONEY)) {
-            getView().finishPaymentMethodSelection(accountMoneyPaymentMethod);
+    public void selectPluginPaymentMethod(final String id) {
+        final CheckoutStore store = CheckoutStore.getInstance();
+        store.reset();
+        store.setSelectedPaymentMethodId(id);
+
+        if (!showHook1(PaymentTypes.PLUGIN, MercadoPagoComponents.Activities.HOOK_1_PLUGIN)) {
+            getView().showPaymentMethodPluginConfiguration();
         }
     }
 
@@ -495,10 +472,19 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
         }
     }
 
-    public boolean isOnlyUniqueSearchSelectionAvailable() {
-        return searchItemsAvailable() && mPaymentMethodSearch.getGroups().size() == 1
-                && !mPaymentMethodSearch.hasCustomSearchItems()
-                && !CheckoutStore.getInstance().hasEnabledPaymenthMethodPlugin();
+    public boolean isOnlyOneItemAvailable() {
+        final CheckoutStore store = CheckoutStore.getInstance();
+
+        int itemCount = 0;
+        int pluginCount = 0;
+
+        if (mPaymentMethodSearch != null && mPaymentMethodSearch.hasSearchItems()) {
+            itemCount = mPaymentMethodSearch.getGroups().size();
+        }
+
+        pluginCount = store.getPaymenthMethodPluginCount();
+
+        return itemCount + pluginCount == 1;
     }
 
     private boolean searchItemsAvailable() {

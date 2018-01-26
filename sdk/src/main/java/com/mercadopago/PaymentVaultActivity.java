@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mercadopago.adapters.PaymentMethodSearchItemAdapter;
 import com.mercadopago.callbacks.OnSelectedCallback;
-import com.mercadopago.constants.PaymentTypes;
 import com.mercadopago.controllers.CheckoutTimer;
 import com.mercadopago.core.CheckoutStore;
 import com.mercadopago.core.MercadoPagoCheckout;
@@ -30,7 +29,6 @@ import com.mercadopago.hooks.Hook;
 import com.mercadopago.hooks.HookActivity;
 import com.mercadopago.model.ApiException;
 import com.mercadopago.model.Card;
-import com.mercadopago.model.CustomSearchItem;
 import com.mercadopago.model.Discount;
 import com.mercadopago.model.Issuer;
 import com.mercadopago.model.Payer;
@@ -57,7 +55,6 @@ import com.mercadopago.tracking.utils.TrackingUtil;
 import com.mercadopago.uicontrollers.FontCache;
 import com.mercadopago.uicontrollers.discounts.DiscountRowView;
 import com.mercadopago.uicontrollers.paymentmethodsearch.PaymentMethodInfoController;
-import com.mercadopago.uicontrollers.paymentmethodsearch.PaymentMethodSearchCustomOption;
 import com.mercadopago.uicontrollers.paymentmethodsearch.PaymentMethodSearchOption;
 import com.mercadopago.uicontrollers.paymentmethodsearch.PaymentMethodSearchViewController;
 import com.mercadopago.util.ApiUtil;
@@ -344,13 +341,6 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
         adapter.notifyItemInserted();
     }
 
-    private void populateCustomOptionsList(List<CustomSearchItem> customSearchItems, OnSelectedCallback<CustomSearchItem> onSelectedCallback) {
-        PaymentMethodSearchItemAdapter adapter = (PaymentMethodSearchItemAdapter) mSearchItemsRecyclerView.getAdapter();
-        List<PaymentMethodSearchViewController> customViewControllers = createCustomSearchItemsViewControllers(customSearchItems, onSelectedCallback);
-        adapter.addItems(customViewControllers);
-        adapter.notifyItemInserted();
-    }
-
     private List<PaymentMethodSearchViewController> createSearchItemsViewControllers(List<PaymentMethodSearchItem> items, final OnSelectedCallback<PaymentMethodSearchItem> onSelectedCallback) {
         final CheckoutStore store = CheckoutStore.getInstance();
         final List<PaymentMethodSearchViewController> customViewControllers = new ArrayList<>();
@@ -359,31 +349,9 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
             viewController.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CheckoutStore.getInstance().reset();
 
                     if (PAYMENT_METHOD.equals(item.getType())) {
-                        store.setSelectedPaymentMethodId(item.getId());
-                    }
-
-                    onSelectedCallback.onSelected(item);
-                }
-            });
-            customViewControllers.add(viewController);
-        }
-        return customViewControllers;
-    }
-
-    private List<PaymentMethodSearchViewController> createCustomSearchItemsViewControllers(List<CustomSearchItem> customSearchItems, final OnSelectedCallback<CustomSearchItem> onSelectedCallback) {
-        final CheckoutStore store = CheckoutStore.getInstance();
-        final List<PaymentMethodSearchViewController> customViewControllers = new ArrayList<>();
-        for (final CustomSearchItem item : customSearchItems) {
-            PaymentMethodSearchCustomOption viewController = new PaymentMethodSearchCustomOption(this, item);
-            viewController.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CheckoutStore.getInstance().reset();
-
-                    if (PAYMENT_METHOD.equals(item.getType())) {
+                        CheckoutStore.getInstance().reset();
                         store.setSelectedPaymentMethodId(item.getId());
                     }
 
@@ -406,14 +374,8 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
                 viewController.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-
-                        store.reset();
                         final String id = String.valueOf(v.getTag());
-                        store.setSelectedPaymentMethodId(id);
-
-                        if (!mPaymentVaultPresenter.showHook1(PaymentTypes.PLUGIN, MercadoPagoComponents.Activities.HOOK_1_PLUGIN)) {
-                            showPaymentMethodPluginConfiguration();
-                        }
+                        mPaymentVaultPresenter.selectPluginPaymentMethod(id);
                     }
                 });
                 controllers.add(viewController);
@@ -422,7 +384,7 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
         return controllers;
     }
 
-    private void showPaymentMethodPluginConfiguration() {
+    public void showPaymentMethodPluginConfiguration() {
 
         final CheckoutStore store = CheckoutStore.getInstance();
         final PaymentMethodPlugin plugin = store.getSelectedPaymentMethodPlugin();
@@ -631,7 +593,7 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
     private boolean shouldFinishOnBack(Intent data) {
         return  !CheckoutStore.getInstance().hasEnabledPaymenthMethodPlugin() && (mPaymentVaultPresenter.getSelectedSearchItem() != null && (!mPaymentVaultPresenter.getSelectedSearchItem().hasChildren()
                 || (mPaymentVaultPresenter.getSelectedSearchItem().getChildren().size() == 1))
-                || (mPaymentVaultPresenter.getSelectedSearchItem() == null && (mPaymentVaultPresenter.isOnlyUniqueSearchSelectionAvailable() || mPaymentVaultPresenter.isOnlyAccountMoneyEnabled()))
+                || (mPaymentVaultPresenter.getSelectedSearchItem() == null && mPaymentVaultPresenter.isOnlyOneItemAvailable())
                 || (data != null) && (data.getStringExtra("mercadoPagoError") != null));
     }
 
@@ -739,11 +701,6 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
         if (mActivityActive) {
             ApiUtil.showApiExceptionError(this, apiException, mPublicKey, requestOrigin);
         }
-    }
-
-    @Override
-    public void showCustomOptions(List<CustomSearchItem> customSearchItems, OnSelectedCallback<CustomSearchItem> customSearchItemOnSelectedCallback) {
-        populateCustomOptionsList(customSearchItems, customSearchItemOnSelectedCallback);
     }
 
     @Override

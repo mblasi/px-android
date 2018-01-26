@@ -13,6 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mercadopago.constants.PaymentTypes;
+import com.mercadopago.constants.Sites;
 import com.mercadopago.core.MercadoPagoCheckout;
 import com.mercadopago.customviews.MPButton;
 import com.mercadopago.examples.R;
@@ -20,16 +22,20 @@ import com.mercadopago.examples.utils.ColorPickerDialog;
 import com.mercadopago.examples.utils.ExamplesUtils;
 import com.mercadopago.exceptions.MercadoPagoError;
 import com.mercadopago.hooks.ExampleHooks;
+import com.mercadopago.model.Item;
 import com.mercadopago.model.Payment;
+import com.mercadopago.paymentresult.model.Badge;
 import com.mercadopago.plugins.DataInitializationTask;
 import com.mercadopago.plugins.MainPaymentProcessor;
-import com.mercadopago.plugins.SamplePaymentMethodPlugin;
-import com.mercadopago.plugins.SamplePaymentProcessor;
 import com.mercadopago.preferences.CheckoutPreference;
+import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CheckoutExampleActivity extends AppCompatActivity {
@@ -89,17 +95,39 @@ public class CheckoutExampleActivity extends AppCompatActivity {
 
     private void startMercadoPagoCheckout() {
 
+        final PaymentResultScreenPreference paymentResultScreenPreference =
+                new PaymentResultScreenPreference.Builder()
+                        .disableRejectedLabelText()
+                        .setBadgeApproved(Badge.PENDING_BADGE_IMAGE)
+                        .build();
+
+        final List<String> excludedTypes = new ArrayList<>();
+        excludedTypes.add(PaymentTypes.ATM);
+        excludedTypes.add(PaymentTypes.BANK_TRANSFER);
+//        excludedTypes.add(PaymentTypes.ACCOUNT_MONEY);
+//        excludedTypes.add(PaymentTypes.CREDIT_CARD);
+//        excludedTypes.add(PaymentTypes.DEBIT_CARD);
+        excludedTypes.add(PaymentTypes.DIGITAL_CURRENCY);
+        excludedTypes.add(PaymentTypes.TICKET);
+        excludedTypes.add(PaymentTypes.TICKET);
+
+        final CheckoutPreference.Builder checkoutPreferenceBuilder = new CheckoutPreference.Builder()
+                .addExcludedPaymentTypes(excludedTypes)
+                .setSite(Sites.ARGENTINA)
+                .enableAccountMoney()
+                .addItem(new Item("Sarasa", new BigDecimal(10)));
+
         final Map<String, Object> defaultData = new HashMap<>();
         defaultData.put("amount", 120f);
 
         final MercadoPagoCheckout.Builder builder = new MercadoPagoCheckout.Builder()
                 .setActivity(this)
                 .setPublicKey(mPublicKey)
-                .setCheckoutPreference(getCheckoutPreference())
-                .addPaymentMethodPlugin(
-                        new SamplePaymentMethodPlugin(),
-                        new SamplePaymentProcessor()
-                )
+                .setCheckoutPreference(checkoutPreferenceBuilder.build())
+//                .addPaymentMethodPlugin(
+//                        new SamplePaymentMethodPlugin(),
+//                        new SamplePaymentProcessor()
+//                )
                 .setPaymentProcessor(new MainPaymentProcessor())
                 .setDataInitializationTask(new DataInitializationTask(defaultData) {
                     @Override

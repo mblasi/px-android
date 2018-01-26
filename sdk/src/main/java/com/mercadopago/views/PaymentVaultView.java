@@ -4,7 +4,6 @@ import com.mercadopago.callbacks.OnSelectedCallback;
 import com.mercadopago.exceptions.MercadoPagoError;
 import com.mercadopago.hooks.Hook;
 import com.mercadopago.model.Card;
-import com.mercadopago.model.CustomSearchItem;
 import com.mercadopago.model.Payer;
 import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.model.PaymentMethodSearchItem;
@@ -27,9 +26,6 @@ public interface PaymentVaultView extends MvpView {
     void showProgress();
 
     void hideProgress();
-
-    void showCustomOptions(List<CustomSearchItem> customSearchItems,
-                           OnSelectedCallback<CustomSearchItem> customSearchItemOnSelectedCallback);
 
     void showPluginOptions(List<PaymentMethodInfo> items);
 
@@ -66,4 +62,6 @@ public interface PaymentVaultView extends MvpView {
     void showHook(final Hook hook, final int code);
 
     PaymentMethodInfo getPaymentMethodInfo(final PaymentMethodPlugin plugin);
+
+    void showPaymentMethodPluginConfiguration();
 }
