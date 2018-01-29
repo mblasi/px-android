@@ -754,16 +754,21 @@ public class CheckoutPresenter extends MvpPresenter<CheckoutView, CheckoutProvid
     public boolean isUniquePaymentMethod() {
         final CheckoutStore store = CheckoutStore.getInstance();
         int pluginCount = store.getPaymenthMethodPluginCount();
-        int itemCount = 0;
+        int groupCount = 0;
+        int customCount = 0;
 
         if (mPaymentMethodSearch != null && mPaymentMethodSearch.hasSearchItems()) {
-            itemCount = mPaymentMethodSearch.getGroups().size();
-            if (pluginCount == 0 && itemCount == 1 && mPaymentMethodSearch.getGroups().get(0).isGroup()) {
+            groupCount = mPaymentMethodSearch.getGroups().size();
+            if (pluginCount == 0 && groupCount == 1 && mPaymentMethodSearch.getGroups().get(0).isGroup()) {
                 return false;
             }
         }
 
-        return itemCount + pluginCount == 1;
+        if (mPaymentMethodSearch != null && mPaymentMethodSearch.hasCustomSearchItems()) {
+            customCount = mPaymentMethodSearch.getCustomSearchItems().size();
+        }
+
+        return groupCount + customCount + pluginCount == 1;
     }
 
     private PaymentResult createPaymentResult(final Payment payment, final PaymentData paymentData) {

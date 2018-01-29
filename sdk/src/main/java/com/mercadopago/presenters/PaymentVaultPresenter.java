@@ -357,6 +357,19 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
 
         getView().showPluginOptions(pluginUpItems);
 
+        if (mPaymentMethodSearch.hasCustomSearchItems()) {
+            List<CustomSearchItem> shownCustomItems;
+
+            if (mShowAllSavedCardsEnabled) {
+                shownCustomItems = mPaymentMethodSearch.getCustomSearchItems();
+            } else {
+                shownCustomItems = getLimitedCustomOptions(mPaymentMethodSearch.getCustomSearchItems(), mMaxSavedCards);
+            }
+
+
+            getView().showCustomOptions(shownCustomItems, getCustomOptionCallback());
+        }
+
         if (searchItemsAvailable()) {
             getView().showSearchItems(mPaymentMethodSearch.getGroups(), getPaymentMethodSearchItemSelectionCallback());
         }
@@ -463,16 +476,21 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     public boolean isOnlyOneItemAvailable() {
         final CheckoutStore store = CheckoutStore.getInstance();
 
-        int itemCount = 0;
+        int groupCount = 0;
+        int customCount = 0;
         int pluginCount = 0;
 
         if (mPaymentMethodSearch != null && mPaymentMethodSearch.hasSearchItems()) {
-            itemCount = mPaymentMethodSearch.getGroups().size();
+            groupCount = mPaymentMethodSearch.getGroups().size();
+        }
+
+        if (mPaymentMethodSearch != null && mPaymentMethodSearch.hasCustomSearchItems()) {
+            customCount = mPaymentMethodSearch.getCustomSearchItems().size();
         }
 
         pluginCount = store.getPaymenthMethodPluginCount();
 
-        return itemCount + pluginCount == 1;
+        return groupCount + customCount + pluginCount == 1;
     }
 
     private boolean searchItemsAvailable() {

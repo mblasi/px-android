@@ -31,6 +31,7 @@ import com.mercadopago.plugins.SamplePaymentMethodPlugin;
 import com.mercadopago.plugins.SamplePaymentProcessor;
 import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
+import com.mercadopago.preferences.ServicePreference;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 
@@ -97,11 +98,11 @@ public class CheckoutExampleActivity extends AppCompatActivity {
 
     private void startMercadoPagoCheckout() {
 
-        final PaymentResultScreenPreference paymentResultScreenPreference =
-                new PaymentResultScreenPreference.Builder()
-                        .disableRejectedLabelText()
-                        .setBadgeApproved(Badge.PENDING_BADGE_IMAGE)
-                        .build();
+        startOnlyAccountMoneyPlugin();
+//        startBianryCheckoutWithCustomCCs();
+    }
+
+    private void startBianryCheckoutWithCustomCCs() {
 
         final List<String> excludedTypes = new ArrayList<>();
         excludedTypes.add(PaymentTypes.ATM);
@@ -109,20 +110,27 @@ public class CheckoutExampleActivity extends AppCompatActivity {
         excludedTypes.add(PaymentTypes.DEBIT_CARD);
         excludedTypes.add(PaymentTypes.DIGITAL_CURRENCY);
         excludedTypes.add(PaymentTypes.TICKET);
-        excludedTypes.add(PaymentTypes.TICKET);
 
         final CheckoutPreference.Builder checkoutPreferenceBuilder = new CheckoutPreference.Builder()
                 .addExcludedPaymentTypes(excludedTypes)
                 .setSite(Sites.ARGENTINA)
-                .enableAccountMoney()
+                .setPayerAccessToken("TEST-3284996600758722-031613-bd9e7923837b50bd493d18728eb971f0__LC_LD__-243966003")
                 .addItem(new Item("Sarasa", new BigDecimal(10)));
+
+        final Map<String, String> additionalInfo = new HashMap<>();
+        additionalInfo.put("access_token", "TEST-3284996600758722-031613-bd9e7923837b50bd493d18728eb971f0__LC_LD__-243966003");
+
+        final ServicePreference servicePreference = new ServicePreference.Builder()
+                .setGetCustomerURL("https://api.mercadopago.com", "v1/customers/261226393-BbrrfJaeqLhEmE", additionalInfo)
+                .build();
 
         final Map<String, Object> defaultData = new HashMap<>();
         defaultData.put("amount", 120f);
 
         final MercadoPagoCheckout.Builder builder = new MercadoPagoCheckout.Builder()
                 .setActivity(this)
-                .setPublicKey(mPublicKey)
+                .setServicePreference(servicePreference)
+                .setPublicKey("TEST-ad365c37-8012-4014-84f5-6c895b3f8e0a")
                 .setCheckoutPreference(checkoutPreferenceBuilder.build())
                 .addPaymentMethodPlugin(
                         new SamplePaymentMethodPlugin(),
@@ -135,6 +143,88 @@ public class CheckoutExampleActivity extends AppCompatActivity {
                         data.put("user", "Nico");
                     }
                 });
+
+        if (mHooksEnabled.isChecked()) {
+            builder.setCheckoutHooks(new ExampleHooks());
+        }
+
+        builder.startForPayment();
+    }
+
+    private void startCCOnlyWithPreloadedCCs() {
+
+        final List<String> excludedTypes = new ArrayList<>();
+        excludedTypes.add(PaymentTypes.ATM);
+        excludedTypes.add(PaymentTypes.BANK_TRANSFER);
+        excludedTypes.add(PaymentTypes.DIGITAL_CURRENCY);
+        excludedTypes.add(PaymentTypes.TICKET);
+
+        final CheckoutPreference.Builder checkoutPreferenceBuilder = new CheckoutPreference.Builder()
+                .addExcludedPaymentTypes(excludedTypes)
+                .setSite(Sites.ARGENTINA)
+                .setPayerAccessToken("TEST-3284996600758722-031613-bd9e7923837b50bd493d18728eb971f0__LC_LD__-243966003")
+                .addItem(new Item("Sarasa", new BigDecimal(10)));
+
+        final Map<String, String> additionalInfo = new HashMap<>();
+        additionalInfo.put("access_token", "TEST-3284996600758722-031613-bd9e7923837b50bd493d18728eb971f0__LC_LD__-243966003");
+
+        final ServicePreference servicePreference = new ServicePreference.Builder()
+                .setGetCustomerURL("https://api.mercadopago.com", "v1/customers/261226393-BbrrfJaeqLhEmE", additionalInfo)
+                .build();
+
+        final Map<String, Object> defaultData = new HashMap<>();
+        defaultData.put("amount", 120f);
+
+        final MercadoPagoCheckout.Builder builder = new MercadoPagoCheckout.Builder()
+                .setActivity(this)
+                .setServicePreference(servicePreference)
+                .setPublicKey("TEST-ad365c37-8012-4014-84f5-6c895b3f8e0a")
+                .setCheckoutPreference(checkoutPreferenceBuilder.build())
+                .setPaymentProcessor(new MainPaymentProcessor());
+
+        if (mHooksEnabled.isChecked()) {
+            builder.setCheckoutHooks(new ExampleHooks());
+        }
+
+        builder.startForPayment();
+    }
+
+    private void startOnlyAccountMoneyPlugin() {
+
+        final List<String> excludedTypes = new ArrayList<>();
+        excludedTypes.add(PaymentTypes.ATM);
+        excludedTypes.add(PaymentTypes.BANK_TRANSFER);
+        excludedTypes.add(PaymentTypes.DIGITAL_CURRENCY);
+        excludedTypes.add(PaymentTypes.CREDIT_CARD);
+        excludedTypes.add(PaymentTypes.DEBIT_CARD);
+        excludedTypes.add(PaymentTypes.TICKET);
+
+        final CheckoutPreference.Builder checkoutPreferenceBuilder = new CheckoutPreference.Builder()
+                .addExcludedPaymentTypes(excludedTypes)
+                .setSite(Sites.ARGENTINA)
+                .setPayerAccessToken("TEST-3284996600758722-031613-bd9e7923837b50bd493d18728eb971f0__LC_LD__-243966003")
+                .addItem(new Item("Sarasa", new BigDecimal(10)));
+
+        final Map<String, String> additionalInfo = new HashMap<>();
+        additionalInfo.put("access_token", "TEST-3284996600758722-031613-bd9e7923837b50bd493d18728eb971f0__LC_LD__-243966003");
+
+        final ServicePreference servicePreference = new ServicePreference.Builder()
+                .setGetCustomerURL("https://api.mercadopago.com", "v1/customers/261226393-BbrrfJaeqLhEmE", additionalInfo)
+                .build();
+
+        final Map<String, Object> defaultData = new HashMap<>();
+        defaultData.put("amount", 120f);
+
+        final MercadoPagoCheckout.Builder builder = new MercadoPagoCheckout.Builder()
+                .setActivity(this)
+                .setServicePreference(servicePreference)
+                .setPublicKey("TEST-ad365c37-8012-4014-84f5-6c895b3f8e0a")
+                .setCheckoutPreference(checkoutPreferenceBuilder.build())
+                .setPaymentProcessor(new MainPaymentProcessor())
+                .addPaymentMethodPlugin(
+                    new SamplePaymentMethodPlugin(),
+                    new SamplePaymentProcessor()
+                );
 
         if (mHooksEnabled.isChecked()) {
             builder.setCheckoutHooks(new ExampleHooks());
