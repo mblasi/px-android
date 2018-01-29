@@ -753,14 +753,16 @@ public class CheckoutPresenter extends MvpPresenter<CheckoutView, CheckoutProvid
 
     public boolean isUniquePaymentMethod() {
         final CheckoutStore store = CheckoutStore.getInstance();
+        int pluginCount = store.getPaymenthMethodPluginCount();
         int itemCount = 0;
-        int pluginCount = 0;
 
         if (mPaymentMethodSearch != null && mPaymentMethodSearch.hasSearchItems()) {
             itemCount = mPaymentMethodSearch.getGroups().size();
+            if (pluginCount == 0 && itemCount == 1 && mPaymentMethodSearch.getGroups().get(0).isGroup()) {
+                return false;
+            }
         }
 
-        pluginCount = store.getPaymenthMethodPluginCount();
         return itemCount + pluginCount == 1;
     }
 

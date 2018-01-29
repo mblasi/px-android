@@ -27,6 +27,8 @@ import com.mercadopago.model.Payment;
 import com.mercadopago.paymentresult.model.Badge;
 import com.mercadopago.plugins.DataInitializationTask;
 import com.mercadopago.plugins.MainPaymentProcessor;
+import com.mercadopago.plugins.SamplePaymentMethodPlugin;
+import com.mercadopago.plugins.SamplePaymentProcessor;
 import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.util.JsonUtil;
@@ -104,9 +106,7 @@ public class CheckoutExampleActivity extends AppCompatActivity {
         final List<String> excludedTypes = new ArrayList<>();
         excludedTypes.add(PaymentTypes.ATM);
         excludedTypes.add(PaymentTypes.BANK_TRANSFER);
-//        excludedTypes.add(PaymentTypes.ACCOUNT_MONEY);
-//        excludedTypes.add(PaymentTypes.CREDIT_CARD);
-//        excludedTypes.add(PaymentTypes.DEBIT_CARD);
+        excludedTypes.add(PaymentTypes.DEBIT_CARD);
         excludedTypes.add(PaymentTypes.DIGITAL_CURRENCY);
         excludedTypes.add(PaymentTypes.TICKET);
         excludedTypes.add(PaymentTypes.TICKET);
@@ -124,10 +124,10 @@ public class CheckoutExampleActivity extends AppCompatActivity {
                 .setActivity(this)
                 .setPublicKey(mPublicKey)
                 .setCheckoutPreference(checkoutPreferenceBuilder.build())
-//                .addPaymentMethodPlugin(
-//                        new SamplePaymentMethodPlugin(),
-//                        new SamplePaymentProcessor()
-//                )
+                .addPaymentMethodPlugin(
+                        new SamplePaymentMethodPlugin(),
+                        new SamplePaymentProcessor()
+                )
                 .setPaymentProcessor(new MainPaymentProcessor())
                 .setDataInitializationTask(new DataInitializationTask(defaultData) {
                     @Override
