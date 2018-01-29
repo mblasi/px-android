@@ -318,18 +318,6 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
         }
     }
 
-    /**
-     *
-     * @deprecated Account money is a plugin now.
-     */
-//    @Deprecated
-//    public boolean isOnlyAccountMoneyEnabled() {
-//        return mPaymentMethodSearch.hasCustomSearchItems()
-//                && mPaymentMethodSearch.getCustomSearchItems().size() == 1
-//                && mPaymentMethodSearch.getCustomSearchItems().get(0).getId().equals(ACCOUNT_MONEY_ID)
-//                && (mPaymentMethodSearch.getGroups() == null || mPaymentMethodSearch.getGroups().isEmpty());
-//    }
-
     private void selectItem(PaymentMethodSearchItem item) {
         selectItem(item, false);
     }

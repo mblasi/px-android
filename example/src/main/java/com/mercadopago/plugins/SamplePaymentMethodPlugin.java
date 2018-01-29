@@ -37,11 +37,6 @@ public class SamplePaymentMethodPlugin extends PaymentMethodPlugin {
     }
 
     @Override
-    public boolean isConfigurationComponentEnabled(@NonNull final Map<String, Object> data) {
-        return false;
-    }
-
-    @Override
     public PluginComponent createConfigurationComponent(@NonNull final PluginComponent.Props props,
                                                         @NonNull final Context context) {
         return new SamplePaymentMethod(
