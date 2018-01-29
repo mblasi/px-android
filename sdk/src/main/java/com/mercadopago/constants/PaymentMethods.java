@@ -6,7 +6,8 @@ package com.mercadopago.constants;
 public class PaymentMethods {
 
     /**
-     * @deprecated Esta constante ACCOUNT_MONEY se va a eliminar, pertenece al plugin de account money.
+     * @deprecated ACCOUNT_MONEY is deprecated, will be removed in future releases as part
+     * of payment methods plugins implementation.
      */
     @Deprecated
     public static final String ACCOUNT_MONEY = "account_money";
