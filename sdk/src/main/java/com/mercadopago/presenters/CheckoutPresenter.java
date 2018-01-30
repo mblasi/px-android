@@ -277,7 +277,15 @@ public class CheckoutPresenter extends MvpPresenter<CheckoutView, CheckoutProvid
     private void retrievePaymentMethodSearch() {
         Payer payer = new Payer();
         payer.setAccessToken(mCheckoutPreference.getPayer().getAccessToken());
-        getResourcesProvider().getPaymentMethodSearch(getTransactionAmount(), mCheckoutPreference.getExcludedPaymentTypes(), mCheckoutPreference.getExcludedPaymentMethods(), payer, mCheckoutPreference.getSite(), onPaymentMethodSearchRetrieved(), onCustomerRetrieved());
+        getResourcesProvider().getPaymentMethodSearch(
+            getTransactionAmount(),
+            mCheckoutPreference.getExcludedPaymentTypes(),
+            mCheckoutPreference.getExcludedPaymentMethods(),
+            payer,
+            mCheckoutPreference.getSite(),
+            onPaymentMethodSearchRetrieved(),
+            onCustomerRetrieved()
+        );
     }
 
     public BigDecimal getTransactionAmount() {

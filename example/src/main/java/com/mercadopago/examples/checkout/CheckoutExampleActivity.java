@@ -24,13 +24,11 @@ import com.mercadopago.exceptions.MercadoPagoError;
 import com.mercadopago.hooks.ExampleHooks;
 import com.mercadopago.model.Item;
 import com.mercadopago.model.Payment;
-import com.mercadopago.paymentresult.model.Badge;
 import com.mercadopago.plugins.DataInitializationTask;
 import com.mercadopago.plugins.MainPaymentProcessor;
 import com.mercadopago.plugins.SamplePaymentMethodPlugin;
 import com.mercadopago.plugins.SamplePaymentProcessor;
 import com.mercadopago.preferences.CheckoutPreference;
-import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.preferences.ServicePreference;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
@@ -97,9 +95,7 @@ public class CheckoutExampleActivity extends AppCompatActivity {
     }
 
     private void startMercadoPagoCheckout() {
-
-        startOnlyAccountMoneyPlugin();
-//        startBianryCheckoutWithCustomCCs();
+        startCCOnlyWithPreloadedCCs();
     }
 
     private void startBianryCheckoutWithCustomCCs() {
@@ -157,6 +153,7 @@ public class CheckoutExampleActivity extends AppCompatActivity {
         excludedTypes.add(PaymentTypes.ATM);
         excludedTypes.add(PaymentTypes.BANK_TRANSFER);
         excludedTypes.add(PaymentTypes.DIGITAL_CURRENCY);
+//        excludedTypes.add(PaymentTypes.CREDIT_CARD);
         excludedTypes.add(PaymentTypes.TICKET);
 
         final CheckoutPreference.Builder checkoutPreferenceBuilder = new CheckoutPreference.Builder()
@@ -177,7 +174,7 @@ public class CheckoutExampleActivity extends AppCompatActivity {
 
         final MercadoPagoCheckout.Builder builder = new MercadoPagoCheckout.Builder()
                 .setActivity(this)
-                .setServicePreference(servicePreference)
+//                .setServicePreference(servicePreference)
                 .setPublicKey("TEST-ad365c37-8012-4014-84f5-6c895b3f8e0a")
                 .setCheckoutPreference(checkoutPreferenceBuilder.build())
                 .setPaymentProcessor(new MainPaymentProcessor());

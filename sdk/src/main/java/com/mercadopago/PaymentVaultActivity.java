@@ -382,9 +382,9 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
             viewController.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CheckoutStore.getInstance().reset();
 
                     if (PAYMENT_METHOD.equals(item.getType())) {
+                        CheckoutStore.getInstance().reset();
                         store.setSelectedPaymentMethodId(item.getId());
                     }
 

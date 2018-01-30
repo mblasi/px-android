@@ -308,8 +308,12 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
             } else if (mSelectAutomatically && isOnlyOneItemAvailable()) {
                 if (CheckoutStore.getInstance().hasEnabledPaymenthMethodPlugin()) {
                     selectPluginPaymentMethod(CheckoutStore.getInstance().getFirstEnabledPluginId());
-                } else {
+                } else if (mPaymentMethodSearch.getGroups() != null && !mPaymentMethodSearch.getGroups().isEmpty()) {
                     selectItem(mPaymentMethodSearch.getGroups().get(0), true);
+                } else if (mPaymentMethodSearch.getCustomSearchItems() != null && !mPaymentMethodSearch.getCustomSearchItems().isEmpty()) {
+                    if (PaymentTypes.CREDIT_CARD.equals(mPaymentMethodSearch.getCustomSearchItems().get(0).getType())) {
+                        selectCard(mPaymentMethodSearch.getCustomSearchItems().get(0));
+                    }
                 }
             } else {
                 showAvailableOptions();
@@ -389,13 +393,17 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     private OnSelectedCallback<CustomSearchItem> getCustomOptionCallback() {
         return new OnSelectedCallback<CustomSearchItem>() {
             @Override
-            public void onSelected(CustomSearchItem searchItem) {
-                if (MercadoPagoUtil.isCard(searchItem.getType())) {
-                    Card card = getCardWithPaymentMethod(searchItem);
-                    selectCard(card);
-                }
+            public void onSelected(final CustomSearchItem searchItem) {
+                selectCard(searchItem);
             }
         };
+    }
+
+    private void selectCard(final CustomSearchItem item) {
+        if (MercadoPagoUtil.isCard(item.getType())) {
+            Card card = getCardWithPaymentMethod(item);
+            selectCard(card);
+        }
     }
 
     public void selectPluginPaymentMethod(final String id) {
