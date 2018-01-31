@@ -52,7 +52,6 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".PaymentVaultActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.MercadoPagoTheme.NoActionBar" />
         <activity
             android:name=".InstructionsActivity"
@@ -108,11 +107,9 @@
             android:theme="@style/Theme.MercadoPagoTheme.Modal" />
         <activity
             android:name=".ReviewAndConfirmActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.MercadoPagoTheme.NoActionBar" />
         <activity
             android:name=".ReviewPaymentMethodsActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.MercadoPagoTheme.NoActionBar" />
         <activity
             android:name=".VaultActivity"
