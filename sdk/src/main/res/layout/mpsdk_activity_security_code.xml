@@ -101,7 +101,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:imeOptions="actionNext"
+                            android:imeOptions="actionNext|flagNoExtractUi"
                             android:inputType="number"
                             android:maxLength="4"
                             android:singleLine="true"

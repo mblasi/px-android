@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mercadopago.constants.Sites;
 import com.mercadopago.core.MercadoPagoCheckout;
 import com.mercadopago.customviews.MPButton;
 import com.mercadopago.examples.R;
@@ -20,6 +21,7 @@ import com.mercadopago.examples.utils.ColorPickerDialog;
 import com.mercadopago.examples.utils.ExamplesUtils;
 import com.mercadopago.exceptions.MercadoPagoError;
 import com.mercadopago.hooks.ExampleHooks;
+import com.mercadopago.model.Item;
 import com.mercadopago.model.Payment;
 import com.mercadopago.plugins.DataInitializationTask;
 import com.mercadopago.plugins.MainPaymentProcessor;
@@ -29,6 +31,7 @@ import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,13 +92,20 @@ public class CheckoutExampleActivity extends AppCompatActivity {
 
     private void startMercadoPagoCheckout() {
 
+        CheckoutPreference checkoutPreference = new CheckoutPreference
+                .Builder()
+                .setSite(Sites.ARGENTINA)
+                .addItem(new Item("description", 1, new BigDecimal(1000)))
+                .setPayerAccessToken("TEST-6270211732691649-021716-3251fde8cfd235124cbc5c78836a3b44__LC_LA__-159840830")
+                .build();
+
         final Map<String, Object> defaultData = new HashMap<>();
         defaultData.put("amount", 120f);
 
         final MercadoPagoCheckout.Builder builder = new MercadoPagoCheckout.Builder()
                 .setActivity(this)
                 .setPublicKey(mPublicKey)
-                .setCheckoutPreference(getCheckoutPreference())
+                .setCheckoutPreference(checkoutPreference)
                 .addPaymentMethodPlugin(
                         new SamplePaymentMethodPlugin(),
                         new SamplePaymentProcessor()
