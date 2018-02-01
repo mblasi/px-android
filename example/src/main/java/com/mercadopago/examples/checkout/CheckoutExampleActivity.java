@@ -13,8 +13,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mercadopago.constants.PaymentTypes;
-import com.mercadopago.constants.Sites;
 import com.mercadopago.core.MercadoPagoCheckout;
 import com.mercadopago.customviews.MPButton;
 import com.mercadopago.examples.R;
@@ -22,20 +20,15 @@ import com.mercadopago.examples.utils.ColorPickerDialog;
 import com.mercadopago.examples.utils.ExamplesUtils;
 import com.mercadopago.exceptions.MercadoPagoError;
 import com.mercadopago.hooks.ExampleHooks;
-import com.mercadopago.model.Item;
 import com.mercadopago.model.Payment;
-import com.mercadopago.paymentresult.model.Badge;
 import com.mercadopago.plugins.DataInitializationTask;
 import com.mercadopago.plugins.MainPaymentProcessor;
 import com.mercadopago.plugins.SamplePaymentMethodPlugin;
 import com.mercadopago.plugins.SamplePaymentProcessor;
 import com.mercadopago.preferences.CheckoutPreference;
-import com.mercadopago.preferences.PaymentResultScreenPreference;
-import com.mercadopago.preferences.ServicePreference;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -96,42 +89,13 @@ public class CheckoutExampleActivity extends AppCompatActivity {
 
     private void startMercadoPagoCheckout() {
 
-        final PaymentResultScreenPreference paymentResultScreenPreference =
-                new PaymentResultScreenPreference.Builder()
-                        .disableRejectedLabelText()
-                        .setBadgeApproved(Badge.PENDING_BADGE_IMAGE)
-                        .build();
-
-        final Map<String, String> additionalInfo = new HashMap<>();
-        additionalInfo.put("access_token", "TEST-3284996600758722-031613-bd9e7923837b50bd493d18728eb971f0__LC_LD__-243966003");
-
-        final ServicePreference servicePreference = new ServicePreference.Builder()
-                .setGetCustomerURL(
-                        "https://api.mercadopago.com",
-                        "v1/customers/261226393-BbrrfJaeqLhEmE",
-                        additionalInfo)
-                .build();
-
-        final CheckoutPreference checkoutPreference = new CheckoutPreference.Builder()
-                .setSite(Sites.ARGENTINA)
-                .addExcludedPaymentType(PaymentTypes.ATM)
-                .addExcludedPaymentType(PaymentTypes.TICKET)
-                .addExcludedPaymentType(PaymentTypes.PREPAID_CARD)
-                .addExcludedPaymentType(PaymentTypes.BANK_TRANSFER)
-                .addExcludedPaymentType(PaymentTypes.DIGITAL_CURRENCY)
-                .setPayerAccessToken("TEST-3284996600758722-031613-bd9e7923837b50bd493d18728eb971f0__LC_LD__-243966003")
-                .addItem(new Item("Ferrai roja", new BigDecimal(1000)))
-                .build();
-
         final Map<String, Object> defaultData = new HashMap<>();
         defaultData.put("amount", 120f);
 
         final MercadoPagoCheckout.Builder builder = new MercadoPagoCheckout.Builder()
                 .setActivity(this)
                 .setPublicKey(mPublicKey)
-                .setPaymentResultScreenPreference(paymentResultScreenPreference)
-                .setServicePreference(servicePreference)
-                .setCheckoutPreference(checkoutPreference)
+                .setCheckoutPreference(getCheckoutPreference())
                 .addPaymentMethodPlugin(
                         new SamplePaymentMethodPlugin(),
                         new SamplePaymentProcessor()
