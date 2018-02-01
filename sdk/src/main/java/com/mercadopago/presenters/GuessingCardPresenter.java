@@ -1,5 +1,6 @@
 package com.mercadopago.presenters;
 
+import android.support.annotation.UiThread;
 import android.text.TextUtils;
 
 import com.mercadopago.callbacks.FailureRecovery;
@@ -39,7 +40,9 @@ import com.mercadopago.util.TextUtil;
 import com.mercadopago.views.GuessingCardActivityView;
 
 import java.math.BigDecimal;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +54,9 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
 
     public static final int CARD_DEFAULT_SECURITY_CODE_LENGTH = 4;
     public static final int CARD_DEFAULT_IDENTIFICATION_NUMBER_LENGTH = 12;
+
+    // hacky, we have no RX to make this tidy
+    private Deque<Runnable> viewActions = new ArrayDeque<>();
 
     //Card controller
     private PaymentMethodGuessingController mPaymentMethodGuessingController;
@@ -126,6 +132,25 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
         }
     }
 
+    @UiThread
+    private void performOnView(final Runnable r) {
+        if (isViewAttached()) {
+            r.run(); // view is present, run on same thread
+        } else {
+            viewActions.add(r);
+        }
+    }
+
+    @Override
+    public void attachView(GuessingCardActivityView view) {
+        super.attachView(view);
+
+        // perform all pending actions in order
+        while (!viewActions.isEmpty()) {
+            viewActions.remove().run();
+        }
+    }
+
     private boolean isTimerEnabled() {
         return CheckoutTimer.getInstance().isTimerEnabled();
     }
@@ -138,9 +163,20 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
 
     private void onValidStart() {
         initializeCardToken();
-        getView().onValidStart();
+        performOnView(new Runnable() {
+            @Override
+            public void run() {
+                getView().onValidStart();
+            }
+        });
+
         if (isTimerEnabled()) {
-            getView().initializeTimer();
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().initializeTimer();
+                }
+            });
         } else {
             resolveBankDeals();
         }
@@ -187,8 +223,13 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
 
     private void fillRecoveryFields() {
         if (recoverWithCardholder()) {
-            getView().setCardholderName(mPaymentRecovery.getToken().getCardHolder().getName());
-            getView().setIdentificationNumber(mPaymentRecovery.getToken().getCardHolder().getIdentification().getNumber());
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().setCardholderName(mPaymentRecovery.getToken().getCardHolder().getName());
+                    getView().setIdentificationNumber(mPaymentRecovery.getToken().getCardHolder().getIdentification().getNumber());
+                }
+            });
         }
     }
 
@@ -296,7 +337,12 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
     public void setIdentificationNumberRequired(boolean identificationNumberRequired) {
         this.mIdentificationNumberRequired = identificationNumberRequired;
         if (identificationNumberRequired) {
-            getView().showIdentificationInput();
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().showIdentificationInput();
+                }
+            });
         }
     }
 
@@ -350,23 +396,33 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
 
     private void startGuessingForm() {
         initializeGuessingCardNumberController();
-        getView().initializeTitle();
-        getView().setCardNumberListeners(mPaymentMethodGuessingController);
-        getView().setCardholderNameListeners();
-        getView().setExpiryDateListeners();
-        getView().setSecurityCodeListeners();
-        getView().setIdentificationTypeListeners();
-        getView().setIdentificationNumberListeners();
-        getView().setNextButtonListeners();
-        getView().setBackButtonListeners();
-        getView().setErrorContainerListener();
-        getView().setContainerAnimationListeners();
+        performOnView(new Runnable() {
+              @Override
+              public void run() {
+                  getView().initializeTitle();
+                  getView().setCardNumberListeners(mPaymentMethodGuessingController);
+                  getView().setCardholderNameListeners();
+                  getView().setExpiryDateListeners();
+                  getView().setSecurityCodeListeners();
+                  getView().setIdentificationTypeListeners();
+                  getView().setIdentificationNumberListeners();
+                  getView().setNextButtonListeners();
+                  getView().setBackButtonListeners();
+                  getView().setErrorContainerListener();
+                  getView().setContainerAnimationListeners();
+              }
+          });
         checkPaymentMethodsSupported(false);
     }
 
-    private void checkPaymentMethodsSupported(boolean withAnimation) {
+    private void checkPaymentMethodsSupported(final boolean withAnimation) {
         if (onlyOnePaymentMethodSupported()) {
-            getView().setExclusionWithOneElementInfoView(getAllSupportedPaymentMethods().get(0), withAnimation);
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().setExclusionWithOneElementInfoView(getAllSupportedPaymentMethods().get(0), withAnimation);
+                }
+            });
         }
     }
 
@@ -376,11 +432,16 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
     }
 
     private void setInvalidCardMessage() {
-        if (onlyOnePaymentMethodSupported()) {
-            getView().setInvalidCardOnePaymentMethodErrorView();
-        } else {
-            getView().setInvalidCardMultipleErrorView();
-        }
+        performOnView(new Runnable() {
+            @Override
+            public void run() {
+                if (onlyOnePaymentMethodSupported()) {
+                    getView().setInvalidCardOnePaymentMethodErrorView();
+                } else {
+                    getView().setInvalidCardMultipleErrorView();
+                }
+            }
+        });
     }
 
     public String getPaymentTypeId() {
@@ -422,12 +483,22 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
     }
 
     public void initializeDiscountActivity() {
-        getView().startDiscountActivity(mTransactionAmount);
+        performOnView(new Runnable() {
+            @Override
+            public void run() {
+                getView().startDiscountActivity(mTransactionAmount);
+            }
+        });
     }
 
     private void initializeDiscountRow() {
         if (CheckoutStore.getInstance().getPaymentMethodPluginList().isEmpty()) {
-            getView().showDiscountRow(mTransactionAmount);
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().showDiscountRow(mTransactionAmount);
+                }
+            });
         }
     }
 
@@ -561,7 +632,12 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
         if (mPaymentMethodList == null || mPaymentMethodList.isEmpty()) {
             getPaymentMethodsAsync();
         } else {
-            getView().showInputContainer();
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().showInputContainer();
+                }
+            });
             startGuessingForm();
         }
     }
@@ -570,7 +646,12 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
         if (mShowBankDeals) {
             getBankDealsAsync();
         } else {
-            getView().hideBankDeals();
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().hideBankDeals();
+                }
+            });
         }
     }
 
@@ -597,7 +678,12 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
     }
 
     private void resolvePaymentMethodsAsync(List<PaymentMethod> paymentMethods) {
-        getView().showInputContainer();
+        performOnView(new Runnable() {
+            @Override
+            public void run() {
+                getView().showInputContainer();
+            }
+        });
         mPaymentMethodList = paymentMethods;
         startGuessingForm();
     }
@@ -605,7 +691,12 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
     public void resolvePaymentMethodListSet(List<PaymentMethod> paymentMethodList, String bin) {
         saveBin(bin);
         if (paymentMethodList.isEmpty()) {
-            getView().setCardNumberInputMaxLength(MercadoPagoUtil.BIN_LENGTH);
+            performOnView(new Runnable() {
+                  @Override
+                  public void run() {
+                      getView().setCardNumberInputMaxLength(MercadoPagoUtil.BIN_LENGTH);
+                  }
+              });
             setInvalidCardMessage();
         } else if (paymentMethodList.size() == 1) {
             onPaymentMethodSet(paymentMethodList.get(0));
@@ -618,35 +709,45 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
         }
     }
 
-    public void onPaymentMethodSet(PaymentMethod paymentMethod) {
-        if (mPaymentMethod == null) {
-            setPaymentMethod(paymentMethod);
-            configureWithSettings();
-            loadIdentificationTypes();
-            getView().setPaymentMethod(paymentMethod);
-        }
-        getView().resolvePaymentMethodSet(paymentMethod);
+    public void onPaymentMethodSet(final PaymentMethod paymentMethod) {
+        performOnView(new Runnable() {
+            @Override
+            public void run() {
+                if (mPaymentMethod == null) {
+                    setPaymentMethod(paymentMethod);
+                    configureWithSettings();
+                    loadIdentificationTypes();
+                    getView().setPaymentMethod(paymentMethod);
+                }
+                getView().resolvePaymentMethodSet(paymentMethod);
+            }
+        });
     }
 
     public void resolvePaymentMethodCleared() {
-        getView().clearErrorView();
-        getView().hideRedErrorContainerView(true);
-        getView().restoreBlackInfoContainerView();
-        getView().clearCardNumberInputLength();
+        performOnView(new Runnable() {
+            @Override
+            public void run() {
+                getView().clearErrorView();
+                getView().hideRedErrorContainerView(true);
+                getView().restoreBlackInfoContainerView();
+                getView().clearCardNumberInputLength();
 
-        if (!isPaymentMethodResolved()) {
-            return;
-        }
-        clearSpaceErasableSettings();
-        getView().clearCardNumberEditTextMask();
-        setPaymentMethod(null);
-        getView().clearSecurityCodeEditText();
-        initializeCardToken();
-        setIdentificationNumberRequired(true);
-        setSecurityCodeRequired(true);
-        disablePaymentTypeSelection();
-        getView().checkClearCardView();
-        checkPaymentMethodsSupported(true);
+                if (!isPaymentMethodResolved()) {
+                    return;
+                }
+                clearSpaceErasableSettings();
+                getView().clearCardNumberEditTextMask();
+                setPaymentMethod(null);
+                getView().clearSecurityCodeEditText();
+                initializeCardToken();
+                setIdentificationNumberRequired(true);
+                setSecurityCodeRequired(true);
+                disablePaymentTypeSelection();
+                getView().checkClearCardView();
+                checkPaymentMethodsSupported(true);
+            }
+        });
     }
 
     public void setSelectedPaymentType(PaymentType paymentType) {
@@ -672,34 +773,39 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
     public void configureWithSettings() {
         if (mPaymentMethod == null) return;
 
-        mIsSecurityCodeRequired = mPaymentMethod.isSecurityCodeRequired(mBin);
-        if (!mIsSecurityCodeRequired) {
-            getView().hideSecurityCodeInput();
-        }
-        Setting setting = PaymentMethodGuessingController.getSettingByPaymentMethodAndBin(mPaymentMethod, mBin);
-        if (setting == null) {
-            getView().showError(new MercadoPagoError(getResourcesProvider().getSettingNotFoundForBinErrorMessage(), false), "");
-        } else {
-            int cardNumberLength = getCardNumberLength();
-            int spaces = FrontCardView.CARD_DEFAULT_AMOUNT_SPACES;
+        performOnView(new Runnable() {
+            @Override
+            public void run() {
+                mIsSecurityCodeRequired = mPaymentMethod.isSecurityCodeRequired(mBin);
+                if (!mIsSecurityCodeRequired) {
+                    getView().hideSecurityCodeInput();
+                }
+                Setting setting = PaymentMethodGuessingController.getSettingByPaymentMethodAndBin(mPaymentMethod, mBin);
+                if (setting == null) {
+                    getView().showError(new MercadoPagoError(getResourcesProvider().getSettingNotFoundForBinErrorMessage(), false), "");
+                } else {
+                    int cardNumberLength = getCardNumberLength();
+                    int spaces = FrontCardView.CARD_DEFAULT_AMOUNT_SPACES;
 
-            if (cardNumberLength == FrontCardView.CARD_NUMBER_DINERS_LENGTH || cardNumberLength == FrontCardView.CARD_NUMBER_AMEX_LENGTH || cardNumberLength == FrontCardView.CARD_NUMBER_MAESTRO_SETTING_1_LENGTH) {
-                spaces = FrontCardView.CARD_AMEX_DINERS_AMOUNT_SPACES;
-            } else if (cardNumberLength == FrontCardView.CARD_NUMBER_MAESTRO_SETTING_2_LENGTH) {
-                spaces = FrontCardView.CARD_NUMBER_MAESTRO_SETTING_2_AMOUNT_SPACES;
+                    if (cardNumberLength == FrontCardView.CARD_NUMBER_DINERS_LENGTH || cardNumberLength == FrontCardView.CARD_NUMBER_AMEX_LENGTH || cardNumberLength == FrontCardView.CARD_NUMBER_MAESTRO_SETTING_1_LENGTH) {
+                        spaces = FrontCardView.CARD_AMEX_DINERS_AMOUNT_SPACES;
+                    } else if (cardNumberLength == FrontCardView.CARD_NUMBER_MAESTRO_SETTING_2_LENGTH) {
+                        spaces = FrontCardView.CARD_NUMBER_MAESTRO_SETTING_2_AMOUNT_SPACES;
+                    }
+                    getView().setCardNumberInputMaxLength(cardNumberLength + spaces);
+                    SecurityCode securityCode = setting.getSecurityCode();
+                    if (securityCode == null) {
+                        mSecurityCodeLength = CARD_DEFAULT_SECURITY_CODE_LENGTH;
+                        mSecurityCodeLocation = CardView.CARD_SIDE_BACK;
+                    } else {
+                        mSecurityCodeLength = securityCode.getLength();
+                        mSecurityCodeLocation = securityCode.getCardLocation();
+                    }
+                    getView().setSecurityCodeInputMaxLength(mSecurityCodeLength);
+                    getView().setSecurityCodeViewLocation(mSecurityCodeLocation);
+                }
             }
-            getView().setCardNumberInputMaxLength(cardNumberLength + spaces);
-            SecurityCode securityCode = setting.getSecurityCode();
-            if (securityCode == null) {
-                mSecurityCodeLength = CARD_DEFAULT_SECURITY_CODE_LENGTH;
-                mSecurityCodeLocation = CardView.CARD_SIDE_BACK;
-            } else {
-                mSecurityCodeLength = securityCode.getLength();
-                mSecurityCodeLocation = securityCode.getCardLocation();
-            }
-            getView().setSecurityCodeInputMaxLength(mSecurityCodeLength);
-            getView().setSecurityCodeViewLocation(mSecurityCodeLocation);
-        }
+        });
     }
 
     public void loadIdentificationTypes() {
@@ -710,7 +816,12 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
         if (mIdentificationNumberRequired) {
             getIdentificationTypesAsync();
         } else {
-            getView().hideIdentificationInput();
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().hideIdentificationInput();
+                }
+            });
         }
     }
 
@@ -736,14 +847,19 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
         });
     }
 
-    private void resolveIdentificationTypes(List<IdentificationType> identificationTypes) {
-        if (identificationTypes.isEmpty()) {
-            getView().showError(new MercadoPagoError(getResourcesProvider().getMissingIdentificationTypesErrorMessage(), false), ApiUtil.RequestOrigin.GET_IDENTIFICATION_TYPES);
-        } else {
-            mIdentificationType = identificationTypes.get(0);
-            getView().initializeIdentificationTypes(identificationTypes);
-            mIdentificationTypes = identificationTypes;
-        }
+    private void resolveIdentificationTypes(final List<IdentificationType> identificationTypes) {
+        performOnView(new Runnable() {
+            @Override
+            public void run() {
+                if (identificationTypes.isEmpty()) {
+                    getView().showError(new MercadoPagoError(getResourcesProvider().getMissingIdentificationTypesErrorMessage(), false), ApiUtil.RequestOrigin.GET_IDENTIFICATION_TYPES);
+                } else {
+                    mIdentificationType = identificationTypes.get(0);
+                    getView().initializeIdentificationTypes(identificationTypes);
+                    mIdentificationTypes = identificationTypes;
+                }
+            }
+        });
     }
 
     public List<BankDeal> getBankDealsList() {
@@ -917,11 +1033,21 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
                 }
             }
             mCardToken.validateCardNumber(mPaymentMethod);
-            getView().clearErrorView();
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().clearErrorView();
+                }
+            });
             return true;
-        } catch (CardTokenException e) {
-            getView().setErrorView(e);
-            getView().setErrorCardNumber();
+        } catch (final CardTokenException e) {
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().setErrorView(e);
+                    getView().setErrorCardNumber();
+                }
+            });
             return false;
         }
     }
@@ -932,11 +1058,21 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
         cardHolder.setIdentification(mIdentification);
         mCardToken.setCardholder(cardHolder);
         if (mCardToken.validateCardholderName()) {
-            getView().clearErrorView();
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().clearErrorView();
+                }
+            });
             return true;
         } else {
-            getView().setErrorView(getResourcesProvider().getInvalidEmptyNameErrorMessage());
-            getView().setErrorCardholderName();
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().setErrorView(getResourcesProvider().getInvalidEmptyNameErrorMessage());
+                    getView().setErrorCardholderName();
+                }
+            });
             return false;
         }
     }
@@ -949,11 +1085,21 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
         mCardToken.setExpirationMonth(month);
         mCardToken.setExpirationYear(year);
         if (mCardToken.validateExpiryDate()) {
-            getView().clearErrorView();
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().clearErrorView();
+                }
+            });
             return true;
         } else {
-            getView().setErrorView(getResourcesProvider().getInvalidExpiryDateErrorMessage());
-            getView().setErrorExpiryDate();
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().setErrorView(getResourcesProvider().getInvalidExpiryDateErrorMessage());
+                    getView().setErrorExpiryDate();
+                }
+            });
             return false;
         }
     }
@@ -962,7 +1108,12 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
         mCardToken.setSecurityCode(getSecurityCode());
         try {
             mCardToken.validateSecurityCode(mPaymentMethod);
-            getView().clearErrorView();
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().clearErrorView();
+                }
+            });
             return true;
         } catch (CardTokenException e) {
             setCardSecurityCodeErrorView(e);
@@ -970,12 +1121,17 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
         }
     }
 
-    private void setCardSecurityCodeErrorView(CardTokenException exception) {
+    private void setCardSecurityCodeErrorView(final CardTokenException exception) {
         if (!isSecurityCodeRequired()) {
             return;
         }
-        getView().setErrorView(exception);
-        getView().setErrorSecurityCode();
+        performOnView(new Runnable() {
+            @Override
+            public void run() {
+                getView().setErrorView(exception);
+                getView().setErrorSecurityCode();
+            }
+        });
     }
 
     public boolean validateIdentificationNumber() {
@@ -983,17 +1139,27 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
         mCardToken.getCardholder().setIdentification(mIdentification);
         boolean ans = mCardToken.validateIdentificationNumber(mIdentificationType);
         if (ans) {
-            getView().clearErrorView();
-            getView().clearErrorIdentificationNumber();
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().clearErrorView();
+                    getView().clearErrorIdentificationNumber();
+                }
+            });
         } else {
             setCardIdentificationErrorView(getResourcesProvider().getInvalidIdentificationNumberErrorMessage());
         }
         return ans;
     }
 
-    private void setCardIdentificationErrorView(String message) {
-        getView().setErrorView(message);
-        getView().setErrorIdentificationNumber();
+    private void setCardIdentificationErrorView(final String message) {
+        performOnView(new Runnable() {
+            @Override
+            public void run() {
+                getView().setErrorView(message);
+                getView().setErrorIdentificationNumber();
+            }
+        });
     }
 
     public boolean checkIsEmptyOrValidCardholderName() {
@@ -1098,7 +1264,7 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
         getIssuers();
     }
 
-    private void resolveTokenCreationError(MercadoPagoError error, String requestOrigin) {
+    private void resolveTokenCreationError(final MercadoPagoError error, final String requestOrigin) {
         if (wrongIdentificationNumber(error)) {
             showIdentificationNumberError();
         } else {
@@ -1108,7 +1274,12 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
                     createToken();
                 }
             });
-            getView().showError(error, requestOrigin);
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().showError(error, requestOrigin);
+                }
+            });
         }
     }
 
@@ -1122,9 +1293,14 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
     }
 
     private void showIdentificationNumberError() {
-        getView().hideProgress();
-        getView().setErrorView(getResourcesProvider().getInvalidFieldErrorMessage());
-        getView().setErrorIdentificationNumber();
+        performOnView(new Runnable() {
+            @Override
+            public void run() {
+                getView().hideProgress();
+                getView().setErrorView(getResourcesProvider().getInvalidFieldErrorMessage());
+                getView().setErrorIdentificationNumber();
+            }
+        });
     }
 
     private void getIssuers() {
@@ -1135,24 +1311,34 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
             }
 
             @Override
-            public void onFailure(MercadoPagoError error) {
+            public void onFailure(final MercadoPagoError error) {
                 setFailureRecovery(new FailureRecovery() {
                     @Override
                     public void recover() {
                         getIssuers();
                     }
                 });
-                getView().showError(error, ApiUtil.RequestOrigin.GET_ISSUERS);
+                performOnView(new Runnable() {
+                    @Override
+                    public void run() {
+                        getView().showError(error, ApiUtil.RequestOrigin.GET_ISSUERS);
+                    }
+                });
             }
         });
     }
 
-    private void resolveIssuersList(List<Issuer> issuers) {
+    private void resolveIssuersList(final List<Issuer> issuers) {
         if (issuers.size() == 1) {
             mIssuer = issuers.get(0);
             getInstallments();
         } else {
-            getView().finishCardFlow(mPaymentMethod, mToken, mDiscount, mDirectDiscountEnabled, mDiscountEnabled, issuers);
+            performOnView(new Runnable() {
+                @Override
+                public void run() {
+                    getView().finishCardFlow(mPaymentMethod, mToken, mDiscount, mDirectDiscountEnabled, mDiscountEnabled, issuers);
+                }
+            });
         }
     }
 
@@ -1164,14 +1350,19 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
             }
 
             @Override
-            public void onFailure(MercadoPagoError error) {
+            public void onFailure(final MercadoPagoError error) {
                 setFailureRecovery(new FailureRecovery() {
                     @Override
                     public void recover() {
                         getInstallments();
                     }
                 });
-                getView().showError(error, ApiUtil.RequestOrigin.GET_INSTALLMENTS);
+                performOnView(new Runnable() {
+                    @Override
+                    public void run() {
+                        getView().showError(error, ApiUtil.RequestOrigin.GET_INSTALLMENTS);
+                    }
+                });
             }
         });
     }
@@ -1190,17 +1381,22 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
         }
     }
 
-    private void resolvePayerCosts(List<PayerCost> payerCosts) {
-        PayerCost defaultPayerCost = mPaymentPreference.getDefaultInstallments(payerCosts);
-        if (defaultPayerCost != null) {
-            getView().finishCardFlow(mPaymentMethod, mToken, mDiscount, mDirectDiscountEnabled, mDiscountEnabled, mIssuer, defaultPayerCost);
-        } else if (payerCosts.isEmpty()) {
-            getView().showError(new MercadoPagoError(getResourcesProvider().getMissingPayerCostsErrorMessage(), false), ApiUtil.RequestOrigin.GET_INSTALLMENTS);
-        } else if (payerCosts.size() == 1) {
-            getView().finishCardFlow(mPaymentMethod, mToken, mDiscount, mDirectDiscountEnabled, mDiscountEnabled, mIssuer, payerCosts.get(0));
-        } else {
-            getView().finishCardFlow(mPaymentMethod, mToken, mDiscount, mDirectDiscountEnabled, mDiscountEnabled, mIssuer, payerCosts);
-        }
+    private void resolvePayerCosts(final List<PayerCost> payerCosts) {
+        performOnView(new Runnable() {
+            @Override
+            public void run() {
+                PayerCost defaultPayerCost = mPaymentPreference.getDefaultInstallments(payerCosts);
+                if (defaultPayerCost != null) {
+                    getView().finishCardFlow(mPaymentMethod, mToken, mDiscount, mDirectDiscountEnabled, mDiscountEnabled, mIssuer, defaultPayerCost);
+                } else if (payerCosts.isEmpty()) {
+                    getView().showError(new MercadoPagoError(getResourcesProvider().getMissingPayerCostsErrorMessage(), false), ApiUtil.RequestOrigin.GET_INSTALLMENTS);
+                } else if (payerCosts.size() == 1) {
+                    getView().finishCardFlow(mPaymentMethod, mToken, mDiscount, mDirectDiscountEnabled, mDiscountEnabled, mIssuer, payerCosts.get(0));
+                } else {
+                    getView().finishCardFlow(mPaymentMethod, mToken, mDiscount, mDirectDiscountEnabled, mDiscountEnabled, mIssuer, payerCosts);
+                }
+            }
+        });
     }
 
     public MPTrackingContext getTrackingContext() {
@@ -1208,11 +1404,16 @@ public class GuessingCardPresenter extends MvpPresenter<GuessingCardActivityView
     }
 
     public void checkFinishWithCardToken() {
-        if (hasToShowPaymentTypes() && getGuessedPaymentMethods() != null) {
-            getView().askForPaymentType();
-        } else {
-            getView().showFinishCardFlow();
-        }
+        performOnView(new Runnable() {
+            @Override
+            public void run() {
+                if (hasToShowPaymentTypes() && getGuessedPaymentMethods() != null) {
+                    getView().askForPaymentType();
+                } else {
+                    getView().showFinishCardFlow();
+                }
+            }
+        });
     }
 
     public boolean shouldAskPaymentType(List<PaymentMethod> paymentMethodList) {

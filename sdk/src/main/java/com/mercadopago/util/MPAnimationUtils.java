@@ -5,6 +5,7 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Build;
@@ -25,30 +26,35 @@ import com.mercadopago.uicontrollers.card.IdentificationCardView;
 /**
  * Created by vaserber on 6/22/16.
  */
-public class MPAnimationUtils {
+public final class MPAnimationUtils {
 
     public static final int ANIMATION_EXTRA_FACTOR = 3;
+
+    private MPAnimationUtils() {
+        throw new AssertionError("Can't instantiate utility classes");
+    }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void fadeInLollipop(final int color, final ImageView imageView, final Context context) {
 
-        imageView.post(new Runnable() {
+            imageView.post(new Runnable() {
 
-            @Override
-            public void run() {
-                imageView.setColorFilter(ContextCompat.getColor(context, color),
-                        PorterDuff.Mode.SRC_ATOP);
+                @Override
+                public void run() {
+                    imageView.setColorFilter(ContextCompat.getColor(context, color),
+                            PorterDuff.Mode.SRC_ATOP);
 
-                int width = imageView.getWidth();
+                    int width = imageView.getWidth();
 
-                Animator anim = ViewAnimationUtils.createCircularReveal(imageView, -width, 0,
-                        width, ANIMATION_EXTRA_FACTOR * width);
-                anim.setDuration(300);
-                anim.setInterpolator(new AccelerateDecelerateInterpolator());
-                anim.start();
-            }
-        });
-    }
+                    Animator anim = ViewAnimationUtils.createCircularReveal(imageView, -width, 0,
+                            width, ANIMATION_EXTRA_FACTOR * width);
+                    anim.setDuration(300);
+                    anim.setInterpolator(new AccelerateDecelerateInterpolator());
+                    anim.start();
+                }
+            });
+        }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void fadeOutLollipop(final int color, final ImageView imageView, final Context context) {
