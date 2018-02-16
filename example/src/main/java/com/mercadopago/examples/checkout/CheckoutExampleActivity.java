@@ -116,7 +116,7 @@ public class CheckoutExampleActivity extends AppCompatActivity {
     }
 
     private CheckoutPreference getCheckoutPreference() {
-        return new CheckoutPreference("243962506-0b4a9ec4-34b3-4acc-b25c-5188c027eea5");
+        return new CheckoutPreference(mCheckoutPreferenceId);
     }
 
     @Override
