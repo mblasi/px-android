@@ -17,6 +17,7 @@ import com.mercadopago.examples.R;
 import com.mercadopago.examples.utils.ExamplesUtils;
 import com.mercadopago.exceptions.MercadoPagoError;
 import com.mercadopago.hooks.ExampleHooks;
+import com.mercadopago.model.Discount;
 import com.mercadopago.model.Payment;
 import com.mercadopago.plugins.DataInitializationTask;
 import com.mercadopago.plugins.MainPaymentProcessor;
@@ -26,6 +27,7 @@ import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
