@@ -147,6 +147,7 @@
                             app:autoSizeStepGranularity="1dp"
                             app:autoSizeTextType="uniform"
                             app:font_style="mono_regular"
+                            tools:fontFamily="monospace"
                             tools:text="1234 1234 1234 1234" />
 
                     </FrameLayout>
