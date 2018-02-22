@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mercadopago.CellphoneReview;
+import com.mercadopago.constants.ReviewKeys;
 import com.mercadopago.core.MercadoPagoCheckout;
 import com.mercadopago.customviews.MPButton;
 import com.mercadopago.examples.R;
@@ -19,16 +22,20 @@ import com.mercadopago.exceptions.MercadoPagoError;
 import com.mercadopago.hooks.ExampleHooks;
 import com.mercadopago.model.Discount;
 import com.mercadopago.model.Payment;
+import com.mercadopago.model.Reviewable;
 import com.mercadopago.plugins.DataInitializationTask;
 import com.mercadopago.plugins.MainPaymentProcessor;
 import com.mercadopago.plugins.SamplePaymentMethodPlugin;
 import com.mercadopago.plugins.SamplePaymentProcessor;
 import com.mercadopago.preferences.CheckoutPreference;
+import com.mercadopago.preferences.ReviewScreenPreference;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CheckoutExampleActivity extends AppCompatActivity {
@@ -82,10 +89,23 @@ public class CheckoutExampleActivity extends AppCompatActivity {
         final Map<String, Object> defaultData = new HashMap<>();
         defaultData.put("amount", 120f);
 
+        List<String> order = new ArrayList<>();
+        order.add(ReviewKeys.DEFAULT);
+        order.add(ReviewKeys.ITEMS);
+        order.add(ReviewKeys.SUMMARY);
+        order.add(ReviewKeys.PAYMENT_METHODS);
+
+        ReviewScreenPreference preference = new ReviewScreenPreference.Builder()
+                .setItemsSummary(new CellphoneReview(this, "1231232"))
+                .setReviewOrder(order)
+                .build();
+
+
         final MercadoPagoCheckout.Builder builder = new MercadoPagoCheckout.Builder()
                 .setActivity(this)
                 .setPublicKey(mPublicKey)
                 .setCheckoutPreference(getCheckoutPreference())
+                .setReviewScreenPreference(preference)
                 .addPaymentMethodPlugin(
                         new SamplePaymentMethodPlugin(),
                         new SamplePaymentProcessor()

@@ -1,26 +1,22 @@
-package com.mercadopago.examples.reviewables;
+package com.mercadopago;
+import com.mercadopago.examples.R;
+
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.mercadopago.examples.R;
 import com.mercadopago.model.Reviewable;
 
 /**
- * Created by mreverter on 2/3/17.
+ * Created by vaserber on 22/02/2018.
  */
 
 public class CellphoneReview extends Reviewable {
-
-    public static final Integer CELLPHONE_CHANGE = 321321;
-
     protected View mView;
     protected TextView mNumberTextView;
-    protected View mNumberEdition;
 
     private Context mContext;
     private String mNumber;
@@ -37,25 +33,19 @@ public class CellphoneReview extends Reviewable {
 
     @Override
     public View inflateInParent(ViewGroup parent, boolean attachToRoot) {
-        mView = LayoutInflater.from(mContext).inflate(R.layout.cellphone_review_2, parent, attachToRoot);
+        mView = LayoutInflater.from(mContext)
+                .inflate(R.layout.example_item, parent, attachToRoot);
         return mView;
     }
 
     @Override
     public void initializeControls() {
-        mNumberTextView = mView.findViewById(R.id.phoneNumber);
-        mNumberEdition = mView.findViewById(R.id.phoneNumberEdition);
-        mNumberEdition.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notifyChangeRequired(CELLPHONE_CHANGE);
-                Toast.makeText(mContext, "Cambiar número!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        mNumberTextView = (TextView) mView.findViewById(R.id.phoneNumber);
     }
 
     @Override
     public void draw() {
         mNumberTextView.setText(mNumber);
     }
+
 }

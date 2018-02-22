@@ -223,6 +223,7 @@ public class ReviewScreenPreference {
         }
 
         public Builder setItemsSummary(Reviewable itemsSummary) {
+            itemsSummary.setKey(ReviewKeys.ITEMS);
             this.itemsSummary = itemsSummary;
             return this;
         }
@@ -292,6 +293,7 @@ public class ReviewScreenPreference {
             return this;
         }
 
+        //para esconder el item?
         public Builder hideQuantityRow() {
             this.showQuantityRow = false;
             return this;
@@ -302,6 +304,7 @@ public class ReviewScreenPreference {
             return this;
         }
 
+        //para esconder el item?
         public Builder hideAmountTitle() {
             this.showAmountTitle = false;
             return this;
