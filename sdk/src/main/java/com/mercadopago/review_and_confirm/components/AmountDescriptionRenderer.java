@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 public class AmountDescriptionRenderer extends Renderer<AmountDescription> {
 
     @Override
-    public View render(@NonNull final AmountDescription component,@NonNull final Context context, final ViewGroup parent) {
+    public View render(@NonNull final AmountDescription component, @NonNull final Context context, final ViewGroup parent) {
         final View bodyView = inflate(R.layout.mpsdk_amount_description_component, parent);
         final MPTextView descriptionTextView = bodyView.findViewById(R.id.mpsdkDescription);
         final MPTextView amountTextView = bodyView.findViewById(R.id.mpsdkAmount);

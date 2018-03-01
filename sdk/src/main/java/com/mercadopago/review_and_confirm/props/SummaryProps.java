@@ -101,5 +101,4 @@ public class SummaryProps {
             return new SummaryProps(this);
         }
     }
-
 }
