@@ -1,5 +1,6 @@
 package com.mercadopago.plugins.model;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 import com.mercadopago.model.Payment;
@@ -15,6 +16,10 @@ public class ProcessorPaymentResult {
     public final String status;
     public final String statusDetail;
     public final PaymentData paymentData;
+
+
+    public final String title;
+    public final @DrawableRes int icon;
 
     public ProcessorPaymentResult(final Long paymentId,
                                   final @NonNull String status,

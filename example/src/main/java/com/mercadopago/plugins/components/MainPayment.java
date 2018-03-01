@@ -36,9 +36,9 @@ public class MainPayment extends PluginComponent<Void> {
             public void run() {
 
                 final ProcessorPaymentResult result = new ProcessorPaymentResult(
-                        98723496234l,
-                        Payment.StatusCodes.STATUS_APPROVED,
-                        Payment.StatusCodes.STATUS_DETAIL_APPROVED_PLUGIN_PM,
+                        8406656l,
+                        Payment.StatusCodes.STATUS_PENDING,
+                        Payment.StatusCodes.STATUS_DETAIL_PENDING_WAITING_PAYMENT,
                         props.paymentData);
 
                 getDispatcher().dispatch(new PluginPaymentResultAction(result));

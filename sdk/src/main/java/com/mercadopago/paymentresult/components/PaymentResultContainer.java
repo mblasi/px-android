@@ -8,6 +8,7 @@ import com.mercadopago.components.Component;
 import com.mercadopago.components.LoadingComponent;
 import com.mercadopago.constants.PaymentMethods;
 import com.mercadopago.constants.PaymentTypes;
+import com.mercadopago.core.CheckoutStore;
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.paymentresult.PaymentMethodProvider;
@@ -338,6 +339,9 @@ public class PaymentResultContainer extends Component<PaymentResultProps, Void> 
     }
 
     private String getTitle(@NonNull final PaymentResultProps props) {
+
+
+        CheckoutStore.getInstance().hasEnabledPaymenthMethodPlugin()
 
         if (props.hasCustomizedTitle()) {
             return props.getPreferenceTitle();
