@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.mercadopago.R;
+
 import com.mercadopago.components.Renderer;
 import com.mercadopago.components.RendererFactory;
 import com.mercadopago.customviews.MPTextView;
