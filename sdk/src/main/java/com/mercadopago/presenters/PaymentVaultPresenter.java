@@ -26,6 +26,7 @@ import com.mercadopago.providers.PaymentVaultProvider;
 import com.mercadopago.util.ApiUtil;
 import com.mercadopago.util.CurrenciesUtil;
 import com.mercadopago.util.MercadoPagoUtil;
+import com.mercadopago.util.TextUtil;
 import com.mercadopago.views.PaymentVaultView;
 
 import java.math.BigDecimal;
@@ -51,6 +52,7 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     private Boolean mDirectDiscountEnabled = true;
     private Boolean mShowAllSavedCardsEnabled = false;
     private Integer mMaxSavedCards;
+    private String mFlowId;
 
     private boolean mSelectAutomatically;
     private FailureRecovery failureRecovery;
@@ -60,7 +62,6 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     private boolean hook1Displayed = false;
 
     /**
-     *
      * @deprecated Account money is a plugin now.
      */
     @Deprecated
@@ -177,6 +178,9 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
         if (!isSiteConfigurationValid()) {
             throw new IllegalStateException(getResourcesProvider().getInvalidSiteConfigurationErrorMessage());
         }
+        if (!isFlowIdValid(mFlowId)) {
+            throw new IllegalStateException(getResourcesProvider().getInvalidFlowIdErrorMessage());
+        }
     }
 
     private Boolean isAmountValid(BigDecimal amount) {
@@ -193,6 +197,11 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
             isValid = false;
         }
         return isValid;
+    }
+
+    /*TODO: COMPLETE WHEN PATTERN DEFINED*/
+    private boolean isFlowIdValid(String flowId) {
+        return !TextUtil.isEmpty(flowId);
     }
 
     public boolean isItemSelected() {
@@ -558,6 +567,11 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
         this.mAmount = mAmount;
     }
 
+    public void setFlowId(String mFlowId) {
+        this.mFlowId = mFlowId;
+    }
+
+
     public void setPayerAccessToken(String payerAccessToken) {
         this.mPayerAccessToken = payerAccessToken;
     }
@@ -668,7 +682,6 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     }
 
     /**
-     *
      * @deprecated Account money is a plugin now.
      */
     @Deprecated

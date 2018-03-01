@@ -42,6 +42,29 @@ import static org.junit.Assert.assertEquals;
 public class PaymentVaultPresenterTest {
 
     @Test
+    public void ifFlowIdNotSetShowInvalidFlowIdError() {
+        MockedView mockedView = new MockedView();
+        MockedProvider provider = new MockedProvider();
+
+        PaymentMethodSearch paymentMethodSearch = PaymentMethodSearchs.getPaymentMethodSearchWithoutFlowIdMLA();
+
+        provider.setResponse(paymentMethodSearch);
+
+        PaymentVaultPresenter presenter = new PaymentVaultPresenter();
+        presenter.attachView(mockedView);
+        presenter.attachResourcesProvider(provider);
+
+        presenter.setAmount(BigDecimal.TEN);
+
+        presenter.setSite(Sites.ARGENTINA);
+
+
+        presenter.initialize(true);
+
+        assertEquals(MockedProvider.INVALID_FLOW_ID, mockedView.errorShown.getMessage());
+    }
+
+    @Test
     public void ifSiteNotSetShowInvalidSiteError() {
         MockedView mockedView = new MockedView();
         MockedProvider provider = new MockedProvider();
@@ -560,6 +583,7 @@ public class PaymentVaultPresenterTest {
         presenter.setAmount(BigDecimal.TEN);
         presenter.setSite(Sites.ARGENTINA);
         presenter.setDiscountEnabled(false);
+        presenter.setFlowId(provider.FLOW_ID);
 
         presenter.initialize(true);
 
@@ -896,6 +920,7 @@ public class PaymentVaultPresenterTest {
 
         presenter.setAmount(BigDecimal.TEN);
         presenter.setSite(Sites.ARGENTINA);
+        presenter.setFlowId(provider.FLOW_ID);
         // Set show all saved cards
         presenter.setShowAllSavedCardsEnabled(true);
         presenter.setMaxSavedCards(FlowPreference.DEFAULT_MAX_SAVED_CARDS_TO_SHOW);
@@ -1043,6 +1068,7 @@ public class PaymentVaultPresenterTest {
         MockedView mockedView = new MockedView();
         MockedProvider provider = new MockedProvider();
 
+        presenter.setFlowId(provider.FLOW_ID);
         presenter.attachView(mockedView);
         presenter.attachResourcesProvider(provider);
 
@@ -1105,12 +1131,14 @@ public class PaymentVaultPresenterTest {
 
         private static final String INVALID_SITE = "invalid site";
         private static final String INVALID_AMOUNT = "invalid amount";
+        private static final String INVALID_FLOW_ID = "invalid flowId";
         private static final String ALL_TYPES_EXCLUDED = "all types excluded";
         private static final String INVALID_DEFAULT_INSTALLMENTS = "invalid default installments";
         private static final String INVALID_MAX_INSTALLMENTS = "invalid max installments";
         private static final String STANDARD_ERROR_MESSAGE = "standard error";
         private static final String EMPTY_PAYMENT_METHODS = "empty payment methods";
         private static final String CAMPAIGN_DOES_NOT_MATCH_ERROR = "campaign-doesnt-match";
+        private static final String FLOW_ID = "a7a24145-c5c2-4ca0-b067-7c3f4dd6c665";
 
         private boolean shouldFail;
         private boolean shouldDiscountFail;
@@ -1194,6 +1222,11 @@ public class PaymentVaultPresenterTest {
         @Override
         public String getEmptyPaymentMethodsErrorMessage() {
             return EMPTY_PAYMENT_METHODS;
+        }
+
+        @Override
+        public String getInvalidFlowIdErrorMessage() {
+            return INVALID_FLOW_ID;
         }
     }
 

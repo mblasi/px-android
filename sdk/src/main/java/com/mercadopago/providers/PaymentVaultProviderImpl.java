@@ -177,6 +177,11 @@ public class PaymentVaultProviderImpl implements PaymentVaultProvider {
         return context.getString(R.string.mpsdk_no_payment_methods_found);
     }
 
+    @Override
+    public String getInvalidFlowIdErrorMessage() {
+        return context.getString(R.string.mpsdk_error_message_invalid_flowId);
+    }
+
     private boolean isMerchantServerCustomerAvailable() {
         return !TextUtil.isEmpty(merchantBaseUrl) && !TextUtil.isEmpty(merchantGetCustomerUri);
     }

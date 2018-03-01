@@ -164,6 +164,7 @@
 
     <!-- Error messages -->
     <string name="mpsdk_error_message_invalid_amount">Monto inválido</string>
+    <string name="mpsdk_error_message_invalid_flowId">FlowId Inválido</string>
     <string name="mpsdk_error_message_invalid_item">Item inválido</string>
     <string name="mpsdk_error_message_expired_preference">Preferencia expirada</string>
     <string name="mpsdk_error_message_inactive_preference">Preferencia inactiva</string>

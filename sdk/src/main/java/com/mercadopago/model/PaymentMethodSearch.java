@@ -22,6 +22,8 @@ public class PaymentMethodSearch {
 
     private AccountMoney accountMoney;
 
+    private String flowId;
+
     public List<PaymentMethodSearchItem> getGroups() {
         return groups;
     }
@@ -189,4 +191,13 @@ public class PaymentMethodSearch {
     public void setAccountMoney(AccountMoney accountMoney) {
         this.accountMoney = accountMoney;
     }
+
+    public String getFlowId() {
+        return flowId;
+    }
+
+    public void setFlowId(String flowId) {
+        this.flowId = flowId;
+    }
+
 }

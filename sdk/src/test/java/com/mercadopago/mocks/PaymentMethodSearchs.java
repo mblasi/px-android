@@ -66,4 +66,9 @@ public class PaymentMethodSearchs {
         String json = ResourcesUtil.getStringResource("only_one_off_type_and_account_money_MLA.json");
         return JsonUtil.getInstance().fromJson(json, PaymentMethodSearch.class);
     }
+
+    public static PaymentMethodSearch getPaymentMethodSearchWithoutFlowIdMLA() {
+        String json = ResourcesUtil.getStringResource("payment_method_search_without_flow_id_MLA.json");
+        return JsonUtil.getInstance().fromJson(json, PaymentMethodSearch.class);
+    }
 }

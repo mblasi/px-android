@@ -34,4 +34,6 @@ public interface PaymentVaultProvider extends ResourcesProvider {
     String getStandardErrorMessage();
 
     String getEmptyPaymentMethodsErrorMessage();
+
+    String getInvalidFlowIdErrorMessage();
 }
