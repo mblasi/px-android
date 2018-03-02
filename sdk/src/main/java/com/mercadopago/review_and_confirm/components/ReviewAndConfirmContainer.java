@@ -7,6 +7,7 @@ import com.mercadopago.components.Component;
 import com.mercadopago.components.RendererFactory;
 import com.mercadopago.review_and_confirm.models.PaymentModel;
 import com.mercadopago.review_and_confirm.models.ReviewAndConfirmPreferences;
+import com.mercadopago.review_and_confirm.models.SummaryModel;
 import com.mercadopago.review_and_confirm.models.TermsAndConditionsModel;
 
 public class ReviewAndConfirmContainer extends Component<ReviewAndConfirmContainer.Props, Void> {
@@ -26,17 +27,18 @@ public class ReviewAndConfirmContainer extends Component<ReviewAndConfirmContain
     public static class Props {
         final TermsAndConditionsModel termsAndConditionsModel;
         final PaymentModel paymentModel;
+        final SummaryModel summaryModel;
         final ReviewAndConfirmPreferences preferences;
 
         public Props(final TermsAndConditionsModel termsAndConditionsModel,
                      final PaymentModel paymentModel,
-                     final ReviewAndConfirmPreferences preferences) {
+                     final ReviewAndConfirmPreferences preferences,
+                     final SummaryModel summaryModel) {
 
             this.termsAndConditionsModel = termsAndConditionsModel;
             this.paymentModel = paymentModel;
+            this.summaryModel = summaryModel;
             this.preferences = preferences;
         }
     }
-
-
 }

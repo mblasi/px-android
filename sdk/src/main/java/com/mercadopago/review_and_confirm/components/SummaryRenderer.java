@@ -1,21 +1,17 @@
 package com.mercadopago.review_and_confirm.components;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.mercadopago.R;
-import com.mercadopago.adapters.SummaryRowAdapter;
-import com.mercadopago.callbacks.OnSelectedCallback;
 import com.mercadopago.components.Renderer;
 import com.mercadopago.components.RendererFactory;
 import com.mercadopago.customviews.MPTextView;
-import com.mercadopago.model.SummaryDetail;
 import com.mercadopago.uicontrollers.payercosts.PayerCostColumn;
 import com.mercadopago.util.CurrenciesUtil;
 
@@ -28,7 +24,7 @@ import java.math.BigDecimal;
 public class SummaryRenderer extends Renderer<Summary> {
 
     @Override
-    public View render(final Summary component, final Context context) {
+    public View render(final Summary component, final Context context, ViewGroup viewGroup) {
         final View summaryView = LayoutInflater.from(context).inflate(R.layout.mpsdk_review_summary_component, null, false);
         final MPTextView subtotalAmountTextView = summaryView.findViewById(R.id.mpsdkReviewSummarySubtotalText);
         final MPTextView totalAmountTextView = summaryView.findViewById(R.id.mpsdkReviewSummaryTotalText);
