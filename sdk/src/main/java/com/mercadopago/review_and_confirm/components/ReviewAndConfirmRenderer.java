@@ -33,6 +33,8 @@ public class ReviewAndConfirmRenderer extends Renderer<ReviewAndConfirmContainer
         Renderer summary = RendererFactory.create(linearLayout.getContext(), component.getSummaryComponent());
         summary.render(linearLayout);
 
+        addSummary(component.props.summaryModel, linearLayout);
+
         if (component.props.preferences.hasCustomTopView()) {
             Renderer renderer = RendererFactory.create(context, component.props.preferences.getTopComponent());
             linearLayout.addView(renderer.render(parent));

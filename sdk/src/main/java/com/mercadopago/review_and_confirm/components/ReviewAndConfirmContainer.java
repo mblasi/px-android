@@ -51,8 +51,8 @@ public class ReviewAndConfirmContainer extends Component<ReviewAndConfirmContain
 
         public Props(final TermsAndConditionsModel termsAndConditionsModel,
                      final PaymentModel paymentModel,
-                     final ReviewAndConfirmPreferences preferences,
-                     final SummaryModel summaryModel) {
+                     final SummaryModel summaryModel,
+                     final ReviewAndConfirmPreferences preferences) {
 
             this.termsAndConditionsModel = termsAndConditionsModel;
             this.paymentModel = paymentModel;
