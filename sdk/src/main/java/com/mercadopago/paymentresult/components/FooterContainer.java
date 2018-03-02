@@ -33,8 +33,26 @@ public class FooterContainer extends Component<FooterContainer.Props, Void> {
 
         final PaymentResultScreenPreference preferences = CheckoutStore.getInstance().getPaymentResultScreenPreference();
 
+        Footer.FooterAction buttonAction = props.paymentResult.footerButtonAction;
+        Footer.FooterAction linkAction = props.paymentResult.footerlinkAction;
+
+        if (buttonAction == null) {
+            buttonAction = getButtonAction();
+        }
+
+        if (linkAction == null) {
+            linkAction = getLinkAction();
+        }
+
+        return new Footer.Props(
+            buttonAction, linkAction
+        );
+    }
+
+    private Footer.FooterAction getButtonAction() {
+
         Footer.FooterAction buttonAction = null;
-        Footer.FooterAction linkAction = null;
+        final PaymentResultScreenPreference preferences = CheckoutStore.getInstance().getPaymentResultScreenPreference();
 
         if (props.paymentResult.isStatusApproved()) {
 
@@ -47,12 +65,6 @@ public class FooterContainer extends Component<FooterContainer.Props, Void> {
                         preferences.getSecondaryCongratsExitButtonTitle(),
                         new ResultCodeAction(preferences.getSecondaryCongratsExitResultCode())
                 );
-            }
-
-            if (TextUtils.isEmpty(preferences.getExitButtonTitle())) {
-                linkAction = new Footer.FooterAction(resourcesProvider.getContinueShopping());
-            } else {
-                linkAction = new Footer.FooterAction(preferences.getExitButtonTitle());
             }
 
         } else if (props.paymentResult.isStatusPending() || props.paymentResult.isStatusInProcess()) {
@@ -68,12 +80,6 @@ public class FooterContainer extends Component<FooterContainer.Props, Void> {
                 );
             }
 
-            if (TextUtils.isEmpty(preferences.getExitButtonTitle())) {
-                linkAction = new Footer.FooterAction(resourcesProvider.getContinueShopping());
-            } else {
-                linkAction = new Footer.FooterAction(preferences.getExitButtonTitle());
-            }
-
         } else if (props.paymentResult.isStatusRejected()) {
 
             if (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CALL_FOR_AUTHORIZE
@@ -84,8 +90,6 @@ public class FooterContainer extends Component<FooterContainer.Props, Void> {
                         new ChangePaymentMethodAction()
                 );
 
-                linkAction = new Footer.FooterAction(resourcesProvider.getCancelPayment());
-
             } else if (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CARD_DISABLED
                     .equals(props.paymentResult.getPaymentStatusDetail())) {
 
@@ -94,9 +98,6 @@ public class FooterContainer extends Component<FooterContainer.Props, Void> {
                         new RecoverPaymentAction()
                 );
 
-                linkAction = new Footer.FooterAction(resourcesProvider.getChangePaymentMethodLabel(),
-                        new ChangePaymentMethodAction());
-
             } else if (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_INSUFFICIENT_AMOUNT
                     .equals(props.paymentResult.getPaymentStatusDetail())) {
 
@@ -104,8 +105,6 @@ public class FooterContainer extends Component<FooterContainer.Props, Void> {
                         resourcesProvider.getChangePaymentMethodLabel(),
                         new ChangePaymentMethodAction()
                 );
-
-                linkAction = new Footer.FooterAction(resourcesProvider.getCancelPayment());
 
             } else if (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_DATE
                     .equals(props.paymentResult.getPaymentStatusDetail())
@@ -121,24 +120,17 @@ public class FooterContainer extends Component<FooterContainer.Props, Void> {
                         new RecoverPaymentAction()
                 );
 
-                linkAction = new Footer.FooterAction(resourcesProvider.getChangePaymentMethodLabel(),
-                        new ChangePaymentMethodAction());
-
             } else if (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_DUPLICATED_PAYMENT
                     .equals(props.paymentResult.getPaymentStatusDetail())) {
 
                 buttonAction = null;
 
-                linkAction = new Footer.FooterAction(resourcesProvider.getContinueShopping());
-
             } else {
 
                 buttonAction = new Footer.FooterAction(
-                    resourcesProvider.getChangePaymentMethodLabel(),
-                    new ChangePaymentMethodAction()
+                        resourcesProvider.getChangePaymentMethodLabel(),
+                        new ChangePaymentMethodAction()
                 );
-
-                linkAction = new Footer.FooterAction(resourcesProvider.getCancelPayment());
             }
 
             // Remove the button by user preference
@@ -147,16 +139,79 @@ public class FooterContainer extends Component<FooterContainer.Props, Void> {
             }
         }
 
-        return new Footer.Props(
-            buttonAction, linkAction
-        );
+        return buttonAction;
+    }
+
+    private Footer.FooterAction getLinkAction() {
+
+        Footer.FooterAction linkAction = null;
+        final PaymentResultScreenPreference preferences = CheckoutStore.getInstance().getPaymentResultScreenPreference();
+
+        if (props.paymentResult.isStatusApproved()) {
+
+            if (TextUtils.isEmpty(preferences.getExitButtonTitle())) {
+                linkAction = new Footer.FooterAction(resourcesProvider.getContinueShopping());
+            } else {
+                linkAction = new Footer.FooterAction(preferences.getExitButtonTitle());
+            }
+
+        } else if (props.paymentResult.isStatusPending() || props.paymentResult.isStatusInProcess()) {
+
+            if (TextUtils.isEmpty(preferences.getExitButtonTitle())) {
+                linkAction = new Footer.FooterAction(resourcesProvider.getContinueShopping());
+            } else {
+                linkAction = new Footer.FooterAction(preferences.getExitButtonTitle());
+            }
+
+        } else if (props.paymentResult.isStatusRejected()) {
+
+            if (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CALL_FOR_AUTHORIZE
+                    .equals(props.paymentResult.getPaymentStatusDetail())) {
+
+                linkAction = new Footer.FooterAction(resourcesProvider.getCancelPayment());
+
+            } else if (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_CARD_DISABLED
+                    .equals(props.paymentResult.getPaymentStatusDetail())) {
+
+                linkAction = new Footer.FooterAction(resourcesProvider.getChangePaymentMethodLabel(),
+                        new ChangePaymentMethodAction());
+
+            } else if (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_INSUFFICIENT_AMOUNT
+                    .equals(props.paymentResult.getPaymentStatusDetail())) {
+
+                linkAction = new Footer.FooterAction(resourcesProvider.getCancelPayment());
+
+            } else if (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_DATE
+                    .equals(props.paymentResult.getPaymentStatusDetail())
+                    || Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_SECURITY_CODE
+                    .equals(props.paymentResult.getPaymentStatusDetail())
+                    || Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_OTHER
+                    .equals(props.paymentResult.getPaymentStatusDetail())
+                    || Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_BAD_FILLED_CARD_NUMBER
+                    .equals(props.paymentResult.getPaymentStatusDetail())) {
+
+                linkAction = new Footer.FooterAction(resourcesProvider.getChangePaymentMethodLabel(),
+                        new ChangePaymentMethodAction());
+
+            } else if (Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_DUPLICATED_PAYMENT
+                    .equals(props.paymentResult.getPaymentStatusDetail())) {
+
+                linkAction = new Footer.FooterAction(resourcesProvider.getContinueShopping());
+
+            } else {
+
+                linkAction = new Footer.FooterAction(resourcesProvider.getCancelPayment());
+            }
+        }
+
+        return linkAction;
     }
 
     public static class Props {
 
         public final PaymentResult paymentResult;
 
-        public Props(PaymentResult paymentResult) {
+        public Props(final PaymentResult paymentResult) {
             this.paymentResult = paymentResult;
         }
     }

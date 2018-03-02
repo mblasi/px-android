@@ -1,5 +1,9 @@
 package com.mercadopago.model;
 
+import android.support.annotation.DrawableRes;
+
+import com.mercadopago.paymentresult.components.Footer;
+
 /**
  * Created by vaserber on 2/13/17.
  */
@@ -15,6 +19,10 @@ public class PaymentResult {
     private String paymentStatusDetail;
     private String payerEmail;
     private String statementDescription;
+    public final String headerTitle;
+    public final @DrawableRes int headerIcon;
+    public final Footer.FooterAction footerButtonAction;
+    public final Footer.FooterAction footerlinkAction;
 
     private PaymentResult(Builder builder) {
         this.paymentData = builder.paymentData;
@@ -23,6 +31,10 @@ public class PaymentResult {
         this.paymentStatusDetail = builder.paymentStatusDetail;
         this.payerEmail = builder.payerEmail;
         this.statementDescription = builder.statementDescription;
+        this.headerTitle = builder.headerTitle;
+        this.headerIcon = builder.headerIcon;
+        this.footerButtonAction = builder.footerButtonAction;
+        this.footerlinkAction = builder.footerBlinkAction;
     }
 
     public PaymentData getPaymentData() {
@@ -77,6 +89,10 @@ public class PaymentResult {
         private String paymentStatusDetail;
         private String payerEmail;
         private String statementDescription;
+        private  String headerTitle;
+        private @DrawableRes int headerIcon = 0;
+        private Footer.FooterAction footerButtonAction;
+        private Footer.FooterAction footerBlinkAction;
 
         public Builder setPaymentData(PaymentData paymentData) {
             this.paymentData = paymentData;
@@ -105,6 +121,26 @@ public class PaymentResult {
 
         public Builder setStatementDescription(String statementDescription) {
             this.statementDescription = statementDescription;
+            return this;
+        }
+
+        public Builder setHeaderTitle(final String headerTitle) {
+            this.headerTitle = headerTitle;
+            return this;
+        }
+
+        public Builder setHeaderIcon(final int headerIcon) {
+            this.headerIcon = headerIcon;
+            return this;
+        }
+
+        public Builder setFooterButtonAction(final Footer.FooterAction footerButtonAction) {
+            this.footerButtonAction = footerButtonAction;
+            return this;
+        }
+
+        public Builder setFooterlinkAction(final Footer.FooterAction footerBlinkAction) {
+            this.footerBlinkAction = footerBlinkAction;
             return this;
         }
 

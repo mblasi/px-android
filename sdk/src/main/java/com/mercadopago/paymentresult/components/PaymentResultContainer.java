@@ -8,7 +8,6 @@ import com.mercadopago.components.Component;
 import com.mercadopago.components.LoadingComponent;
 import com.mercadopago.constants.PaymentMethods;
 import com.mercadopago.constants.PaymentTypes;
-import com.mercadopago.core.CheckoutStore;
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.paymentresult.PaymentMethodProvider;
@@ -17,6 +16,7 @@ import com.mercadopago.paymentresult.model.Badge;
 import com.mercadopago.paymentresult.props.HeaderProps;
 import com.mercadopago.paymentresult.props.PaymentResultBodyProps;
 import com.mercadopago.paymentresult.props.PaymentResultProps;
+import com.mercadopago.util.TextUtils;
 
 /**
  * Created by vaserber on 10/20/17.
@@ -207,7 +207,9 @@ public class PaymentResultContainer extends Component<PaymentResultProps, Void> 
     }
 
     private int getIconImage(@NonNull final PaymentResultProps props) {
-        if (props.hasCustomizedImageIcon()) {
+        if (props.paymentResult.headerIcon != 0) {
+            return props.paymentResult.headerIcon;
+        } else if (props.hasCustomizedImageIcon()) {
             return props.getPreferenceIcon();
         } else if (props.paymentResult == null) {
             return DEFAULT_ICON_IMAGE;
@@ -340,10 +342,9 @@ public class PaymentResultContainer extends Component<PaymentResultProps, Void> 
 
     private String getTitle(@NonNull final PaymentResultProps props) {
 
-
-        CheckoutStore.getInstance().hasEnabledPaymenthMethodPlugin()
-
-        if (props.hasCustomizedTitle()) {
+        if (TextUtils.isNotEmpty(props.paymentResult.headerTitle)) {
+            return props.paymentResult.headerTitle;
+        } else if (props.hasCustomizedTitle()) {
             return props.getPreferenceTitle();
         } else if (props.hasInstructions()) {
             return props.getInstructionsTitle();

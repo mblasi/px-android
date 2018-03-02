@@ -35,11 +35,12 @@ public class SamplePayment extends PluginComponent<Void> {
             @Override
             public void run() {
 
-                final ProcessorPaymentResult result = new ProcessorPaymentResult(
-                    123456l,
-                    Payment.StatusCodes.STATUS_APPROVED,
-                    Payment.StatusCodes.STATUS_DETAIL_APPROVED_PLUGIN_PM,
-                    props.paymentData);
+                final ProcessorPaymentResult result = new ProcessorPaymentResult.Builder()
+                        .setPaymentId(8406656l)
+                        .setStatus(Payment.StatusCodes.STATUS_REJECTED)
+                        .setStatusDetail(Payment.StatusCodes.STATUS_DETAIL_CC_REJECTED_PLUGIN_PM)
+                        .setHeaderTitle("Sample title")
+                        .build();
 
                 getDispatcher().dispatch(new PluginPaymentResultAction(result));
             }

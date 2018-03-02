@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentData;
+import com.mercadopago.paymentresult.components.Footer;
 
 /**
  * Created by nfortuna on 12/29/17.
@@ -15,21 +16,30 @@ public class ProcessorPaymentResult {
     public final Long paymentId;
     public final String status;
     public final String statusDetail;
-    public final PaymentData paymentData;
+    public final String headerTitle;
+    public final @DrawableRes int headerIcon;
+    public final Footer.FooterAction footerButtonAction;
+    public final Footer.FooterAction footerBlinkAction;
 
-
-    public final String title;
-    public final @DrawableRes int icon;
-
-    public ProcessorPaymentResult(final Long paymentId,
-                                  final @NonNull String status,
-                                  final @NonNull String statusDetail,
-                                  final @NonNull PaymentData paymentData) {
-
+    public ProcessorPaymentResult(final Long paymentId, final String status, final String statusDetail,
+                                  final PaymentData paymentData) {
         this.paymentId = paymentId;
         this.status = status;
         this.statusDetail = processStatusDetail(status, statusDetail);
-        this.paymentData = paymentData;
+        this.headerTitle = null;
+        this.headerIcon = 0;
+        this.footerButtonAction = null;
+        this.footerBlinkAction = null;
+    }
+
+    public ProcessorPaymentResult(final Builder builder) {
+        this.paymentId = builder.paymentId;
+        this.status = builder.status;
+        this.statusDetail = processStatusDetail(builder.status, builder.statusDetail);
+        this.headerTitle = builder.headerTitle;
+        this.headerIcon = builder.headerIcon;
+        this.footerButtonAction = builder.footerButtonAction;
+        this.footerBlinkAction = builder.footerBlinkAction;
     }
 
     private String processStatusDetail(@NonNull final String status, @NonNull final String statusDetail) {
@@ -55,5 +65,55 @@ public class ProcessorPaymentResult {
             }
         }
         return statusDetail;
+    }
+
+    public static class Builder {
+        protected Long paymentId;
+        protected String status;
+        protected String statusDetail;
+        protected PaymentData paymentData;
+        protected String headerTitle;
+        protected @DrawableRes int headerIcon;
+        private Footer.FooterAction footerButtonAction;
+        private Footer.FooterAction footerBlinkAction;
+
+        public Builder setPaymentId(final Long paymentId) {
+            this.paymentId = paymentId;
+            return this;
+        }
+
+        public Builder setStatus(final String status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setStatusDetail(final String statusDetail) {
+            this.statusDetail = statusDetail;
+            return this;
+        }
+
+        public Builder setHeaderTitle(final String headerTitle) {
+            this.headerTitle = headerTitle;
+            return this;
+        }
+
+        public Builder setHeaderIcon(final int headerIcon) {
+            this.headerIcon = headerIcon;
+            return this;
+        }
+
+        public Builder setFooterButtonAction(final Footer.FooterAction footerButtonAction) {
+            this.footerButtonAction = footerButtonAction;
+            return this;
+        }
+
+        public Builder setFooterBlinkAction(final Footer.FooterAction footerBlinkAction) {
+            this.footerBlinkAction = footerBlinkAction;
+            return this;
+        }
+
+        public ProcessorPaymentResult build() {
+            return new ProcessorPaymentResult(this);
+        }
     }
 }

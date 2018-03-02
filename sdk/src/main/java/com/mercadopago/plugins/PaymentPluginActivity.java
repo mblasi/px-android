@@ -81,19 +81,23 @@ public class PaymentPluginActivity extends AppCompatActivity implements ActionDi
     }
 
     private PaymentResult toPaymentResult(@NonNull final ProcessorPaymentResult pluginResult) {
-
+        final CheckoutStore store = CheckoutStore.getInstance();
         final Payment payment = new Payment();
         payment.setId(pluginResult.paymentId);
-        payment.setPaymentMethodId(pluginResult.paymentData.getPaymentMethod().getId());
+        payment.setPaymentMethodId(store.getPaymentData().getPaymentMethod().getId());
         payment.setPaymentTypeId(PaymentTypes.PLUGIN);
         payment.setStatus(pluginResult.status);
         payment.setStatusDetail(pluginResult.statusDetail);
 
         return new PaymentResult.Builder()
-                .setPaymentData(pluginResult.paymentData)
+                .setPaymentData(store.getPaymentData())
                 .setPaymentId(payment.getId())
                 .setPaymentStatus(payment.getStatus())
                 .setPaymentStatusDetail(payment.getStatusDetail())
+                .setHeaderTitle(pluginResult.headerTitle)
+                .setHeaderIcon(pluginResult.headerIcon)
+                .setFooterButtonAction(pluginResult.footerButtonAction)
+                .setFooterlinkAction(pluginResult.footerBlinkAction)
                 .build();
     }
 }
