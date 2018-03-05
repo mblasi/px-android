@@ -32,9 +32,11 @@ public class ReviewAndConfirmContainer extends Component<ReviewAndConfirmContain
     public Summary getSummaryComponent() {
         final SummaryProps summaryProps = new SummaryProps.Builder()
                 .setAmount(props.summaryModel.amount)
+                .setCurrencyId(props.summaryModel.currencyId)
                 .setPaymentMethod(props.summaryModel.paymentMethod)
                 .setPayerCost(props.summaryModel.payerCost)
                 .setSite(props.summaryModel.site)
+                .setSummary(props.summaryModel.summary)
                 .setDiscount(props.summaryModel.discount)
                 .build();
 

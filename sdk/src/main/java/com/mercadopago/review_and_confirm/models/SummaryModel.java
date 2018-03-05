@@ -7,7 +7,6 @@ import com.mercadopago.model.Discount;
 import com.mercadopago.model.PayerCost;
 import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.model.Site;
-import com.mercadopago.model.Summary;
 
 import java.math.BigDecimal;
 
@@ -37,7 +36,7 @@ public class SummaryModel implements Parcelable {
     }
 
     protected SummaryModel(Parcel in) {
-        //TODO
+        currencyId = in.readString();
     }
 
     public static final Creator<SummaryModel> CREATOR = new Creator<SummaryModel>() {
@@ -61,5 +60,6 @@ public class SummaryModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         //TODO
+        parcel.writeString(currencyId);
     }
 }
