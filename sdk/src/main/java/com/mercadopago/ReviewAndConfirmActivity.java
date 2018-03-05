@@ -241,7 +241,8 @@ public class ReviewAndConfirmActivity extends MercadoPagoBaseActivity implements
     @Override
     public void trackScreen() {
         MPTrackingContext mpTrackingContext = new MPTrackingContext.Builder(this, mPublicKey)
-                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setCheckoutVersion("test-px-android")
+                .setTrackingStrategy(TrackingUtil.REALTIME_STRATEGY)
                 .build();
 
         PaymentData paymentData = mPresenter.getPaymentData();
