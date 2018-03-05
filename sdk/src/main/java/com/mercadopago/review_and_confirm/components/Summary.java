@@ -3,6 +3,7 @@ package com.mercadopago.review_and_confirm.components;
 import android.support.annotation.NonNull;
 
 import com.mercadopago.components.Component;
+import com.mercadopago.lite.constants.PaymentTypes;
 import com.mercadopago.model.SummaryDetail;
 import com.mercadopago.review_and_confirm.props.AmountDescriptionProps;
 import com.mercadopago.review_and_confirm.props.SummaryProps;

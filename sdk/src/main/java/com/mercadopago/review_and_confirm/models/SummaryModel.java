@@ -42,6 +42,22 @@ public class SummaryModel implements Parcelable {
         this.discount = discount;
     }
 
+    protected SummaryModel(Parcel in) {
+        currencyId = in.readString();
+    }
+
+    public static final Creator<SummaryModel> CREATOR = new Creator<SummaryModel>() {
+        @Override
+        public SummaryModel createFromParcel(Parcel in) {
+            return new SummaryModel(in);
+        }
+
+        @Override
+        public SummaryModel[] newArray(int size) {
+            return new SummaryModel[size];
+        }
+    };
+
     @Override
     public int describeContents() {
         //TODO
@@ -51,5 +67,6 @@ public class SummaryModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         //TODO
+        parcel.writeString(currencyId);
     }
 }

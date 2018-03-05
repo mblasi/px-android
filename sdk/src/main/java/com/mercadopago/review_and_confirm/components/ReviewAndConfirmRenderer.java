@@ -29,7 +29,9 @@ public class ReviewAndConfirmRenderer extends Renderer<ReviewAndConfirmContainer
         LinearLayout linearLayout = createMainLayout(context);
 
         //TODO add view item - add view custom
-        addSummary(component.props.summaryModel, linearLayout);
+
+        Renderer summary = RendererFactory.create(linearLayout.getContext(), component.getSummaryComponent());
+        summary.render(linearLayout);
 
         if (component.props.preferences.hasCustomTopView()) {
             Renderer renderer = RendererFactory.create(context, component.props.preferences.getTopComponent());
@@ -81,8 +83,9 @@ public class ReviewAndConfirmRenderer extends Renderer<ReviewAndConfirmContainer
                 component.getDispatcher().dispatch(new CancelPaymentAction());
             }
         });
+    }
 
-        //TODO getSummary component to summaryComponent
+    //TODO getSummary component to summaryComponent
 
     private void addSummary(final SummaryModel summaryModel,
                             final ViewGroup container) {

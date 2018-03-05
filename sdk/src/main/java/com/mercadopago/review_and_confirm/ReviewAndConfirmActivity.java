@@ -24,6 +24,7 @@ import com.mercadopago.review_and_confirm.components.actions.ChangePaymentMethod
 import com.mercadopago.review_and_confirm.components.actions.ConfirmPaymentAction;
 import com.mercadopago.review_and_confirm.models.PaymentModel;
 import com.mercadopago.review_and_confirm.models.ReviewAndConfirmPreferences;
+import com.mercadopago.review_and_confirm.models.SummaryModel;
 import com.mercadopago.review_and_confirm.models.TermsAndConditionsModel;
 import com.mercadopago.tracker.Tracker;
 import com.mercadopago.uicontrollers.FontCache;
@@ -35,6 +36,7 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
 
     private static final String EXTRA_TERMS_AND_CONDITIONS = "extra_terms_and_conditions";
     private static final String EXTRA_PAYMENT_MODEL = "extra_payment_model";
+    private static final String EXTRA_SUMMARY_MODEL = "extra_summary_model";
     private static final String EXTRA_PUBLIC_KEY = "extra_public_key";
 
     private View floatingConfirmLayout;
@@ -126,9 +128,12 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
         Bundle extras = intent.getExtras();
         TermsAndConditionsModel termsAndConditionsModel = null;
         PaymentModel paymentModel = null;
+        SummaryModel summaryModel = null;
+
         if (extras != null) {
             termsAndConditionsModel = extras.getParcelable(EXTRA_TERMS_AND_CONDITIONS);
             paymentModel = extras.getParcelable(EXTRA_PAYMENT_MODEL);
+            summaryModel = extras.getParcelable(EXTRA_SUMMARY_MODEL);
             Tracker.trackReviewAndConfirmScreen(this, getIntent().getStringExtra(EXTRA_PUBLIC_KEY), paymentModel);
         }
 

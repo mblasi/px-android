@@ -1,8 +1,8 @@
 package com.mercadopago.review_and_confirm.components;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.Spanned;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -24,8 +24,8 @@ import java.math.BigDecimal;
 public class SummaryRenderer extends Renderer<Summary> {
 
     @Override
-    public View render(final Summary component, final Context context, final ViewGroup parent) {
-        final View summaryView = LayoutInflater.from(context).inflate(R.layout.mpsdk_review_summary_component, null, false);
+    public View render(@NonNull final Summary component, @NonNull final Context context, final ViewGroup parent) {
+        final View summaryView = inflate(R.layout.mpsdk_review_summary_component, parent);
         final MPTextView subtotalAmountTextView = summaryView.findViewById(R.id.mpsdkReviewSummarySubtotalText);
         final MPTextView totalAmountTextView = summaryView.findViewById(R.id.mpsdkReviewSummaryTotalText);
         final FrameLayout payerCostContainer = summaryView.findViewById(R.id.mpsdkReviewSummaryPayerCostContainer);

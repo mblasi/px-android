@@ -3,7 +3,6 @@ package com.mercadopago.review_and_confirm.components;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.Spanned;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,8 +21,7 @@ public class AmountDescriptionRenderer extends Renderer<AmountDescription> {
 
     @Override
     public View render(@NonNull final AmountDescription component,@NonNull final Context context, final ViewGroup parent) {
-        //final View amountDescriptionView = inflate(R.layout.mpsdk_amount_description_component, parent);
-        final View bodyView = LayoutInflater.from(context).inflate(R.layout.mpsdk_amount_description_component, null, false);
+        final View bodyView = inflate(R.layout.mpsdk_amount_description_component, parent);
         final MPTextView descriptionTextView = bodyView.findViewById(R.id.mpsdkDescription);
         final MPTextView amountTextView = bodyView.findViewById(R.id.mpsdkAmount);
 
