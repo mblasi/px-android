@@ -3,6 +3,7 @@ package com.mercadopago.review_and_confirm.components;
 import android.support.annotation.NonNull;
 
 import com.mercadopago.components.Component;
+import com.mercadopago.core.CheckoutStore;
 import com.mercadopago.lite.constants.PaymentTypes;
 import com.mercadopago.model.SummaryDetail;
 import com.mercadopago.review_and_confirm.props.AmountDescriptionProps;
@@ -70,16 +71,62 @@ public class Summary extends Component<SummaryProps, Void> {
     public List<AmountDescription> getAmountDescriptionComponents() {
         List<AmountDescription> amountDescriptionList = new ArrayList<>();
 
-        for (SummaryDetail summaryDetail : props.summary.getSummaryDetails()) {
+        for (SummaryDetail summaryDetail : getSummary().getSummaryDetails()) {
             final AmountDescriptionProps amountDescriptionProps = new AmountDescriptionProps(
                     summaryDetail.getTotalAmount(),
                     summaryDetail.getTitle(),
                     props.currencyId,
                     summaryDetail.getTextColor());
+
             amountDescriptionList.add(new AmountDescription(amountDescriptionProps));
         }
 
         return amountDescriptionList;
+    }
+
+    private com.mercadopago.model.Summary getSummary() {
+        com.mercadopago.model.Summary.Builder summaryBuilder = new com.mercadopago.model.Summary.Builder();
+
+        if (reviewScreenPreference != null && isValidTotalAmount() && hasProductAmount()) {
+            summaryBuilder.addSummaryProductDetail(reviewScreenPreference.getProductAmount(), getSummaryProductsTitle(), getDefaultTextColor())
+                    .addSummaryShippingDetail(reviewScreenPreference.getShippingAmount(), getSummaryShippingTitle(), getDefaultTextColor())
+                    .addSummaryArrearsDetail(reviewScreenPreference.getArrearsAmount(), getSummaryArrearTitle(), getDefaultTextColor())
+                    .addSummaryTaxesDetail(reviewScreenPreference.getTaxesAmount(), getSummaryTaxesTitle(), getDefaultTextColor())
+                    .addSummaryDiscountDetail(getDiscountAmount(), getSummaryDiscountsTitle(), getDiscountTextColor())
+                    .setDisclaimerText(reviewScreenPreference.getDisclaimerText())
+                    .setDisclaimerColor(getDisclaimerTextColor());
+
+            if (getChargesAmount().compareTo(BigDecimal.ZERO) > 0) {
+                summaryBuilder.addSummaryChargeDetail(getChargesAmount(), getSummaryChargesTitle(), getDefaultTextColor());
+            }
+
+        } else {
+            summaryBuilder.addSummaryProductDetail(amount, getSummaryProductsTitle(), getDefaultTextColor());
+
+            if (payerCost != null && getPayerCostChargesAmount().compareTo(BigDecimal.ZERO) > 0) {
+                summaryBuilder.addSummaryChargeDetail(getPayerCostChargesAmount(), getSummaryChargesTitle(), getDefaultTextColor());
+            }
+
+            if (reviewScreenPreference != null && !isEmpty(reviewScreenPreference.getDisclaimerText())) {
+                summaryBuilder.setDisclaimerText(reviewScreenPreference.getDisclaimerText())
+                        .setDisclaimerColor(getDisclaimerTextColor());
+            }
+
+            if (discount != null) {
+                summaryBuilder.addSummaryDiscountDetail(discount.getCouponAmount(), getSummaryDiscountsTitle(), getDiscountTextColor());
+            }
+        }
+
+        return summaryBuilder.build();
+    }
+
+    private boolean isValidTotalAmount() {
+        BigDecimal totalAmountPreference = reviewScreenPreference.getTotalAmount();
+        return totalAmountPreference.compareTo(amount) == 0;
+    }
+
+    private boolean hasProductAmount() {
+        return reviewScreenPreference.hasProductAmount();
     }
 
     private boolean isEmptySummaryDetails() {

@@ -44,11 +44,14 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     public static void start(final Activity activity,
                              final String merchantPublicKey,
                              final TermsAndConditionsModel termsAndConditions,
-                             final PaymentModel paymentModel) {
+                             final PaymentModel paymentModel,
+                             final SummaryModel summaryModel) {
+        //TODO result code should be changed by the outside.
         Intent intent = new Intent(activity, ReviewAndConfirmActivity.class);
         intent.putExtra(EXTRA_PUBLIC_KEY, merchantPublicKey);
         intent.putExtra(EXTRA_TERMS_AND_CONDITIONS, termsAndConditions);
         intent.putExtra(EXTRA_PAYMENT_MODEL, paymentModel);
+        intent.putExtra(EXTRA_SUMMARY_MODEL, summaryModel);
         activity.startActivityForResult(intent, MercadoPagoComponents.Activities.REVIEW_AND_CONFIRM_REQUEST_CODE);
     }
 

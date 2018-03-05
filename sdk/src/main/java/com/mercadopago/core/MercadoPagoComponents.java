@@ -42,6 +42,7 @@ import com.mercadopago.preferences.PaymentResultScreenPreference;
 import com.mercadopago.preferences.ReviewScreenPreference;
 import com.mercadopago.preferences.ServicePreference;
 import com.mercadopago.review_and_confirm.models.PaymentModel;
+import com.mercadopago.review_and_confirm.models.SummaryModel;
 import com.mercadopago.review_and_confirm.models.TermsAndConditionsModel;
 import com.mercadopago.uicontrollers.reviewandconfirm.ReviewItemsView;
 import com.mercadopago.uicontrollers.reviewandconfirm.ReviewPaymentOffView;
@@ -419,12 +420,12 @@ public class MercadoPagoComponents {
                 // TODO remove
 //                Intent intent = new Intent(activity, ReviewAndConfirmActivity.class);
 //                intent.putExtra("merchantPublicKey", merchantPublicKey);
-//                intent.putExtra("hasExtraPaymentMethods", hasExtraPaymentMethods);
 //                intent.putExtra("amount", amount.toString());
 //                intent.putExtra("site", JsonUtil.getInstance().toJson(site));
-//                intent.putExtra("issuer", JsonUtil.getInstance().toJson(issuer));
 //                intent.putExtra("paymentMethod", JsonUtil.getInstance().toJson(paymentMethod));
 //                intent.putExtra("payerCost", JsonUtil.getInstance().toJson(payerCost));
+//                intent.putExtra("hasExtraPaymentMethods", hasExtraPaymentMethods);
+//                intent.putExtra("issuer", JsonUtil.getInstance().toJson(issuer));
 //                intent.putExtra("token", JsonUtil.getInstance().toJson(token));
 //                intent.putExtra("paymentMethodCommentInfo", paymentMethodCommentInfo);
 //                intent.putExtra("paymentMethodDescriptionInfo", paymentMethodDescriptionInfo);
@@ -438,7 +439,8 @@ public class MercadoPagoComponents {
                 //TODO remove the two trues and validate data.
                 TermsAndConditionsModel termsAndConditionsModel = new TermsAndConditionsModel(site.getId(), termsAndConditionsEnabled);
                 PaymentModel paymentModel = new PaymentModel(paymentMethod, token, issuer, hasExtraPaymentMethods);
-                com.mercadopago.review_and_confirm.ReviewAndConfirmActivity.start(activity, merchantPublicKey, termsAndConditionsModel, paymentModel);
+                SummaryModel summaryModel = new SummaryModel(amount, paymentMethod, site, payerCost, discount);
+                com.mercadopago.review_and_confirm.ReviewAndConfirmActivity.start(activity, merchantPublicKey, termsAndConditionsModel, paymentModel, summaryModel);
             }
         }
 

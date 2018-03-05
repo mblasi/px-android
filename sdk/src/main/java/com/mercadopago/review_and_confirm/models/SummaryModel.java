@@ -18,32 +18,26 @@ import java.math.BigDecimal;
 public class SummaryModel implements Parcelable {
 
     public final BigDecimal amount;
-    public final String currencyId;
     public final PaymentMethod paymentMethod;
     public final Site site;
     public final PayerCost payerCost;
-    public final Summary summary;
     public final Discount discount;
 
     public SummaryModel(BigDecimal amount,
-                        String currencyId,
                         PaymentMethod paymentMethod,
                         Site site,
                         PayerCost payerCost,
-                        Summary summary,
                         Discount discount) {
 
         this.amount = amount;
-        this.currencyId = currencyId;
         this.paymentMethod = paymentMethod;
         this.site = site;
         this.payerCost = payerCost;
-        this.summary = summary;
         this.discount = discount;
     }
 
     protected SummaryModel(Parcel in) {
-        currencyId = in.readString();
+        //TODO
     }
 
     public static final Creator<SummaryModel> CREATOR = new Creator<SummaryModel>() {
@@ -67,6 +61,5 @@ public class SummaryModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         //TODO
-        parcel.writeString(currencyId);
     }
 }
