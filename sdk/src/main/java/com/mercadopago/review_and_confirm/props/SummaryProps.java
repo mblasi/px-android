@@ -3,7 +3,6 @@ package com.mercadopago.review_and_confirm.props;
 import android.support.annotation.NonNull;
 
 import com.mercadopago.model.Discount;
-import com.mercadopago.model.Payer;
 import com.mercadopago.model.PayerCost;
 import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.model.Site;

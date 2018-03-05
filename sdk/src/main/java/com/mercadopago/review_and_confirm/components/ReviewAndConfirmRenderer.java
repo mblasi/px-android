@@ -16,8 +16,6 @@ import com.mercadopago.review_and_confirm.components.actions.ChangePaymentMethod
 import com.mercadopago.review_and_confirm.components.actions.ConfirmPaymentAction;
 import com.mercadopago.review_and_confirm.components.payment_method.PaymentMethodComponent;
 import com.mercadopago.review_and_confirm.models.PaymentModel;
-import com.mercadopago.review_and_confirm.models.SummaryModel;
-import com.mercadopago.review_and_confirm.props.SummaryProps;
 
 public class ReviewAndConfirmRenderer extends Renderer<ReviewAndConfirmContainer> {
 
@@ -32,8 +30,6 @@ public class ReviewAndConfirmRenderer extends Renderer<ReviewAndConfirmContainer
 
         Renderer summary = RendererFactory.create(linearLayout.getContext(), component.getSummaryComponent());
         summary.render(linearLayout);
-
-        addSummary(component.props.summaryModel, linearLayout);
 
         if (component.props.preferences.hasCustomTopView()) {
             Renderer renderer = RendererFactory.create(context, component.props.preferences.getTopComponent());
@@ -85,25 +81,6 @@ public class ReviewAndConfirmRenderer extends Renderer<ReviewAndConfirmContainer
                 component.getDispatcher().dispatch(new CancelPaymentAction());
             }
         });
-    }
-
-    //TODO getSummary component to summaryComponent
-
-    private void addSummary(final SummaryModel summaryModel,
-                            final ViewGroup container) {
-
-        SummaryProps summaryProps = new SummaryProps(summaryModel.amount,
-                summaryModel.currencyId,
-                summaryModel.paymentMethod,
-                summaryModel.site,
-                summaryModel.payerCost,
-                summaryModel.summary,
-                summaryModel.discount);
-
-        Summary summaryComponent = new Summary(summaryProps);
-
-        Renderer summary = RendererFactory.create(container.getContext(), summaryComponent);
-        summary.render(container);
     }
 
     private void addPaymentMethod(final PaymentModel paymentModel, final ActionDispatcher dispatcher, final ViewGroup parent) {
