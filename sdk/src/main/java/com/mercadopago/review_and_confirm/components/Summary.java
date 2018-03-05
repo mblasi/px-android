@@ -4,8 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.mercadopago.components.Component;
 import com.mercadopago.core.CheckoutStore;
-import com.mercadopago.lite.constants.PaymentTypes;
 import com.mercadopago.model.SummaryDetail;
+import com.mercadopago.preferences.ReviewScreenPreference;
+import com.mercadopago.review_and_confirm.SummaryProvider;
 import com.mercadopago.review_and_confirm.props.AmountDescriptionProps;
 import com.mercadopago.review_and_confirm.props.SummaryProps;
 
@@ -13,16 +14,22 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mercadopago.util.TextUtils.isEmpty;
+
 /**
  * Created by mromar on 2/28/18.
  */
 
 public class Summary extends Component<SummaryProps, Void> {
 
+    private SummaryProvider provider;
+
     public static final String CFT = "CFT ";
 
-    public Summary(@NonNull SummaryProps props) {
+    public Summary(@NonNull final SummaryProps props,
+                   @NonNull final SummaryProvider provider) {
         super(props);
+        this.provider = provider;
     }
 
     public BigDecimal getSubtotalAmount() {
@@ -85,48 +92,92 @@ public class Summary extends Component<SummaryProps, Void> {
     }
 
     private com.mercadopago.model.Summary getSummary() {
+        ReviewScreenPreference reviewScreenPreference = CheckoutStore.getInstance().getReviewScreenPreference();
         com.mercadopago.model.Summary.Builder summaryBuilder = new com.mercadopago.model.Summary.Builder();
 
         if (reviewScreenPreference != null && isValidTotalAmount() && hasProductAmount()) {
-            summaryBuilder.addSummaryProductDetail(reviewScreenPreference.getProductAmount(), getSummaryProductsTitle(), getDefaultTextColor())
-                    .addSummaryShippingDetail(reviewScreenPreference.getShippingAmount(), getSummaryShippingTitle(), getDefaultTextColor())
-                    .addSummaryArrearsDetail(reviewScreenPreference.getArrearsAmount(), getSummaryArrearTitle(), getDefaultTextColor())
-                    .addSummaryTaxesDetail(reviewScreenPreference.getTaxesAmount(), getSummaryTaxesTitle(), getDefaultTextColor())
-                    .addSummaryDiscountDetail(getDiscountAmount(), getSummaryDiscountsTitle(), getDiscountTextColor())
+            summaryBuilder.addSummaryProductDetail(reviewScreenPreference.getProductAmount(), provider.getSummaryProductsTitle(), provider.getDefaultTextColor())
+                    .addSummaryShippingDetail(reviewScreenPreference.getShippingAmount(), provider.getSummaryShippingTitle(), provider.getDefaultTextColor())
+                    .addSummaryArrearsDetail(reviewScreenPreference.getArrearsAmount(), provider.getSummaryArrearTitle(), provider.getDefaultTextColor())
+                    .addSummaryTaxesDetail(reviewScreenPreference.getTaxesAmount(), provider.getSummaryTaxesTitle(), provider.getDefaultTextColor())
+                    .addSummaryDiscountDetail(getDiscountAmount(), provider.getSummaryDiscountsTitle(), provider.getDiscountTextColor())
                     .setDisclaimerText(reviewScreenPreference.getDisclaimerText())
-                    .setDisclaimerColor(getDisclaimerTextColor());
+                    .setDisclaimerColor(provider.getDisclaimerTextColor());
 
             if (getChargesAmount().compareTo(BigDecimal.ZERO) > 0) {
-                summaryBuilder.addSummaryChargeDetail(getChargesAmount(), getSummaryChargesTitle(), getDefaultTextColor());
+                summaryBuilder.addSummaryChargeDetail(getChargesAmount(), provider.getSummaryChargesTitle(), provider.getDefaultTextColor());
             }
 
         } else {
-            summaryBuilder.addSummaryProductDetail(amount, getSummaryProductsTitle(), getDefaultTextColor());
+            summaryBuilder.addSummaryProductDetail(props.amount, provider.getSummaryProductsTitle(), provider.getDefaultTextColor());
 
-            if (payerCost != null && getPayerCostChargesAmount().compareTo(BigDecimal.ZERO) > 0) {
-                summaryBuilder.addSummaryChargeDetail(getPayerCostChargesAmount(), getSummaryChargesTitle(), getDefaultTextColor());
+            if (props.payerCost != null && getPayerCostChargesAmount().compareTo(BigDecimal.ZERO) > 0) {
+                summaryBuilder.addSummaryChargeDetail(getPayerCostChargesAmount(), provider.getSummaryChargesTitle(), provider.getDefaultTextColor());
             }
 
             if (reviewScreenPreference != null && !isEmpty(reviewScreenPreference.getDisclaimerText())) {
                 summaryBuilder.setDisclaimerText(reviewScreenPreference.getDisclaimerText())
-                        .setDisclaimerColor(getDisclaimerTextColor());
+                        .setDisclaimerColor(provider.getDisclaimerTextColor());
             }
 
-            if (discount != null) {
-                summaryBuilder.addSummaryDiscountDetail(discount.getCouponAmount(), getSummaryDiscountsTitle(), getDiscountTextColor());
+            if (props.discount != null) {
+                summaryBuilder.addSummaryDiscountDetail(props.discount.getCouponAmount(), provider.getSummaryDiscountsTitle(), provider.getDiscountTextColor());
             }
         }
 
         return summaryBuilder.build();
     }
 
+    private BigDecimal getChargesAmount() {
+        ReviewScreenPreference reviewScreenPreference = CheckoutStore.getInstance().getReviewScreenPreference();
+        BigDecimal interestAmount = new BigDecimal(0);
+
+        if (reviewScreenPreference.getChargeAmount() != null) {
+            interestAmount = reviewScreenPreference.getChargeAmount();
+        }
+
+        if (props.payerCost != null && props.payerCost.getInstallments() > 1 && isValidAmount(props.payerCost.getTotalAmount())) {
+            BigDecimal totalInterestsAmount = getPayerCostChargesAmount();
+            interestAmount = interestAmount.add(totalInterestsAmount);
+        }
+
+        return interestAmount;
+    }
+
+    private BigDecimal getPayerCostChargesAmount() {
+        BigDecimal totalInterestsAmount;
+
+        if (props.discount != null && isValidAmount(props.discount.getCouponAmount())) {
+            BigDecimal totalAmount = props.amount.subtract(props.discount.getCouponAmount());
+            totalInterestsAmount = props.payerCost.getTotalAmount().subtract(totalAmount);
+        } else {
+            totalInterestsAmount = props.payerCost.getTotalAmount().subtract(props.amount);
+        }
+
+        return totalInterestsAmount;
+    }
+
+    private BigDecimal getDiscountAmount() {
+        BigDecimal discountAmount = CheckoutStore.getInstance().getReviewScreenPreference().getDiscountAmount();
+
+        if (props.discount != null && isValidAmount(props.discount.getCouponAmount())) {
+            discountAmount = discountAmount.add(props.discount.getCouponAmount());
+        }
+
+        return discountAmount;
+    }
+
+    private boolean isValidAmount(BigDecimal amount) {
+        return amount != null && amount.compareTo(BigDecimal.ZERO) >= 0;
+    }
+
     private boolean isValidTotalAmount() {
-        BigDecimal totalAmountPreference = reviewScreenPreference.getTotalAmount();
-        return totalAmountPreference.compareTo(amount) == 0;
+        BigDecimal totalAmountPreference = CheckoutStore.getInstance().getReviewScreenPreference().getTotalAmount();
+        return totalAmountPreference.compareTo(props.amount) == 0;
     }
 
     private boolean hasProductAmount() {
-        return reviewScreenPreference.hasProductAmount();
+        return CheckoutStore.getInstance().getReviewScreenPreference().hasProductAmount();
     }
 
     private boolean isEmptySummaryDetails() {
