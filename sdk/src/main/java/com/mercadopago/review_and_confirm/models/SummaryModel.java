@@ -60,5 +60,6 @@ public class SummaryModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         //TODO
+        parcel.writeString(currencyId);
     }
 }
