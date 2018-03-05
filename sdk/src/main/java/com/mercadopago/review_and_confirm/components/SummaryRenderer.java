@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 public class SummaryRenderer extends Renderer<Summary> {
 
     @Override
-    public View render(final Summary component, final Context context, ViewGroup viewGroup) {
+    public View render(final Summary component, final Context context, final ViewGroup parent) {
         final View summaryView = LayoutInflater.from(context).inflate(R.layout.mpsdk_review_summary_component, null, false);
         final MPTextView subtotalAmountTextView = summaryView.findViewById(R.id.mpsdkReviewSummarySubtotalText);
         final MPTextView totalAmountTextView = summaryView.findViewById(R.id.mpsdkReviewSummaryTotalText);

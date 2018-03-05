@@ -131,8 +131,9 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
             paymentModel = extras.getParcelable(EXTRA_PAYMENT_MODEL);
             Tracker.trackReviewAndConfirmScreen(this, getIntent().getStringExtra(EXTRA_PUBLIC_KEY), paymentModel);
         }
+
         ReviewAndConfirmPreferences reviewAndConfirmPreferences = CheckoutStore.getInstance().getReviewAndConfirmPreferences();
-        return new ReviewAndConfirmContainer.Props(termsAndConditionsModel, paymentModel, reviewAndConfirmPreferences);
+        return new ReviewAndConfirmContainer.Props(termsAndConditionsModel, paymentModel, summaryModel, reviewAndConfirmPreferences);
     }
 
     private void setFloatingVisibility(boolean visible) {

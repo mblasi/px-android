@@ -1,9 +1,11 @@
 package com.mercadopago.review_and_confirm.components;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.mercadopago.R;
 import com.mercadopago.components.Renderer;
@@ -19,7 +21,8 @@ import java.math.BigDecimal;
 public class AmountDescriptionRenderer extends Renderer<AmountDescription> {
 
     @Override
-    public View render(AmountDescription component, Context context) {
+    public View render(@NonNull final AmountDescription component,@NonNull final Context context, final ViewGroup parent) {
+        //final View amountDescriptionView = inflate(R.layout.mpsdk_amount_description_component, parent);
         final View bodyView = LayoutInflater.from(context).inflate(R.layout.mpsdk_amount_description_component, null, false);
         final MPTextView descriptionTextView = bodyView.findViewById(R.id.mpsdkDescription);
         final MPTextView amountTextView = bodyView.findViewById(R.id.mpsdkAmount);
