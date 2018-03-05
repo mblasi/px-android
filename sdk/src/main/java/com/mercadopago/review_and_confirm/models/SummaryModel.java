@@ -36,7 +36,7 @@ public class SummaryModel implements Parcelable {
     }
 
     protected SummaryModel(Parcel in) {
-        currencyId = in.readString();
+        //TODO
     }
 
     public static final Creator<SummaryModel> CREATOR = new Creator<SummaryModel>() {
@@ -60,6 +60,5 @@ public class SummaryModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         //TODO
-        parcel.writeString(currencyId);
     }
 }
