@@ -3,6 +3,7 @@ package com.mercadopago.preferences;
 import android.support.annotation.NonNull;
 
 import com.mercadopago.constants.ReviewKeys;
+import com.mercadopago.core.CheckoutStore;
 import com.mercadopago.model.Reviewable;
 
 import java.math.BigDecimal;
@@ -306,7 +307,9 @@ public class ReviewScreenPreference {
         }
 
         public ReviewScreenPreference build() {
-            return new ReviewScreenPreference(this);
+            final ReviewScreenPreference reviewScreenPreference = new ReviewScreenPreference(this);
+            CheckoutStore.getInstance().setReviewScreenPreference(reviewScreenPreference);
+            return reviewScreenPreference;
         }
     }
 }
