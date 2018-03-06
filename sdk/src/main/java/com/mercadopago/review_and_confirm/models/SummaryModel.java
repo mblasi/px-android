@@ -25,6 +25,8 @@ public class SummaryModel implements Parcelable {
     public final String cftPercent;
     public final String couponAmount;
     public final boolean hasPercentOff;
+    public final String installmentsRate;
+    public final String installmentAmount;
 
     public SummaryModel(BigDecimal amount,
                         PaymentMethod paymentMethod,
@@ -41,6 +43,8 @@ public class SummaryModel implements Parcelable {
         this.cftPercent = payerCost.getCFTPercent();
         this.couponAmount = discount.getCouponAmount().toString();
         this.hasPercentOff = discount.hasPercentOff();
+        this.installmentsRate = payerCost.getInstallmentRate().toString();
+        this.installmentAmount = payerCost.getInstallmentAmount().toString();
     }
 
     protected SummaryModel(Parcel in) {
@@ -53,6 +57,8 @@ public class SummaryModel implements Parcelable {
         cftPercent = in.readString();
         couponAmount = in.readString();
         hasPercentOff = in.readByte() != 0;
+        installmentsRate = in.readString();
+        installmentAmount = in.readString();
     }
 
     public static final Creator<SummaryModel> CREATOR = new Creator<SummaryModel>() {
@@ -83,6 +89,8 @@ public class SummaryModel implements Parcelable {
         dest.writeString(cftPercent);
         dest.writeString(couponAmount);
         dest.writeByte((byte) (hasPercentOff ? 1 : 0));
+        dest.writeString(installmentsRate);
+        dest.writeString(installmentAmount);
     }
 
     public BigDecimal getAmount() {
@@ -99,5 +107,13 @@ public class SummaryModel implements Parcelable {
 
     public BigDecimal getCouponAmount() {
         return new BigDecimal(couponAmount);
+    }
+
+    public BigDecimal getInstallmentsRate() {
+        return new BigDecimal(installmentsRate);
+    }
+
+    public BigDecimal getInstallmentAmount() {
+        return new BigDecimal(installmentAmount);
     }
 }

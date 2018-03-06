@@ -21,6 +21,8 @@ public class SummaryProps {
     public final String cftPercent;
     public final BigDecimal couponAmount;
     public final boolean hasPercentOff;
+    public final BigDecimal installmentsRate;
+    public final BigDecimal installmentAmount;
 
     public SummaryProps(@NonNull final SummaryModel summaryModel) {
         this.amount = summaryModel.getAmount();
@@ -32,5 +34,7 @@ public class SummaryProps {
         this.cftPercent = summaryModel.cftPercent;
         this.couponAmount = summaryModel.getCouponAmount();
         this.hasPercentOff = summaryModel.hasPercentOff;
+        this.installmentsRate = summaryModel.getInstallmentsRate();
+        this.installmentAmount = summaryModel.getInstallmentAmount();
     }
 }

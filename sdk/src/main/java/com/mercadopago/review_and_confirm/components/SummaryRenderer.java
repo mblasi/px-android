@@ -43,10 +43,11 @@ public class SummaryRenderer extends Renderer<Summary> {
 
         if (component.hasToRenderPayerCost()) {
             //payer cost
-            PayerCostColumn payerCostColumn = new PayerCostColumn(context, component.props.site);
+            PayerCostColumn payerCostColumn = new PayerCostColumn(context, component.props.currencyId, component.props.siteId, component.props.installmentsRate,
+                    component.props.installments, component.props.payerCostTotalAmount, component.props.installmentAmount);
             payerCostColumn.inflateInParent(payerCostContainer, true);
             payerCostColumn.initializeControls();
-            payerCostColumn.drawPayerCostWithoutTotal(component.props.payerCost);
+            payerCostColumn.drawPayerCostWithoutTotal();
 
             //finance
             setText(cftTextView, component.getFinance());
@@ -59,7 +60,7 @@ public class SummaryRenderer extends Renderer<Summary> {
         setText(totalAmountTextView, getFormattedAmount(component.getTotalAmount(), component.props.currencyId));
 
         //disclaimer
-        setText(disclaimerTextView, component.props.summary.getDisclaimerText());
+        setText(disclaimerTextView, component.getSummary().getDisclaimerText());
 
         return summaryView;
     }
