@@ -40,12 +40,14 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     private static final String EXTRA_PUBLIC_KEY = "extra_public_key";
 
     private View floatingConfirmLayout;
+    private SummaryProvider summaryProvider;
 
     public static void start(final Activity activity,
                              final String merchantPublicKey,
                              final TermsAndConditionsModel termsAndConditions,
                              final PaymentModel paymentModel,
                              final SummaryModel summaryModel) {
+
         //TODO result code should be changed by the outside.
         Intent intent = new Intent(activity, ReviewAndConfirmActivity.class);
         intent.putExtra(EXTRA_PUBLIC_KEY, merchantPublicKey);
@@ -59,6 +61,9 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mpsdk_view_container_review_and_confirm);
+
+        summaryProvider = new SummaryProviderImpl(this);
+
         initializeViews();
     }
 
@@ -121,7 +126,7 @@ public final class ReviewAndConfirmActivity extends MercadoPagoBaseActivity impl
     private void initContent(final ViewGroup mainContent) {
         ReviewAndConfirmContainer.Props props = getActivityParameters();
         final ComponentManager manager = new ComponentManager(this);
-        final ReviewAndConfirmContainer container = new ReviewAndConfirmContainer(props);
+        final ReviewAndConfirmContainer container = new ReviewAndConfirmContainer(props, summaryProvider);
         container.setDispatcher(this);
         manager.render(container, mainContent);
     }

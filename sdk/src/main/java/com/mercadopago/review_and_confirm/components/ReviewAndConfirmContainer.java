@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.mercadopago.components.ActionDispatcher;
 import com.mercadopago.components.Component;
 import com.mercadopago.components.RendererFactory;
+import com.mercadopago.review_and_confirm.SummaryProvider;
 import com.mercadopago.review_and_confirm.models.PaymentModel;
 import com.mercadopago.review_and_confirm.models.ReviewAndConfirmPreferences;
 import com.mercadopago.review_and_confirm.models.SummaryModel;
@@ -13,12 +14,16 @@ import com.mercadopago.review_and_confirm.props.SummaryProps;
 
 public class ReviewAndConfirmContainer extends Component<ReviewAndConfirmContainer.Props, Void> {
 
+    private SummaryProvider summaryProvider;
+
     static {
         RendererFactory.register(ReviewAndConfirmContainer.class, ReviewAndConfirmRenderer.class);
     }
 
-    public ReviewAndConfirmContainer(@NonNull Props props) {
+    public ReviewAndConfirmContainer(@NonNull final Props props,
+                                     @NonNull final SummaryProvider summaryProvider) {
         super(props);
+        this.summaryProvider = summaryProvider;
     }
 
     public ReviewAndConfirmContainer(@NonNull Props props, @NonNull ActionDispatcher dispatcher) {
@@ -30,15 +35,10 @@ public class ReviewAndConfirmContainer extends Component<ReviewAndConfirmContain
     }
 
     public Summary getSummaryComponent() {
-        final SummaryProps summaryProps = new SummaryProps.Builder()
-                .setAmount(props.summaryModel.amount)
-                .setPaymentMethod(props.summaryModel.paymentMethod)
-                .setPayerCost(props.summaryModel.payerCost)
-                .setSite(props.summaryModel.site)
-                .setDiscount(props.summaryModel.discount)
-                .build();
 
-        return new Summary(props.summaryModel);
+        SummaryProps summaryProps = new SummaryProps(props.summaryModel);
+
+        return new Summary(summaryProps, summaryProvider);
     }
 
     public static class Props {

@@ -46,12 +46,12 @@ public class Summary extends Component<SummaryProps, Void> {
         BigDecimal totalAmount = null;
 
         if (isCardPaymentMethod()) {
-            if (props.payerCost.getInstallments() == 1) {
+            if (props.installments == 1) {
                 if (props.discount != null && !isEmptySummaryDetails()) {
-                    totalAmount = props.payerCost.getTotalAmount();
+                    totalAmount = props.payerCostTotalAmount;
                 }
             } else {
-                totalAmount = props.payerCost.getTotalAmount();
+                totalAmount = props.payerCostTotalAmount;
             }
         } else if (hasDiscount() && !isEmptySummaryDetails()) {
             totalAmount = getSubtotal();
@@ -61,7 +61,7 @@ public class Summary extends Component<SummaryProps, Void> {
     }
 
     public boolean hasToRenderPayerCost() {
-        return isCardPaymentMethod() && props.payerCost.getInstallments() > 1;
+        return isCardPaymentMethod() && props.installments > 1;
     }
 
     public StringBuilder getFinance() {
@@ -69,7 +69,7 @@ public class Summary extends Component<SummaryProps, Void> {
 
         if (props.payerCost.hasCFT()) {
             stringBuilder.append(CFT);
-            stringBuilder.append(props.payerCost.getCFTPercent());
+            stringBuilder.append(props.cftPercent);
         }
 
         return stringBuilder;
@@ -121,7 +121,7 @@ public class Summary extends Component<SummaryProps, Void> {
             }
 
             if (props.discount != null) {
-                summaryBuilder.addSummaryDiscountDetail(props.discount.getCouponAmount(), provider.getSummaryDiscountsTitle(), provider.getDiscountTextColor());
+                summaryBuilder.addSummaryDiscountDetail(props.couponAmount, provider.getSummaryDiscountsTitle(), provider.getDiscountTextColor());
             }
         }
 
@@ -136,7 +136,7 @@ public class Summary extends Component<SummaryProps, Void> {
             interestAmount = reviewScreenPreference.getChargeAmount();
         }
 
-        if (props.payerCost != null && props.payerCost.getInstallments() > 1 && isValidAmount(props.payerCost.getTotalAmount())) {
+        if (props.payerCost != null && props.installments > 1 && isValidAmount(props.payerCostTotalAmount)) {
             BigDecimal totalInterestsAmount = getPayerCostChargesAmount();
             interestAmount = interestAmount.add(totalInterestsAmount);
         }

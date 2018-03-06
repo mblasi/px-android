@@ -16,11 +16,15 @@ import java.math.BigDecimal;
 
 public class SummaryModel implements Parcelable {
 
-    public final BigDecimal amount;
-    public final PaymentMethod paymentMethod;
-    public final Site site;
-    public final PayerCost payerCost;
-    public final Discount discount;
+    public final String amount;
+    public final String currencyId;
+    public final String siteId;
+    public final String paymentTypeId;
+    public final String payerCostTotalAmount;
+    public final String installments;
+    public final String cftPercent;
+    public final String couponAmount;
+    public final boolean hasPercentOff;
 
     public SummaryModel(BigDecimal amount,
                         PaymentMethod paymentMethod,
@@ -28,15 +32,27 @@ public class SummaryModel implements Parcelable {
                         PayerCost payerCost,
                         Discount discount) {
 
-        this.amount = amount;
-        this.paymentMethod = paymentMethod;
-        this.site = site;
-        this.payerCost = payerCost;
-        this.discount = discount;
+        this.amount = amount.toString();
+        this.currencyId = site.getCurrencyId();
+        this.siteId = site.getId();
+        this.paymentTypeId = paymentMethod.getPaymentTypeId();
+        this.payerCostTotalAmount = payerCost.getTotalAmount().toString();
+        this.installments = payerCost.getInstallments().toString();
+        this.cftPercent = payerCost.getCFTPercent();
+        this.couponAmount = discount.getCouponAmount().toString();
+        this.hasPercentOff = discount.hasPercentOff();
     }
 
     protected SummaryModel(Parcel in) {
-        //TODO
+        amount = in.readString();
+        currencyId = in.readString();
+        siteId = in.readString();
+        paymentTypeId = in.readString();
+        payerCostTotalAmount = in.readString();
+        installments = in.readString();
+        cftPercent = in.readString();
+        couponAmount = in.readString();
+        hasPercentOff = in.readByte() != 0;
     }
 
     public static final Creator<SummaryModel> CREATOR = new Creator<SummaryModel>() {
@@ -53,12 +69,35 @@ public class SummaryModel implements Parcelable {
 
     @Override
     public int describeContents() {
-        //TODO
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        //TODO
+    public void writeToParcel(final Parcel dest, final int flags) {
+        dest.writeString(amount);
+        dest.writeString(currencyId);
+        dest.writeString(siteId);
+        dest.writeString(paymentTypeId);
+        dest.writeString(payerCostTotalAmount);
+        dest.writeString(installments);
+        dest.writeString(cftPercent);
+        dest.writeString(couponAmount);
+        dest.writeByte((byte) (hasPercentOff ? 1 : 0));
+    }
+
+    public BigDecimal getAmount() {
+        return new BigDecimal(amount);
+    }
+
+    public BigDecimal getPayerCostTotalAmount() {
+        return new BigDecimal(payerCostTotalAmount);
+    }
+
+    public Integer getInstallments() {
+        return Integer.parseInt(installments);
+    }
+
+    public BigDecimal getCouponAmount() {
+        return new BigDecimal(couponAmount);
     }
 }
