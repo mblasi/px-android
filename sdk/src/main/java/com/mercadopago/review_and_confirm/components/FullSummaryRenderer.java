@@ -36,6 +36,8 @@ public class FullSummaryRenderer extends Renderer<FullSummary> {
         final MPTextView cftTextView = summaryView.findViewById(R.id.mpsdkCFT);
         final MPTextView disclaimerTextView = summaryView.findViewById(R.id.mpsdkDisclaimer);
         final LinearLayout summaryDetailsContainer = summaryView.findViewById(R.id.mpsdkSummaryDetails);
+        final LinearLayout reviewSummaryPayContainer = summaryView.findViewById(R.id.mpsdkReviewSummaryPay);
+        final View firstSeparetor = summaryView.findViewById(R.id.mpsdkFirstSeparator);
 
         //summaryDetails list
         for (AmountDescription amountDescription : component.getAmountDescriptionComponents()) {
@@ -55,6 +57,9 @@ public class FullSummaryRenderer extends Renderer<FullSummary> {
             //finance
             setText(cftTextView, component.getFinance());
             cftTextView.setVisibility(isEmpty(component.getFinance()) ? View.GONE : View.VISIBLE);
+        } else {
+            reviewSummaryPayContainer.setVisibility(View.GONE);
+            firstSeparetor.setVisibility(View.GONE);
         }
 
         //subtotal

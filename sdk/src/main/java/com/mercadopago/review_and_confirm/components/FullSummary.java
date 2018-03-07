@@ -114,7 +114,7 @@ public class FullSummary extends Component<SummaryModel, Void> {
             }
 
         } else {
-            summaryBuilder.addSummaryProductDetail(props.getAmount(), provider.getSummaryProductsTitle(), provider.getDefaultTextColor());
+            summaryBuilder.addSummaryProductDetail(props.getTotalAmount(), provider.getSummaryProductsTitle(), provider.getDefaultTextColor());
 
             if (isValidAmount(props.getPayerCostTotalAmount()) && getPayerCostChargesAmount().compareTo(BigDecimal.ZERO) > 0) {
                 summaryBuilder.addSummaryChargeDetail(getPayerCostChargesAmount(), provider.getSummaryChargesTitle(), provider.getDefaultTextColor());
@@ -153,10 +153,10 @@ public class FullSummary extends Component<SummaryModel, Void> {
         BigDecimal totalInterestsAmount;
 
         if (isValidAmount(props.getCouponAmount())) {
-            BigDecimal totalAmount = props.getAmount().subtract(props.getCouponAmount());
+            BigDecimal totalAmount = props.getTotalAmount().subtract(props.getCouponAmount());
             totalInterestsAmount = props.getPayerCostTotalAmount().subtract(totalAmount);
         } else {
-            totalInterestsAmount = props.getPayerCostTotalAmount().subtract(props.getAmount());
+            totalInterestsAmount = props.getPayerCostTotalAmount().subtract(props.getTotalAmount());
         }
 
         return totalInterestsAmount;
@@ -178,7 +178,7 @@ public class FullSummary extends Component<SummaryModel, Void> {
 
     private boolean isValidTotalAmount() {
         BigDecimal totalAmountPreference = CheckoutStore.getInstance().getReviewScreenPreference().getTotalAmount();
-        return totalAmountPreference.compareTo(props.getAmount()) == 0;
+        return totalAmountPreference.compareTo(props.getTotalAmount()) == 0;
     }
 
     private boolean hasProductAmount() {
@@ -190,9 +190,9 @@ public class FullSummary extends Component<SummaryModel, Void> {
     }
 
     private BigDecimal getSubtotal() {
-        BigDecimal ans = props.getAmount();
+        BigDecimal ans = props.getTotalAmount();
         if (hasDiscount()) {
-            ans = props.getAmount().subtract(props.getCouponAmount());
+            ans = props.getTotalAmount().subtract(props.getCouponAmount());
         }
         return ans;
     }

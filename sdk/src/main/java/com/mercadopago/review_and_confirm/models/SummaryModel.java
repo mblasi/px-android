@@ -27,6 +27,7 @@ public class SummaryModel implements Parcelable {
     public final boolean hasPercentOff;
     private final String installmentsRate;
     private final String installmentAmount;
+    public final String itemTitle;
 
     public SummaryModel(BigDecimal amount,
                         PaymentMethod paymentMethod,
@@ -45,6 +46,8 @@ public class SummaryModel implements Parcelable {
         this.hasPercentOff = discount != null ? discount.hasPercentOff() : false;
         this.installmentsRate = payerCost.getInstallmentRate().toString();
         this.installmentAmount = payerCost.getInstallmentAmount().toString();
+        //TODO
+        this.itemTitle = "Lala";
     }
 
     protected SummaryModel(Parcel in) {
@@ -59,6 +62,7 @@ public class SummaryModel implements Parcelable {
         hasPercentOff = in.readByte() != 0;
         installmentsRate = in.readString();
         installmentAmount = in.readString();
+        itemTitle = in.readString();
     }
 
     public static final Creator<SummaryModel> CREATOR = new Creator<SummaryModel>() {
@@ -91,9 +95,10 @@ public class SummaryModel implements Parcelable {
         dest.writeByte((byte) (hasPercentOff ? 1 : 0));
         dest.writeString(installmentsRate);
         dest.writeString(installmentAmount);
+        dest.writeString(itemTitle);
     }
 
-    public BigDecimal getAmount() {
+    public BigDecimal getTotalAmount() {
         return new BigDecimal(this.amount);
     }
 

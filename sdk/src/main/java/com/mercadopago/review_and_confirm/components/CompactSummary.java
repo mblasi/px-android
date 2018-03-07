@@ -28,12 +28,6 @@ public class CompactSummary extends Component<SummaryModel, Void> {
     }
 
     public BigDecimal getTotalAmount() {
-        //TODO
-        return new BigDecimal(0);
-    }
-
-    public String getItemTitle() {
-        //TODO
-        return "";
+        return props.getTotalAmount();
     }
 }
