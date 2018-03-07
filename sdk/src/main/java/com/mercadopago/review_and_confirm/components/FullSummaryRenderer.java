@@ -38,6 +38,8 @@ public class FullSummaryRenderer extends Renderer<FullSummary> {
         final LinearLayout summaryDetailsContainer = summaryView.findViewById(R.id.mpsdkSummaryDetails);
         final LinearLayout reviewSummaryPayContainer = summaryView.findViewById(R.id.mpsdkReviewSummaryPay);
         final View firstSeparetor = summaryView.findViewById(R.id.mpsdkFirstSeparator);
+        final LinearLayout totalAmountContainer = summaryView.findViewById(R.id.mpsdkReviewSummaryTotal);
+        final View secondSeparator = summaryView.findViewById(R.id.mpsdkSecondSeparator);
 
         //summaryDetails list
         for (AmountDescription amountDescription : component.getAmountDescriptionComponents()) {
@@ -69,6 +71,8 @@ public class FullSummaryRenderer extends Renderer<FullSummary> {
 
         //total
         setText(totalAmountTextView, getFormattedAmount(component.getTotalAmount(), component.props.currencyId));
+        totalAmountContainer.setVisibility(component.getTotalAmount() == null ? View.GONE : View.VISIBLE);
+        secondSeparator.setVisibility(component.getTotalAmount() == null ? View.GONE : View.VISIBLE);
 
         //disclaimer
         setText(disclaimerTextView, component.getSummary().getDisclaimerText());
