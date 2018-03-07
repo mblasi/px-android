@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mercadopago.R;
 
@@ -16,7 +17,12 @@ import com.mercadopago.customviews.MPTextView;
 import com.mercadopago.uicontrollers.payercosts.PayerCostColumn;
 import com.mercadopago.util.CurrenciesUtil;
 
+import org.w3c.dom.Text;
+
 import java.math.BigDecimal;
+
+import static android.view.View.GONE;
+import static com.mercadopago.util.TextUtils.isEmpty;
 
 /**
  * Created by mromar on 2/28/18.
@@ -28,6 +34,7 @@ public class SummaryRenderer extends Renderer<Summary> {
     public View render(@NonNull final Summary component, @NonNull final Context context, final ViewGroup parent) {
         final View summaryView = inflate(R.layout.mpsdk_review_summary_component, parent);
         final MPTextView subtotalAmountTextView = summaryView.findViewById(R.id.mpsdkReviewSummarySubtotalText);
+        final TextView subtotalLabel = summaryView.findViewById(R.id.subtotal_label);
         final MPTextView totalAmountTextView = summaryView.findViewById(R.id.mpsdkReviewSummaryTotalText);
         final FrameLayout payerCostContainer = summaryView.findViewById(R.id.mpsdkReviewSummaryPayerCostContainer);
         final MPTextView cftTextView = summaryView.findViewById(R.id.mpsdkCFT);
@@ -51,10 +58,13 @@ public class SummaryRenderer extends Renderer<Summary> {
 
             //finance
             setText(cftTextView, component.getFinance());
+            cftTextView.setVisibility(isEmpty(component.getFinance()) ? View.GONE : View.VISIBLE);
         }
 
         //subtotal
-        setText(subtotalAmountTextView, getFormattedAmount(component.getSubtotalAmount(), component.props.currencyId));
+        Spanned subTotal = getFormattedAmount(component.getSubtotalAmount(), component.props.currencyId);
+        setText(subtotalAmountTextView, subTotal);
+        subtotalLabel.setVisibility(subTotal == null ? View.GONE : View.VISIBLE);
 
         //total
         setText(totalAmountTextView, getFormattedAmount(component.getTotalAmount(), component.props.currencyId));
@@ -66,6 +76,6 @@ public class SummaryRenderer extends Renderer<Summary> {
     }
 
     private Spanned getFormattedAmount(BigDecimal amount, String currencyId) {
-        return CurrenciesUtil.getFormattedAmount(amount, currencyId);
+        return amount != null && !isEmpty(currencyId) ? CurrenciesUtil.getFormattedAmount(amount, currencyId) : null;
     }
 }

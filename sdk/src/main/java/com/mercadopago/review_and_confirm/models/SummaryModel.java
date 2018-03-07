@@ -41,8 +41,8 @@ public class SummaryModel implements Parcelable {
         this.payerCostTotalAmount = payerCost.getTotalAmount().toString();
         this.installments = payerCost.getInstallments().toString();
         this.cftPercent = payerCost.getCFTPercent();
-        this.couponAmount = discount.getCouponAmount().toString();
-        this.hasPercentOff = discount.hasPercentOff();
+        this.couponAmount = discount != null ? discount.getCouponAmount().toString() : null;
+        this.hasPercentOff = discount != null ? discount.hasPercentOff() : false;
         this.installmentsRate = payerCost.getInstallmentRate().toString();
         this.installmentAmount = payerCost.getInstallmentAmount().toString();
     }
@@ -91,29 +91,5 @@ public class SummaryModel implements Parcelable {
         dest.writeByte((byte) (hasPercentOff ? 1 : 0));
         dest.writeString(installmentsRate);
         dest.writeString(installmentAmount);
-    }
-
-    public BigDecimal getAmount() {
-        return new BigDecimal(amount);
-    }
-
-    public BigDecimal getPayerCostTotalAmount() {
-        return new BigDecimal(payerCostTotalAmount);
-    }
-
-    public Integer getInstallments() {
-        return Integer.parseInt(installments);
-    }
-
-    public BigDecimal getCouponAmount() {
-        return new BigDecimal(couponAmount);
-    }
-
-    public BigDecimal getInstallmentsRate() {
-        return new BigDecimal(installmentsRate);
-    }
-
-    public BigDecimal getInstallmentAmount() {
-        return new BigDecimal(installmentAmount);
     }
 }

@@ -25,16 +25,16 @@ public class SummaryProps {
     public final BigDecimal installmentAmount;
 
     public SummaryProps(@NonNull final SummaryModel summaryModel) {
-        this.amount = summaryModel.getAmount();
+        this.amount = new BigDecimal(summaryModel.amount);
         this.currencyId = summaryModel.currencyId;
         this.siteId = summaryModel.siteId;
         this.paymentTypeId = summaryModel.paymentTypeId;
-        this.payerCostTotalAmount = summaryModel.getPayerCostTotalAmount();
-        this.installments = summaryModel.getInstallments();
+        this.payerCostTotalAmount = summaryModel.payerCostTotalAmount != null ? new BigDecimal(summaryModel.payerCostTotalAmount) : null;
+        this.installments = Integer.valueOf(summaryModel.installments);
         this.cftPercent = summaryModel.cftPercent;
-        this.couponAmount = summaryModel.getCouponAmount();
+        this.couponAmount = summaryModel.couponAmount != null ? new BigDecimal(summaryModel.couponAmount) : null;
         this.hasPercentOff = summaryModel.hasPercentOff;
-        this.installmentsRate = summaryModel.getInstallmentsRate();
-        this.installmentAmount = summaryModel.getInstallmentAmount();
+        this.installmentsRate = summaryModel.installmentsRate != null ? new BigDecimal(summaryModel.installmentsRate) : null;
+        this.installmentAmount = summaryModel.installmentAmount != null ? new BigDecimal(summaryModel.installmentAmount) : null;
     }
 }

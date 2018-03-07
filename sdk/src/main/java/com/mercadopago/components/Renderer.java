@@ -101,13 +101,10 @@ public abstract class Renderer<T extends Component> {
     }
 
     protected void setText(@NonNull final TextView view, Spanned text) {
-        String stringText = text.toString();
-        setText(view, stringText);
+        if (text == null) {
+            view.setVisibility(View.GONE);
+        } else {
+            view.setText(text);
+        }
     }
-
-    protected void setText(@NonNull final TextView view, StringBuilder text) {
-        String stringText = text.toString();
-        setText(view, stringText);
-    }
-
 }

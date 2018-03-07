@@ -3,6 +3,7 @@ package com.mercadopago.review_and_confirm.components;
 import android.support.annotation.NonNull;
 
 import com.mercadopago.components.Component;
+import com.mercadopago.components.RendererFactory;
 import com.mercadopago.core.CheckoutStore;
 import com.mercadopago.model.SummaryDetail;
 import com.mercadopago.preferences.ReviewScreenPreference;
@@ -25,6 +26,10 @@ public class Summary extends Component<SummaryProps, Void> {
     private SummaryProvider provider;
 
     public static final String CFT = "CFT ";
+
+    static {
+        RendererFactory.register(Summary.class, SummaryRenderer.class);
+    }
 
     public Summary(@NonNull final SummaryProps props,
                    @NonNull final SummaryProvider provider) {
@@ -64,7 +69,7 @@ public class Summary extends Component<SummaryProps, Void> {
         return isCardPaymentMethod() && props.installments > 1;
     }
 
-    public StringBuilder getFinance() {
+    public String getFinance() {
         StringBuilder stringBuilder = new StringBuilder();
 
         if (!isEmpty(props.cftPercent)) {
@@ -72,7 +77,7 @@ public class Summary extends Component<SummaryProps, Void> {
             stringBuilder.append(props.cftPercent);
         }
 
-        return stringBuilder;
+        return stringBuilder.toString();
     }
 
     public List<AmountDescription> getAmountDescriptionComponents() {
