@@ -7,9 +7,9 @@ import com.mercadopago.components.RendererFactory;
 import com.mercadopago.core.CheckoutStore;
 import com.mercadopago.model.SummaryDetail;
 import com.mercadopago.preferences.ReviewScreenPreference;
-import com.mercadopago.review_and_confirm.SummaryProvider;
+import com.mercadopago.review_and_confirm.FullSummaryProvider;
+import com.mercadopago.review_and_confirm.models.SummaryModel;
 import com.mercadopago.review_and_confirm.props.AmountDescriptionProps;
-import com.mercadopago.review_and_confirm.props.SummaryProps;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,18 +21,18 @@ import static com.mercadopago.util.TextUtils.isEmpty;
  * Created by mromar on 2/28/18.
  */
 
-public class Summary extends Component<SummaryProps, Void> {
+public class FullSummary extends Component<SummaryModel, Void> {
 
-    private SummaryProvider provider;
+    private FullSummaryProvider provider;
 
     public static final String CFT = "CFT ";
 
     static {
-        RendererFactory.register(Summary.class, SummaryRenderer.class);
+        RendererFactory.register(FullSummary.class, FullSummaryRenderer.class);
     }
 
-    public Summary(@NonNull final SummaryProps props,
-                   @NonNull final SummaryProvider provider) {
+    public FullSummary(@NonNull final SummaryModel props,
+                       @NonNull final FullSummaryProvider provider) {
         super(props);
         this.provider = provider;
     }
@@ -51,12 +51,12 @@ public class Summary extends Component<SummaryProps, Void> {
         BigDecimal totalAmount = null;
 
         if (isCardPaymentMethod()) {
-            if (props.installments == 1) {
-                if (props.couponAmount != null && !isEmptySummaryDetails()) {
-                    totalAmount = props.payerCostTotalAmount;
+            if (props.getInstallments() == 1) {
+                if (props.getCouponAmount() != null && !isEmptySummaryDetails()) {
+                    totalAmount = props.getPayerCostTotalAmount();
                 }
             } else {
-                totalAmount = props.payerCostTotalAmount;
+                totalAmount = props.getPayerCostTotalAmount();
             }
         } else if (hasDiscount() && !isEmptySummaryDetails()) {
             totalAmount = getSubtotal();
@@ -66,7 +66,7 @@ public class Summary extends Component<SummaryProps, Void> {
     }
 
     public boolean hasToRenderPayerCost() {
-        return isCardPaymentMethod() && props.installments > 1;
+        return isCardPaymentMethod() && props.getInstallments() > 1;
     }
 
     public String getFinance() {
@@ -114,9 +114,9 @@ public class Summary extends Component<SummaryProps, Void> {
             }
 
         } else {
-            summaryBuilder.addSummaryProductDetail(props.amount, provider.getSummaryProductsTitle(), provider.getDefaultTextColor());
+            summaryBuilder.addSummaryProductDetail(props.getAmount(), provider.getSummaryProductsTitle(), provider.getDefaultTextColor());
 
-            if (isValidAmount(props.payerCostTotalAmount) && getPayerCostChargesAmount().compareTo(BigDecimal.ZERO) > 0) {
+            if (isValidAmount(props.getPayerCostTotalAmount()) && getPayerCostChargesAmount().compareTo(BigDecimal.ZERO) > 0) {
                 summaryBuilder.addSummaryChargeDetail(getPayerCostChargesAmount(), provider.getSummaryChargesTitle(), provider.getDefaultTextColor());
             }
 
@@ -125,8 +125,8 @@ public class Summary extends Component<SummaryProps, Void> {
                         .setDisclaimerColor(provider.getDisclaimerTextColor());
             }
 
-            if (isValidAmount(props.couponAmount)) {
-                summaryBuilder.addSummaryDiscountDetail(props.couponAmount, provider.getSummaryDiscountsTitle(), provider.getDiscountTextColor());
+            if (isValidAmount(props.getCouponAmount())) {
+                summaryBuilder.addSummaryDiscountDetail(props.getCouponAmount(), provider.getSummaryDiscountsTitle(), provider.getDiscountTextColor());
             }
         }
 
@@ -141,7 +141,7 @@ public class Summary extends Component<SummaryProps, Void> {
             interestAmount = reviewScreenPreference.getChargeAmount();
         }
 
-        if (props.installments != null && props.installments > 1 && isValidAmount(props.payerCostTotalAmount)) {
+        if (props.getInstallments() != null && props.getInstallments() > 1 && isValidAmount(props.getPayerCostTotalAmount())) {
             BigDecimal totalInterestsAmount = getPayerCostChargesAmount();
             interestAmount = interestAmount.add(totalInterestsAmount);
         }
@@ -152,11 +152,11 @@ public class Summary extends Component<SummaryProps, Void> {
     private BigDecimal getPayerCostChargesAmount() {
         BigDecimal totalInterestsAmount;
 
-        if (isValidAmount(props.couponAmount)) {
-            BigDecimal totalAmount = props.amount.subtract(props.couponAmount);
-            totalInterestsAmount = props.payerCostTotalAmount.subtract(totalAmount);
+        if (isValidAmount(props.getCouponAmount())) {
+            BigDecimal totalAmount = props.getAmount().subtract(props.getCouponAmount());
+            totalInterestsAmount = props.getPayerCostTotalAmount().subtract(totalAmount);
         } else {
-            totalInterestsAmount = props.payerCostTotalAmount.subtract(props.amount);
+            totalInterestsAmount = props.getPayerCostTotalAmount().subtract(props.getAmount());
         }
 
         return totalInterestsAmount;
@@ -165,8 +165,8 @@ public class Summary extends Component<SummaryProps, Void> {
     private BigDecimal getDiscountAmount() {
         BigDecimal discountAmount = CheckoutStore.getInstance().getReviewScreenPreference().getDiscountAmount();
 
-        if (isValidAmount(props.couponAmount)) {
-            discountAmount = discountAmount.add(props.couponAmount);
+        if (isValidAmount(props.getCouponAmount())) {
+            discountAmount = discountAmount.add(props.getCouponAmount());
         }
 
         return discountAmount;
@@ -178,7 +178,7 @@ public class Summary extends Component<SummaryProps, Void> {
 
     private boolean isValidTotalAmount() {
         BigDecimal totalAmountPreference = CheckoutStore.getInstance().getReviewScreenPreference().getTotalAmount();
-        return totalAmountPreference.compareTo(props.amount) == 0;
+        return totalAmountPreference.compareTo(props.getAmount()) == 0;
     }
 
     private boolean hasProductAmount() {
@@ -190,15 +190,15 @@ public class Summary extends Component<SummaryProps, Void> {
     }
 
     private BigDecimal getSubtotal() {
-        BigDecimal ans = props.amount;
+        BigDecimal ans = props.getAmount();
         if (hasDiscount()) {
-            ans = props.amount.subtract(props.couponAmount);
+            ans = props.getAmount().subtract(props.getCouponAmount());
         }
         return ans;
     }
 
     private boolean hasDiscount() {
-        return props.currencyId != null && props.couponAmount != null;
+        return props.currencyId != null && props.getCouponAmount() != null;
     }
 
     private boolean isCardPaymentMethod() {

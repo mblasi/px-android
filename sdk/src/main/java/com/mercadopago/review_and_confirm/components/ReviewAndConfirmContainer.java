@@ -5,25 +5,25 @@ import android.support.annotation.NonNull;
 import com.mercadopago.components.ActionDispatcher;
 import com.mercadopago.components.Component;
 import com.mercadopago.components.RendererFactory;
-import com.mercadopago.review_and_confirm.SummaryProvider;
+import com.mercadopago.model.Summary;
+import com.mercadopago.review_and_confirm.FullSummaryProvider;
 import com.mercadopago.review_and_confirm.models.PaymentModel;
 import com.mercadopago.review_and_confirm.models.ReviewAndConfirmPreferences;
 import com.mercadopago.review_and_confirm.models.SummaryModel;
 import com.mercadopago.review_and_confirm.models.TermsAndConditionsModel;
-import com.mercadopago.review_and_confirm.props.SummaryProps;
 
 public class ReviewAndConfirmContainer extends Component<ReviewAndConfirmContainer.Props, Void> {
 
-    private SummaryProvider summaryProvider;
+    private FullSummaryProvider fullSummaryProvider;
 
     static {
         RendererFactory.register(ReviewAndConfirmContainer.class, ReviewAndConfirmRenderer.class);
     }
 
     public ReviewAndConfirmContainer(@NonNull final Props props,
-                                     @NonNull final SummaryProvider summaryProvider) {
+                                     @NonNull final FullSummaryProvider fullSummaryProvider) {
         super(props);
-        this.summaryProvider = summaryProvider;
+        this.fullSummaryProvider = fullSummaryProvider;
     }
 
     public ReviewAndConfirmContainer(@NonNull Props props, @NonNull ActionDispatcher dispatcher) {

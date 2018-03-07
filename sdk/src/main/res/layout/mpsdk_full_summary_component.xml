@@ -18,8 +18,7 @@
         android:id="@+id/mpsdkSummaryDetails"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:orientation="vertical"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/mpsdkReviewSummarySubtotal"
@@ -30,12 +29,12 @@
         android:weightSum="1">
 
         <com.mercadopago.customviews.MPTextView
+            android:id="@+id/subtotalLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_weight="0.6"
             android:text="@string/mpsdk_review_summary_subtotal"
-            android:id="@+id/subtotal_label"
             android:textColor="@color/mpsdk_summary_text_color"
             android:textSize="18dp" />
 

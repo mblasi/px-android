@@ -14,11 +14,11 @@ import static com.mercadopago.util.TextUtils.isEmpty;
  * Created by mromar on 3/5/18.
  */
 
-public class SummaryProviderImpl implements SummaryProvider {
+public class FullSummaryProviderImpl implements FullSummaryProvider {
 
     private final Context context;
 
-    public SummaryProviderImpl(Context context) {
+    public FullSummaryProviderImpl(Context context) {
         this.context = context;
     }
 

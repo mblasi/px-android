@@ -48,8 +48,8 @@ public class CheckoutExampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout_example);
         mActivity = this;
-        mPublicKey = "TEST-b17d8f8e-5039-4d58-a99f-7a66872741ca";//ExamplesUtils.DUMMY_MERCHANT_PUBLIC_KEY;
-        mCheckoutPreferenceId = "242624092-e0d12cfe-779b-4b85-b3b5-2243b45334c3";//ExamplesUtils.DUMMY_PREFERENCE_ID;
+        mPublicKey = ExamplesUtils.DUMMY_MERCHANT_PUBLIC_KEY;
+        mCheckoutPreferenceId = ExamplesUtils.DUMMY_PREFERENCE_ID;
 
         mProgressBar = findViewById(R.id.progressBar);
         mRegularLayout = findViewById(R.id.regularLayout);

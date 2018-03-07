@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.mercadopago.R;
 
@@ -17,24 +16,21 @@ import com.mercadopago.customviews.MPTextView;
 import com.mercadopago.uicontrollers.payercosts.PayerCostColumn;
 import com.mercadopago.util.CurrenciesUtil;
 
-import org.w3c.dom.Text;
-
 import java.math.BigDecimal;
 
-import static android.view.View.GONE;
 import static com.mercadopago.util.TextUtils.isEmpty;
 
 /**
  * Created by mromar on 2/28/18.
  */
 
-public class SummaryRenderer extends Renderer<Summary> {
+public class FullSummaryRenderer extends Renderer<FullSummary> {
 
     @Override
-    public View render(@NonNull final Summary component, @NonNull final Context context, final ViewGroup parent) {
-        final View summaryView = inflate(R.layout.mpsdk_review_summary_component, parent);
+    public View render(@NonNull final FullSummary component, @NonNull final Context context, final ViewGroup parent) {
+        final View summaryView = inflate(R.layout.mpsdk_full_summary_component, parent);
         final MPTextView subtotalAmountTextView = summaryView.findViewById(R.id.mpsdkReviewSummarySubtotalText);
-        final TextView subtotalLabel = summaryView.findViewById(R.id.subtotal_label);
+        final MPTextView subtotalLabel = summaryView.findViewById(R.id.subtotalLabel);
         final MPTextView totalAmountTextView = summaryView.findViewById(R.id.mpsdkReviewSummaryTotalText);
         final FrameLayout payerCostContainer = summaryView.findViewById(R.id.mpsdkReviewSummaryPayerCostContainer);
         final MPTextView cftTextView = summaryView.findViewById(R.id.mpsdkCFT);
@@ -50,8 +46,8 @@ public class SummaryRenderer extends Renderer<Summary> {
 
         if (component.hasToRenderPayerCost()) {
             //payer cost
-            PayerCostColumn payerCostColumn = new PayerCostColumn(context, component.props.currencyId, component.props.siteId, component.props.installmentsRate,
-                    component.props.installments, component.props.payerCostTotalAmount, component.props.installmentAmount);
+            PayerCostColumn payerCostColumn = new PayerCostColumn(context, component.props.currencyId, component.props.siteId, component.props.getInstallmentsRate(),
+                    component.props.getInstallments(), component.props.getPayerCostTotalAmount(), component.props.getInstallmentAmount());
             payerCostColumn.inflateInParent(payerCostContainer, true);
             payerCostColumn.initializeControls();
             payerCostColumn.drawPayerCostWithoutTotal();

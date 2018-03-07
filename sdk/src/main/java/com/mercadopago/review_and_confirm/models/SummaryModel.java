@@ -16,17 +16,17 @@ import java.math.BigDecimal;
 
 public class SummaryModel implements Parcelable {
 
-    public final String amount;
+    private final String amount;
     public final String currencyId;
     public final String siteId;
     public final String paymentTypeId;
-    public final String payerCostTotalAmount;
-    public final String installments;
+    private final String payerCostTotalAmount;
+    private final String installments;
     public final String cftPercent;
-    public final String couponAmount;
+    private final String couponAmount;
     public final boolean hasPercentOff;
-    public final String installmentsRate;
-    public final String installmentAmount;
+    private final String installmentsRate;
+    private final String installmentAmount;
 
     public SummaryModel(BigDecimal amount,
                         PaymentMethod paymentMethod,
@@ -92,4 +92,29 @@ public class SummaryModel implements Parcelable {
         dest.writeString(installmentsRate);
         dest.writeString(installmentAmount);
     }
+
+    public BigDecimal getAmount() {
+        return new BigDecimal(this.amount);
+    }
+
+    public BigDecimal getPayerCostTotalAmount() {
+        return this.payerCostTotalAmount != null ? new BigDecimal(this.payerCostTotalAmount) : null;
+    }
+
+    public BigDecimal getCouponAmount() {
+        return this.couponAmount != null ? new BigDecimal(this.couponAmount) : null;
+    }
+
+    public BigDecimal getInstallmentsRate() {
+        return this.installmentsRate != null ? new BigDecimal(this.installmentsRate) : null;
+    }
+
+    public BigDecimal getInstallmentAmount() {
+        return this.installmentAmount != null ? new BigDecimal(this.installmentAmount) : null;
+    }
+
+    public Integer getInstallments() {
+        return this.installments != null ? Integer.valueOf(this.installments) : null;
+    }
 }
+
