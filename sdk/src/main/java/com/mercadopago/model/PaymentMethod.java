@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.mercadopago.R;
 import com.mercadopago.constants.PaymentTypes;
-import com.mercadopago.plugins.model.PaymentMethodInfo;
+import com.mercadopago.plugins.model.PluginInfo;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,7 +30,7 @@ public class PaymentMethod {
 
     }
 
-    public PaymentMethod(@NonNull final PaymentMethodInfo info) {
+    public PaymentMethod(@NonNull final PluginInfo info) {
         id = info.id;
         name = info.name;
         paymentTypeId = PaymentTypes.PLUGIN;

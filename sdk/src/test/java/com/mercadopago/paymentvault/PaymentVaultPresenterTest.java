@@ -18,15 +18,13 @@ import com.mercadopago.model.PaymentMethodSearchItem;
 import com.mercadopago.model.Site;
 import com.mercadopago.mvp.OnResourcesRetrievedCallback;
 import com.mercadopago.plugins.PaymentMethodPlugin;
-import com.mercadopago.plugins.model.PaymentMethodInfo;
+import com.mercadopago.plugins.model.PluginInfo;
 import com.mercadopago.preferences.FlowPreference;
 import com.mercadopago.preferences.PaymentPreference;
 import com.mercadopago.presenters.PaymentVaultPresenter;
 import com.mercadopago.providers.PaymentVaultProvider;
 import com.mercadopago.utils.Discounts;
 import com.mercadopago.views.PaymentVaultView;
-
-import junit.framework.Assert;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -1249,7 +1247,7 @@ public class PaymentVaultPresenterTest {
         }
 
         @Override
-        public void showPluginOptions(List<PaymentMethodInfo> items) {
+        public void showPluginOptions(List<PluginInfo> items) {
 
         }
 
@@ -1328,7 +1326,7 @@ public class PaymentVaultPresenterTest {
         }
 
         @Override
-        public PaymentMethodInfo getPaymentMethodInfo(PaymentMethodPlugin plugin) {
+        public PluginInfo getPaymentMethodInfo(PaymentMethodPlugin plugin) {
             return null;
         }
 

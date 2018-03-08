@@ -14,16 +14,17 @@ import com.mercadopago.constants.PaymentTypes;
 import com.mercadopago.core.CheckoutStore;
 import com.mercadopago.model.Payment;
 import com.mercadopago.model.PaymentResult;
-import com.mercadopago.plugins.model.ProcessorPaymentResult;
+import com.mercadopago.plugins.model.BusinessPayment;
+import com.mercadopago.plugins.model.GenericPayment;
+import com.mercadopago.plugins.model.PluginPayment;
+import com.mercadopago.plugins.model.Processor;
 
-/**
- * Created by nfortuna on 12/13/17.
- */
+public final class PaymentProcessorPluginActivity extends AppCompatActivity implements ActionDispatcher, Processor {
 
-public class PaymentPluginActivity extends AppCompatActivity implements ActionDispatcher {
+    private static final String BUSINESS_PAYMENT = "extra_business_payment";
 
     public static Intent getIntent(@NonNull final Context context) {
-        return new Intent(context, PaymentPluginActivity.class);
+        return new Intent(context, PaymentProcessorPluginActivity.class);
     }
 
     @Override
@@ -31,9 +32,9 @@ public class PaymentPluginActivity extends AppCompatActivity implements ActionDi
         super.onCreate(savedInstanceState);
 
         final CheckoutStore store = CheckoutStore.getInstance();
-        final PaymentProcessor paymentProcessor = store.getPaymentProcessor();
+        final PaymentProcessorPlugin paymentProcessorPlugin = store.getPaymentProcessor();
 
-        if (paymentProcessor == null) {
+        if (paymentProcessorPlugin == null) {
             cancel();
             return;
         }
@@ -44,7 +45,7 @@ public class PaymentPluginActivity extends AppCompatActivity implements ActionDi
                 .setCheckoutPreference(store.getCheckoutPreference())
                 .build();
 
-        final PluginComponent component = paymentProcessor.createPaymentComponent(props, this);
+        final PluginComponent component = paymentProcessorPlugin.createPaymentComponent(props, this);
         final ComponentManager componentManager = new ComponentManager(this);
 
         if (component == null) {
@@ -63,34 +64,40 @@ public class PaymentPluginActivity extends AppCompatActivity implements ActionDi
 
     @Override
     public void dispatch(final Action action) {
-        if (action instanceof PluginPaymentResultAction) {
-            final ProcessorPaymentResult pluginResult = ((PluginPaymentResultAction) action).getPluginPaymentResult();
-            if (pluginResult != null) {
-                try {
-                    final PaymentResult paymentResult = toPaymentResult(pluginResult);
-                    CheckoutStore.getInstance().setPaymentResult(paymentResult);
-                    setResult(RESULT_OK);
-                } catch (final Exception e) {
-                    setResult(RESULT_CANCELED);
-                }
-            } else {
-                setResult(RESULT_CANCELED);
-            }
-            finish();
+        if (action instanceof PluginPayment) {
+            final PluginPayment pluginResult = ((PaymentPluginProcessorResultAction) action).getPluginPaymentResult();
+            pluginResult.process(this);
+        } else {
+            throw new UnsupportedOperationException("Not action with plugin");
         }
     }
 
-    private PaymentResult toPaymentResult(@NonNull final ProcessorPaymentResult pluginResult) {
+    @Override
+    public void process(final BusinessPayment businessPayment) {
+        Intent intent = new Intent();
+        intent.putExtra(BUSINESS_PAYMENT, businessPayment);
+        setResult(RESULT_OK, intent);
+    }
+
+    @Override
+    public void process(final GenericPayment genericPayment) {
+        final PaymentResult paymentResult = toPaymentResult(genericPayment);
+        CheckoutStore.getInstance().setPaymentResult(paymentResult);
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    private PaymentResult toPaymentResult(@NonNull final GenericPayment genericPayment) {
 
         final Payment payment = new Payment();
-        payment.setId(pluginResult.paymentId);
-        payment.setPaymentMethodId(pluginResult.paymentData.getPaymentMethod().getId());
+        payment.setId(genericPayment.paymentId);
+        payment.setPaymentMethodId(genericPayment.paymentData.getPaymentMethod().getId());
         payment.setPaymentTypeId(PaymentTypes.PLUGIN);
-        payment.setStatus(pluginResult.status);
-        payment.setStatusDetail(pluginResult.statusDetail);
+        payment.setStatus(genericPayment.status);
+        payment.setStatusDetail(genericPayment.statusDetail);
 
         return new PaymentResult.Builder()
-                .setPaymentData(pluginResult.paymentData)
+                .setPaymentData(genericPayment.paymentData)
                 .setPaymentId(payment.getId())
                 .setPaymentStatus(payment.getStatus())
                 .setPaymentStatusDetail(payment.getStatusDetail())

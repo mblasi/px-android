@@ -20,7 +20,7 @@ import com.mercadopago.model.Site;
 import com.mercadopago.mvp.MvpPresenter;
 import com.mercadopago.mvp.OnResourcesRetrievedCallback;
 import com.mercadopago.plugins.PaymentMethodPlugin;
-import com.mercadopago.plugins.model.PaymentMethodInfo;
+import com.mercadopago.plugins.model.PluginInfo;
 import com.mercadopago.preferences.PaymentPreference;
 import com.mercadopago.providers.PaymentVaultProvider;
 import com.mercadopago.util.ApiUtil;
@@ -342,13 +342,13 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
 
     private void showAvailableOptions() {
 
-        final List<PaymentMethodInfo> pluginUpItems = new ArrayList<>();
-        final List<PaymentMethodInfo> pluginDownItems = new ArrayList<>();
+        final List<PluginInfo> pluginUpItems = new ArrayList<>();
+        final List<PluginInfo> pluginDownItems = new ArrayList<>();
         final List<PaymentMethodPlugin> paymentMethodPlugins = CheckoutStore.getInstance().getPaymentMethodPluginList();
 
         if (paymentMethodPlugins != null && !paymentMethodPlugins.isEmpty()) {
             for (PaymentMethodPlugin plugin : paymentMethodPlugins) {
-                final PaymentMethodInfo info = getView().getPaymentMethodInfo(plugin);
+                final PluginInfo info = getView().getPaymentMethodInfo(plugin);
                 if (info != null) {
                     if (PaymentMethodPlugin.POSIION_TOP.equalsIgnoreCase(plugin.displayOrder())) {
                         pluginUpItems.add(info);

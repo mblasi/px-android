@@ -4,7 +4,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 import com.mercadopago.constants.PaymentTypes;
-import com.mercadopago.plugins.model.PaymentMethodInfo;
+import com.mercadopago.plugins.model.PluginInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class PaymentMethodSearchItem {
 
     }
 
-    public PaymentMethodSearchItem(@NonNull final PaymentMethodInfo info) {
+    public PaymentMethodSearchItem(@NonNull final PluginInfo info) {
         id = info.id;
         type = PaymentTypes.PLUGIN;
         description = info.name;

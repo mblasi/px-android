@@ -15,15 +15,10 @@ import com.mercadopago.components.Component;
 import com.mercadopago.components.ComponentManager;
 import com.mercadopago.components.NextAction;
 import com.mercadopago.core.CheckoutStore;
-import com.mercadopago.plugins.model.PaymentMethodInfo;
+import com.mercadopago.plugins.model.PluginInfo;
 import com.mercadopago.tracker.FlowHandler;
 import com.mercadopago.tracker.MPTrackingContext;
 import com.mercadopago.tracking.model.ScreenViewEvent;
-import com.mercadopago.tracking.utils.TrackingUtil;
-
-/**
- * Created by nfortuna on 12/13/17.
- */
 
 public class PaymentMethodPluginActivity extends AppCompatActivity implements ActionDispatcher {
 
@@ -44,10 +39,10 @@ public class PaymentMethodPluginActivity extends AppCompatActivity implements Ac
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final PaymentMethodInfo paymentMethodInfo =
+        final PluginInfo pluginInfo =
                 CheckoutStore.getInstance().getSelectedPaymentMethodInfo(this);
         final PaymentMethodPlugin plugin = CheckoutStore
-                .getInstance().getPaymentMethodPluginById(paymentMethodInfo.id);
+                .getInstance().getPaymentMethodPluginById(pluginInfo.id);
 
         Intent intent = getIntent();
         mPublicKey = intent.getStringExtra(PUBLIC_KEY);

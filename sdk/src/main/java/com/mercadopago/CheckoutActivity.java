@@ -24,8 +24,8 @@ import com.mercadopago.model.PaymentMethodSearchItem;
 import com.mercadopago.model.PaymentRecovery;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.model.Token;
-import com.mercadopago.plugins.PaymentPluginActivity;
-import com.mercadopago.plugins.model.PaymentMethodInfo;
+import com.mercadopago.plugins.PaymentProcessorPluginActivity;
+import com.mercadopago.plugins.model.PluginInfo;
 import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.preferences.FlowPreference;
 import com.mercadopago.preferences.PaymentPreference;
@@ -204,10 +204,8 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
             overrideTransitionIn();
         } else if (requestCode == MercadoPagoComponents.Activities.PLUGIN_PAYMENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-
                 final PaymentResult paymentResult = CheckoutStore.getInstance().getPaymentResult();
                 mCheckoutPresenter.checkStartPaymentResultActivity(paymentResult);
-
             } else {
                 overrideTransitionOut();
                 setResult(RESULT_CANCELED);
@@ -301,7 +299,7 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
         overrideTransitionIn();
 
         final CheckoutStore store = CheckoutStore.getInstance();
-        final PaymentMethodInfo paymentMethodInfo = store.getSelectedPaymentMethodInfo(this);
+        final PluginInfo pluginInfo = store.getSelectedPaymentMethodInfo(this);
 
         MercadoPagoComponents.Activities.ReviewAndConfirmBuilder builder = new MercadoPagoComponents.Activities.ReviewAndConfirmBuilder()
                 .setActivity(this)
@@ -324,9 +322,9 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
 
         if (MercadoPagoUtil.isCard(mCheckoutPresenter.getSelectedPaymentMethod().getPaymentTypeId())) {
             builder.setToken(mCheckoutPresenter.getCreatedToken());
-        } else if (paymentMethodInfo != null) { //Plugin payment method selected
-            builder.setPaymentMethodDescriptionInfo(paymentMethodInfo.name);
-            builder.setPaymentMethodCommentInfo(paymentMethodInfo.description);
+        } else if (pluginInfo != null) { //Plugin payment method selected
+            builder.setPaymentMethodDescriptionInfo(pluginInfo.name);
+            builder.setPaymentMethodCommentInfo(pluginInfo.description);
         } else if (!PaymentTypes.ACCOUNT_MONEY.equals(mCheckoutPresenter.getSelectedPaymentMethod().getPaymentTypeId())) {
             PaymentMethodSearchItem paymentMethodSearchItem = mCheckoutPresenter.getPaymentMethodSearch().getSearchItemByPaymentMethod(mCheckoutPresenter.getSelectedPaymentMethod());
             if (paymentMethodSearchItem != null) {
@@ -550,7 +548,7 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
 
     @Override
     public void showPaymentProcessor() {
-        startActivityForResult(PaymentPluginActivity.getIntent(this), MercadoPagoComponents.Activities.PLUGIN_PAYMENT_REQUEST_CODE);
+        startActivityForResult(PaymentProcessorPluginActivity.getIntent(this), MercadoPagoComponents.Activities.PLUGIN_PAYMENT_REQUEST_CODE);
         overrideTransitionFadeInFadeOut();
     }
 
