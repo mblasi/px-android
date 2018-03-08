@@ -373,15 +373,18 @@ public class CheckoutPresenter extends MvpPresenter<CheckoutView, CheckoutProvid
         if (hasToContinuePaymentWithoutESC(paymentResult)) {
             continuePaymentWithoutESC();
         } else {
+
             if (hasToStoreESC(paymentResult)) {
                 getResourcesProvider().saveESC(paymentResult.getPaymentData().getToken().getCardId(),
                         paymentResult.getPaymentData().getToken().getEsc());
             }
+
             if (hasToSkipPaymentResultScreen(paymentResult)) {
                 finishCheckout();
             } else {
                 getView().showPaymentResult(paymentResult);
             }
+
         }
     }
 
@@ -523,7 +526,7 @@ public class CheckoutPresenter extends MvpPresenter<CheckoutView, CheckoutProvid
     }
 
     public void resolvePaymentDataResponse() {
-        if (MercadoPagoCheckout.PAYMENT_DATA_RESULT_CODE.equals(mRequestedResult)) {
+        if (MercadoPagoCheckout.PAYMENT_DATA_RESULT_CODE == mRequestedResult) {
             PaymentData paymentData = createPaymentData();
             getView().finishWithPaymentDataResult(paymentData, mPaymentMethodEdited);
         } else {

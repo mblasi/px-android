@@ -5,10 +5,9 @@ import android.support.annotation.NonNull;
 
 import com.mercadopago.components.RendererFactory;
 import com.mercadopago.model.Payment;
-import com.mercadopago.plugins.PluginComponent;
 import com.mercadopago.plugins.PaymentPluginProcessorResultAction;
+import com.mercadopago.plugins.PluginComponent;
 import com.mercadopago.plugins.model.GenericPayment;
-
 
 public class MainPayment extends PluginComponent<Void> {
 
@@ -37,6 +36,12 @@ public class MainPayment extends PluginComponent<Void> {
                         Payment.StatusCodes.STATUS_APPROVED,
                         Payment.StatusDetail.STATUS_DETAIL_APPROVED_PLUGIN_PM,
                         props.paymentData);
+
+//                BusinessPayment result = new BusinessPayment.Builder(BusinessPayment.Status.APPROVED, 0, "ASD")
+//                        .setHelp("HELP!")
+//                        .setPrimaryButton(new ButtonAction("ASD", 23))
+//                        .setSecondaryButton(new ButtonAction("ASD", 34))
+//                        .build();
 
                 getDispatcher().dispatch(new PaymentPluginProcessorResultAction(result));
             }

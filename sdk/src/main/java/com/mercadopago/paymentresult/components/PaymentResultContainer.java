@@ -6,6 +6,7 @@ import com.mercadopago.R;
 import com.mercadopago.components.ActionDispatcher;
 import com.mercadopago.components.Component;
 import com.mercadopago.components.LoadingComponent;
+import com.mercadopago.components.RendererFactory;
 import com.mercadopago.constants.PaymentMethods;
 import com.mercadopago.constants.PaymentTypes;
 import com.mercadopago.model.Payment;
@@ -22,6 +23,10 @@ import com.mercadopago.paymentresult.props.PaymentResultProps;
  */
 
 public class PaymentResultContainer extends Component<PaymentResultProps, Void> {
+
+    static {
+        RendererFactory.register(PaymentResultContainer.class, PaymentResultRenderer.class);
+    }
 
     public static final int DEFAULT_BACKGROUND_COLOR = R.color.mpsdk_blue_MP;
     public static final int GREEN_BACKGROUND_COLOR = R.color.mpsdk_green_payment_result_background;
@@ -329,12 +334,12 @@ public class PaymentResultContainer extends Component<PaymentResultProps, Void> 
         final String statusDetail = paymentResult.getPaymentStatusDetail();
         return status.equals(Payment.StatusCodes.STATUS_REJECTED) && (
                 statusDetail.equals(Payment.StatusDetail.STATUS_DETAIL_CC_REJECTED_OTHER_REASON) ||
-                statusDetail.equals(Payment.StatusDetail.STATUS_DETAIL_CC_REJECTED_PLUGIN_PM) ||
-                statusDetail.equals(Payment.StatusDetail.STATUS_DETAIL_REJECTED_REJECTED_BY_BANK) ||
-                statusDetail.equals(Payment.StatusDetail.STATUS_DETAIL_REJECTED_REJECTED_INSUFFICIENT_DATA) ||
-                statusDetail.equals(Payment.StatusDetail.STATUS_DETAIL_CC_REJECTED_DUPLICATED_PAYMENT) ||
-                statusDetail.equals(Payment.StatusDetail.STATUS_DETAIL_CC_REJECTED_MAX_ATTEMPTS) ||
-                statusDetail.equals(Payment.StatusDetail.STATUS_DETAIL_REJECTED_HIGH_RISK));
+                        statusDetail.equals(Payment.StatusDetail.STATUS_DETAIL_CC_REJECTED_PLUGIN_PM) ||
+                        statusDetail.equals(Payment.StatusDetail.STATUS_DETAIL_REJECTED_REJECTED_BY_BANK) ||
+                        statusDetail.equals(Payment.StatusDetail.STATUS_DETAIL_REJECTED_REJECTED_INSUFFICIENT_DATA) ||
+                        statusDetail.equals(Payment.StatusDetail.STATUS_DETAIL_CC_REJECTED_DUPLICATED_PAYMENT) ||
+                        statusDetail.equals(Payment.StatusDetail.STATUS_DETAIL_CC_REJECTED_MAX_ATTEMPTS) ||
+                        statusDetail.equals(Payment.StatusDetail.STATUS_DETAIL_REJECTED_HIGH_RISK));
     }
 
     private String getTitle(@NonNull final PaymentResultProps props) {

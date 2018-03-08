@@ -56,7 +56,6 @@ import com.mercadopago.paymentresult.components.InstructionsTertiaryInfoRenderer
 import com.mercadopago.paymentresult.components.PaymentMethod;
 import com.mercadopago.paymentresult.components.PaymentMethodRenderer;
 import com.mercadopago.paymentresult.components.PaymentResultContainer;
-import com.mercadopago.paymentresult.components.PaymentResultRenderer;
 import com.mercadopago.paymentresult.components.Receipt;
 import com.mercadopago.paymentresult.components.ReceiptRenderer;
 import com.mercadopago.paymentresult.components.TotalAmount;
@@ -110,8 +109,7 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
 
         final ComponentManager componentManager = new ComponentManager(this);
 
-        RendererFactory.register(PaymentResultContainer.class, PaymentResultRenderer.class);
-        RendererFactory.register(Header.class, HeaderRenderer.class);
+
         RendererFactory.register(Body.class, BodyRenderer.class);
         RendererFactory.register(FooterContainer.class, FooterContainerRenderer.class);
         RendererFactory.register(Footer.class, FooterRenderer.class);

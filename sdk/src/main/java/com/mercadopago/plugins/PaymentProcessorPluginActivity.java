@@ -27,6 +27,14 @@ public final class PaymentProcessorPluginActivity extends AppCompatActivity impl
         return new Intent(context, PaymentProcessorPluginActivity.class);
     }
 
+    public static boolean isBusiness(@Nullable Intent intent) {
+        return intent != null && intent.getExtras() != null && intent.getExtras().containsKey(BUSINESS_PAYMENT);
+    }
+
+    public static BusinessPayment getBusinessPayment(Intent intent) {
+        return (BusinessPayment) intent.getExtras().get(BUSINESS_PAYMENT);
+    }
+
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +72,11 @@ public final class PaymentProcessorPluginActivity extends AppCompatActivity impl
 
     @Override
     public void dispatch(final Action action) {
-        if (action instanceof PluginPayment) {
+        if (action instanceof PaymentPluginProcessorResultAction) {
             final PluginPayment pluginResult = ((PaymentPluginProcessorResultAction) action).getPluginPaymentResult();
             pluginResult.process(this);
         } else {
-            throw new UnsupportedOperationException("Not action with plugin");
+            throw new UnsupportedOperationException("Not action with payment processor plugin");
         }
     }
 
@@ -77,6 +85,7 @@ public final class PaymentProcessorPluginActivity extends AppCompatActivity impl
         Intent intent = new Intent();
         intent.putExtra(BUSINESS_PAYMENT, businessPayment);
         setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override
