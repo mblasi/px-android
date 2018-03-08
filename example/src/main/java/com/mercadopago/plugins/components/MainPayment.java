@@ -31,7 +31,6 @@ public class MainPayment extends PluginComponent<Void> {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
 //                final GenericPayment result = new GenericPayment(
 //                        98723496234l,
 //                        Payment.StatusCodes.STATUS_APPROVED,

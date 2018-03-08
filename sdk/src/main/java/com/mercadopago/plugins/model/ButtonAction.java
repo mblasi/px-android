@@ -3,6 +3,7 @@ package com.mercadopago.plugins.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.mercadopago.components.Action;
 
@@ -11,7 +12,7 @@ public class ButtonAction extends Action implements Parcelable {
     private final String name;
     private final int resCode;
 
-    public ButtonAction(final String name, final int resCode) {
+    public ButtonAction(@NonNull final String name, final int resCode) {
         this.name = name;
         this.resCode = resCode;
     }

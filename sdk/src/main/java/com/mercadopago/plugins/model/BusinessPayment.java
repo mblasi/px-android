@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
 import com.mercadopago.R;
@@ -154,7 +155,7 @@ public final class BusinessPayment implements PluginPayment, Parcelable {
          * @param buttonAction a {@link ButtonAction }
          * @return builder
          */
-        public Builder setPrimaryButton(ButtonAction buttonAction) {
+        public Builder setPrimaryButton(@Nullable ButtonAction buttonAction) {
             this.buttonPrimary = buttonAction;
             return this;
         }
@@ -167,7 +168,7 @@ public final class BusinessPayment implements PluginPayment, Parcelable {
          * @param buttonAction a {@link ButtonAction }
          * @return builder
          */
-        public Builder setSecondaryButton(ButtonAction buttonAction) {
+        public Builder setSecondaryButton(@Nullable ButtonAction buttonAction) {
             this.buttonSecondary = buttonAction;
             return this;
         }
@@ -178,7 +179,7 @@ public final class BusinessPayment implements PluginPayment, Parcelable {
          * @param help a help message
          * @return builder
          */
-        public Builder setHelp(String help) {
+        public Builder setHelp(@Nullable String help) {
             this.help = help;
             return this;
         }
