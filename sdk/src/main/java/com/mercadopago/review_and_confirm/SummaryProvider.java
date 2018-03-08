@@ -6,7 +6,7 @@ import com.mercadopago.mvp.ResourcesProvider;
  * Created by mromar on 3/5/18.
  */
 
-public interface FullSummaryProvider extends ResourcesProvider {
+public interface SummaryProvider extends ResourcesProvider {
 
     String getSummaryProductsTitle();
     int getDefaultTextColor();

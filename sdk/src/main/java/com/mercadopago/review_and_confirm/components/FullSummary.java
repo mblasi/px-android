@@ -7,7 +7,7 @@ import com.mercadopago.components.RendererFactory;
 import com.mercadopago.core.CheckoutStore;
 import com.mercadopago.model.SummaryDetail;
 import com.mercadopago.preferences.ReviewScreenPreference;
-import com.mercadopago.review_and_confirm.FullSummaryProvider;
+import com.mercadopago.review_and_confirm.SummaryProvider;
 import com.mercadopago.review_and_confirm.models.SummaryModel;
 import com.mercadopago.review_and_confirm.props.AmountDescriptionProps;
 
@@ -23,7 +23,7 @@ import static com.mercadopago.util.TextUtils.isEmpty;
 
 public class FullSummary extends Component<SummaryModel, Void> {
 
-    private FullSummaryProvider provider;
+    private SummaryProvider provider;
 
     public static final String CFT = "CFT ";
 
@@ -32,7 +32,7 @@ public class FullSummary extends Component<SummaryModel, Void> {
     }
 
     public FullSummary(@NonNull final SummaryModel props,
-                       @NonNull final FullSummaryProvider provider) {
+                       @NonNull final SummaryProvider provider) {
         super(props);
         this.provider = provider;
     }

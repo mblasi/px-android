@@ -39,13 +39,13 @@ public class SummaryModel implements Parcelable {
         this.currencyId = site.getCurrencyId();
         this.siteId = site.getId();
         this.paymentTypeId = paymentMethod.getPaymentTypeId();
-        this.payerCostTotalAmount = payerCost.getTotalAmount().toString();
-        this.installments = payerCost.getInstallments().toString();
-        this.cftPercent = payerCost.getCFTPercent();
+        this.payerCostTotalAmount = payerCost != null && payerCost.getTotalAmount() != null ? payerCost.getTotalAmount().toString() : null;
+        this.installments = payerCost != null && payerCost.getInstallments() != null ? payerCost.getInstallments().toString() : null;
+        this.cftPercent = payerCost != null && payerCost.getCFTPercent() != null ? payerCost.getCFTPercent() : null;
         this.couponAmount = discount != null ? discount.getCouponAmount().toString() : null;
         this.hasPercentOff = discount != null ? discount.hasPercentOff() : false;
-        this.installmentsRate = payerCost.getInstallmentRate().toString();
-        this.installmentAmount = payerCost.getInstallmentAmount().toString();
+        this.installmentsRate = payerCost != null && payerCost.getInstallmentRate() != null ? payerCost.getInstallmentRate().toString() : null;
+        this.installmentAmount = payerCost != null && payerCost.getInstallmentAmount() != null ? payerCost.getInstallmentAmount().toString() : null;
         //TODO
         this.itemTitle = "Lala";
     }

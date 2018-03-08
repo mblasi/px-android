@@ -128,7 +128,6 @@
         android:includeFontPadding="false"
         android:textColor="@color/mpsdk_summary_text_color"
         android:textSize="16dp"
-        android:visibility="visible"
         app:font_style="light"
         tools:text="No incluye intereses bancarios" />
 

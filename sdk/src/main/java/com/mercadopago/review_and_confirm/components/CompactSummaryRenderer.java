@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.mercadopago.R;
 import com.mercadopago.components.Renderer;
 import com.mercadopago.customviews.MPTextView;
+import com.mercadopago.util.CurrenciesUtil;
 
 import static com.mercadopago.util.TextUtils.isEmpty;
 
@@ -23,18 +24,17 @@ public class CompactSummaryRenderer extends Renderer<CompactSummary> {
         final MPTextView totalAmountTextView = summaryView.findViewById(R.id.mpsdkTotalAmount);
         final MPTextView itemTitleTextView = summaryView.findViewById(R.id.mpsdkItemTitle);
 
-        setText(totalAmountTextView, component.props.getTotalAmount().toString());
-        setText(itemTitleTextView, getItemTitle(component.props.itemTitle));
+        setText(totalAmountTextView, CurrenciesUtil.getFormattedAmount(component.props.getTotalAmount(), component.props.currencyId));
+        setText(itemTitleTextView, getItemTitle(component.props.itemTitle, context));
 
         return summaryView;
     }
 
-    private String getItemTitle(String itemTitle) {
-        return isEmpty(itemTitle) ? getDefaultTitle() : itemTitle;
+    private String getItemTitle(String itemTitle, Context context) {
+        return isEmpty(itemTitle) ? getDefaultTitle(context) : itemTitle;
     }
 
-    private String getDefaultTitle() {
-        //TODO
-        return "";
+    private String getDefaultTitle(Context context) {
+        return context.getString(R.string.mpsdk_review_summary_product);
     }
 }

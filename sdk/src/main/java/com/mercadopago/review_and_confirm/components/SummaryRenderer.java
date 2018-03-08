@@ -21,7 +21,7 @@ public class SummaryRenderer extends Renderer<SummaryComponent> {
         final View summaryView = inflate(R.layout.mpsdk_summary_component, parent);
         final LinearLayout summaryContainer = summaryView.findViewById(R.id.mpsdkSummaryContainer);
 
-        if(component.props.getInstallments() > 1) {
+        if(component.props.getInstallments() != null && component.props.getInstallments() > 1) {
             final Renderer fullSummaryRenderer = RendererFactory.create(context, component.getFullSummary());
             final View fullSummaryView = fullSummaryRenderer.render();
             summaryContainer.addView(fullSummaryView);

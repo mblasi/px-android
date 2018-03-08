@@ -4,18 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.mercadopago.components.Component;
 import com.mercadopago.components.RendererFactory;
-import com.mercadopago.core.CheckoutStore;
-import com.mercadopago.model.SummaryDetail;
-import com.mercadopago.preferences.ReviewScreenPreference;
-import com.mercadopago.review_and_confirm.FullSummaryProvider;
+import com.mercadopago.review_and_confirm.SummaryProvider;
 import com.mercadopago.review_and_confirm.models.SummaryModel;
-import com.mercadopago.review_and_confirm.props.AmountDescriptionProps;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.mercadopago.util.TextUtils.isEmpty;
 
 /**
  * Created by mromar on 2/28/18.
@@ -23,7 +13,7 @@ import static com.mercadopago.util.TextUtils.isEmpty;
 
 public class SummaryComponent extends Component<SummaryModel, Void> {
 
-    private FullSummaryProvider provider;
+    private SummaryProvider provider;
 
     public static final String CFT = "CFT ";
 
@@ -32,7 +22,7 @@ public class SummaryComponent extends Component<SummaryModel, Void> {
     }
 
     public SummaryComponent(@NonNull final SummaryModel props,
-                            @NonNull final FullSummaryProvider provider) {
+                            @NonNull final SummaryProvider provider) {
         super(props);
         this.provider = provider;
     }
