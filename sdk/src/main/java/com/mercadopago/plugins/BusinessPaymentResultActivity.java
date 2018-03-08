@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.mercadopago.R;
 import com.mercadopago.components.Action;
 import com.mercadopago.components.ActionDispatcher;
+import com.mercadopago.components.ComponentManager;
+import com.mercadopago.paymentresult.components.Header;
+import com.mercadopago.paymentresult.props.HeaderProps;
 import com.mercadopago.plugins.model.BusinessPayment;
 import com.mercadopago.plugins.model.ButtonAction;
 
@@ -30,21 +32,24 @@ public class BusinessPaymentResultActivity extends AppCompatActivity implements 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bussines_payment_result);
+//        setContentView(R.layout.activity_bussines_payment_result);
+
         BusinessPayment businessPayment = parseIntent();
 
-//        final HeaderProps headerProps = new HeaderProps.Builder()
-//                .setHeight(getHeaderMode())
-//                .setBackground(getBackground(props.paymentResult))
-//                .setStatusBarColor(getStatusBarColor(props.paymentResult))
-//                .setIconImage(getIconImage(props))
-//                .setIconUrl(getIconUrl(props))
-//                .setBadgeImage(getBadgeImage(props))
-//                .setTitle(getTitle(props))
-//                .setLabel(getLabel(props))
-//                .setAmountFormat(props.headerAmountFormatter)
-//                .build();
+        BusinessPayment.Status status = businessPayment.getStatus();
+        final HeaderProps headerProps = new HeaderProps.Builder()
+                .setHeight(HeaderProps.HEADER_MODE_WRAP)
+                .setBackground(status.resColor)
+                .setStatusBarColor(status.resColor)
+                .setIconImage(businessPayment.getIcon())
+                .setBadgeImage(status.badge)
+                .setTitle(businessPayment.getTitle())
+                .setLabel(status.message == 0 ? null : getString(status.message))
+                .build();
 
+        Header header = new Header(headerProps, this);
+        ComponentManager componentManager = new ComponentManager(this);
+        componentManager.render(header);
     }
 
     @Override

@@ -18,6 +18,10 @@ public class Header extends Component<HeaderProps, Void> {
         RendererFactory.register(Header.class, HeaderRenderer.class);
     }
 
+    public Header(@NonNull final HeaderProps props) {
+        super(props);
+    }
+
     public Header(@NonNull final HeaderProps props,
                   @NonNull final ActionDispatcher dispatcher) {
         super(props, dispatcher);

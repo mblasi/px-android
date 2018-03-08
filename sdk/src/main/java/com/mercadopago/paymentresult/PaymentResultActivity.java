@@ -113,7 +113,6 @@ public class PaymentResultActivity extends AppCompatActivity implements PaymentR
         RendererFactory.register(Body.class, BodyRenderer.class);
         RendererFactory.register(FooterContainer.class, FooterContainerRenderer.class);
         RendererFactory.register(Footer.class, FooterRenderer.class);
-        RendererFactory.register(Icon.class, IconRenderer.class);
         RendererFactory.register(LoadingComponent.class, LoadingRenderer.class);
         RendererFactory.register(Instructions.class, InstructionsRenderer.class);
         RendererFactory.register(InstructionsSubtitle.class, InstructionsSubtitleRenderer.class);

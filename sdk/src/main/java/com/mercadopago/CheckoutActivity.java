@@ -212,6 +212,7 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
                 break;
             case BUSINESS_REQUEST_CODE:
                 resolveBusinessResultActivity(resultCode, data);
+                break;
             default:
                 break;
         }
