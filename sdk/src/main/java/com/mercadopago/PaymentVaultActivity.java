@@ -50,6 +50,7 @@ import com.mercadopago.presenters.PaymentVaultPresenter;
 import com.mercadopago.providers.PaymentVaultProviderImpl;
 import com.mercadopago.tracker.FlowHandler;
 import com.mercadopago.tracker.MPTrackingContext;
+import com.mercadopago.tracker.TrackingFormatter;
 import com.mercadopago.tracking.model.ScreenViewEvent;
 import com.mercadopago.tracking.tracker.MPTracker;
 import com.mercadopago.tracking.utils.TrackingUtil;
@@ -241,10 +242,13 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity implements Pay
                 .setCheckoutVersion("test-px-android")
                 .setTrackingStrategy(TrackingUtil.REALTIME_STRATEGY)
                 .build();
+
+        //FIXME ADAPT INFORMATION Falta account-money
         ScreenViewEvent event = new ScreenViewEvent.Builder()
                 .setFlowId(FlowHandler.getInstance().getFlowId())
                 .setScreenId(TrackingUtil.SCREEN_ID_PAYMENT_VAULT)
                 .setScreenName(TrackingUtil.SCREEN_NAME_PAYMENT_VAULT)
+                .addProperty(TrackingUtil.PROPERTY_OPTIONS, TrackingFormatter.getFormattedPaymentMethodsForTracking(mPaymentVaultPresenter.getPaymentMethodSearch()))
                 .build();
         mpTrackingContext.trackEvent(event);
     }

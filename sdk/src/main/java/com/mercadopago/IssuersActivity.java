@@ -192,8 +192,8 @@ public class IssuersActivity extends MercadoPagoBaseActivity implements IssuersA
                 .setFlowId(FlowHandler.getInstance().getFlowId())
                 .setScreenId(TrackingUtil.SCREEN_ID_ISSUERS)
                 .setScreenName(TrackingUtil.SCREEN_NAME_CARD_FORM_ISSUERS)
-                .addMetaData(TrackingUtil.METADATA_PAYMENT_TYPE_ID, mPresenter.getPaymentMethod().getPaymentTypeId())
-                .addMetaData(TrackingUtil.METADATA_PAYMENT_METHOD_ID, mPresenter.getPaymentMethod().getId())
+                .addProperty(TrackingUtil.PROPERTY_PAYMENT_TYPE_ID, mPresenter.getPaymentMethod().getPaymentTypeId())
+                .addProperty(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, mPresenter.getPaymentMethod().getId())
                 .build();
 
         mpTrackingContext.trackEvent(event);

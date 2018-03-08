@@ -76,15 +76,15 @@ public class ErrorActivity extends MercadoPagoBaseActivity {
                 ApiException apiException = mMercadoPagoError.getApiException();
 
                 if (apiException.getStatus() != null) {
-                    builder.addMetaData(TrackingUtil.METADATA_ERROR_STATUS, String.valueOf(apiException.getStatus()));
+                    builder.addProperty(TrackingUtil.PROPERTY_ERROR_STATUS, String.valueOf(apiException.getStatus()));
                 }
                 if (apiException.getCause() != null && !apiException.getCause().isEmpty() && apiException.getCause().get(0).getCode() != null) {
-                    builder.addMetaData(TrackingUtil.METADATA_ERROR_CODE, String.valueOf(apiException.getCause().get(0).getCode()));
+                    builder.addProperty(TrackingUtil.PROPERTY_ERROR_CODE, String.valueOf(apiException.getCause().get(0).getCode()));
                 }
             }
 
             if (mMercadoPagoError.getRequestOrigin() != null && !mMercadoPagoError.getRequestOrigin().isEmpty()) {
-                builder.addMetaData(TrackingUtil.METADATA_ERROR_REQUEST, mMercadoPagoError.getRequestOrigin());
+                builder.addProperty(TrackingUtil.PROPERTY_ERROR_REQUEST, mMercadoPagoError.getRequestOrigin());
             }
         }
 

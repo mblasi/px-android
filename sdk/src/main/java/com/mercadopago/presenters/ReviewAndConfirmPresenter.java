@@ -278,4 +278,8 @@ public class ReviewAndConfirmPresenter extends MvpPresenter<ReviewAndConfirmView
         paymentData.setDiscount(mDiscount);
         return paymentData;
     }
+
+    public PaymentMethod getPaymentMethod() {
+        return mPaymentMethod;
+    }
 }

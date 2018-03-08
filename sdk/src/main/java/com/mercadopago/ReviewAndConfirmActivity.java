@@ -241,8 +241,7 @@ public class ReviewAndConfirmActivity extends MercadoPagoBaseActivity implements
     @Override
     public void trackScreen() {
         MPTrackingContext mpTrackingContext = new MPTrackingContext.Builder(this, mPublicKey)
-                .setCheckoutVersion("test-px-android")
-                .setTrackingStrategy(TrackingUtil.REALTIME_STRATEGY)
+                .setCheckoutVersion(BuildConfig.VERSION_NAME)
                 .build();
 
         PaymentData paymentData = mPresenter.getPaymentData();
@@ -252,18 +251,18 @@ public class ReviewAndConfirmActivity extends MercadoPagoBaseActivity implements
                     .setFlowId(FlowHandler.getInstance().getFlowId())
                     .setScreenId(TrackingUtil.SCREEN_ID_REVIEW_AND_CONFIRM)
                     .setScreenName(TrackingUtil.SCREEN_NAME_REVIEW_AND_CONFIRM)
-                    .addMetaData(TrackingUtil.METADATA_SHIPPING_INFO, TrackingUtil.HAS_SHIPPING_DEFAULT_VALUE);
+                    .addProperty(TrackingUtil.PROPERTY_SHIPPING_INFO, TrackingUtil.HAS_SHIPPING_DEFAULT_VALUE);
 
             if (paymentData.getPaymentMethod() != null) {
                 if (paymentData.getPaymentMethod().getPaymentTypeId() != null) {
-                    builder.addMetaData(TrackingUtil.METADATA_PAYMENT_TYPE_ID, paymentData.getPaymentMethod().getPaymentTypeId());
+                    builder.addProperty(TrackingUtil.PROPERTY_PAYMENT_TYPE_ID, paymentData.getPaymentMethod().getPaymentTypeId());
                 }
                 if (paymentData.getPaymentMethod().getId() != null) {
-                    builder.addMetaData(TrackingUtil.METADATA_PAYMENT_METHOD_ID, paymentData.getPaymentMethod().getId());
+                    builder.addProperty(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, paymentData.getPaymentMethod().getId());
                 }
             }
             if (paymentData.getIssuer() != null && paymentData.getIssuer().getId() != null) {
-                builder.addMetaData(TrackingUtil.METADATA_ISSUER_ID, String.valueOf(paymentData.getIssuer().getId()));
+                builder.addProperty(TrackingUtil.PROPERTY_ISSUER_ID, String.valueOf(paymentData.getIssuer().getId()));
             }
 
             ScreenViewEvent event = builder.build();
@@ -328,8 +327,11 @@ public class ReviewAndConfirmActivity extends MercadoPagoBaseActivity implements
     }
 
     private void trackCheckoutConfirmed() {
+
         final MPTrackingContext mpTrackingContext = new MPTrackingContext.Builder(this, mPublicKey)
-                .setCheckoutVersion(BuildConfig.VERSION_NAME)
+                //.setCheckoutVersion(BuildConfig.VERSION_NAME)
+                .setCheckoutVersion("test-px-android")
+                .setTrackingStrategy(TrackingUtil.REALTIME_STRATEGY)
                 .build();
 
         final ActionEvent actionEvent = new ActionEvent.Builder()
@@ -337,7 +339,12 @@ public class ReviewAndConfirmActivity extends MercadoPagoBaseActivity implements
                 .setAction(TrackingUtil.ACTION_CHECKOUT_CONFIRMED)
                 .setScreenId(TrackingUtil.SCREEN_ID_REVIEW_AND_CONFIRM)
                 .setScreenName(TrackingUtil.SCREEN_NAME_REVIEW_AND_CONFIRM)
+                .addProperty(TrackingUtil.PROPERTY_PAYMENT_TYPE_ID, mPresenter.getPaymentMethod().getPaymentTypeId())
+                .addProperty(TrackingUtil.PROPERTY_PAYMENT_METHOD_ID, mPresenter.getPaymentMethod().getId())
+                .addProperty("card_id","227126817")
+                .addProperty("installments","6")
                 .build();
+
 
         mpTrackingContext.trackEvent(actionEvent);
     }

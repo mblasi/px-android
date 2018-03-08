@@ -60,7 +60,6 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     private boolean hook1Displayed = false;
 
     /**
-     *
      * @deprecated Account money is a plugin now.
      */
     @Deprecated
@@ -668,11 +667,11 @@ public class PaymentVaultPresenter extends MvpPresenter<PaymentVaultView, Paymen
     }
 
     /**
-     *
      * @deprecated Account money is a plugin now.
      */
     @Deprecated
     public PaymentMethod getAccountMoneyPaymentMethod() {
         return accountMoneyPaymentMethod;
     }
+
 }

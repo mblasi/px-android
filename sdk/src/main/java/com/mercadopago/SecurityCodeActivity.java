@@ -295,7 +295,7 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
                 .setFlowId(FlowHandler.getInstance().getFlowId())
                 .setScreenId(TrackingUtil.SCREEN_ID_CARD_FORM + mSecurityCodePresenter.getPaymentMethod().getPaymentTypeId() + TrackingUtil.CARD_SECURITY_CODE_VIEW)
                 .setScreenName(TrackingUtil.SCREEN_NAME_SECURITY_CODE)
-                .addMetaData(TrackingUtil.METADATA_SECURITY_CODE_REASON, mReason)
+                .addProperty(TrackingUtil.PROPERTY_SECURITY_CODE_REASON, mReason)
                 .build();
 
         mpTrackingContext.trackEvent(event);

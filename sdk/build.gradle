@@ -85,5 +85,5 @@ dependencies {
 
     implementation "com.google.code.gson:gson:$gson"
     implementation "com.squareup.picasso:picasso:$picasso"
-    api "com.mercadopago:tracking:3.0.2-noop-2"
+    compile project(path: ':tracking')
 }
