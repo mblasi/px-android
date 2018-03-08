@@ -153,6 +153,10 @@ public class CheckoutStore {
         return null;
     }
 
+    public ReviewScreenPreference getReviewScreenPreference() {
+        return this.reviewScreenPreference;
+    }
+
     public int getPaymenthMethodPluginCount() {
         int count = 0;
         for (final PaymentMethodPlugin plugin : paymentMethodPluginList) {
