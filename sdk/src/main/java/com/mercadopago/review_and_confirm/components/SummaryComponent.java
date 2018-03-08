@@ -32,6 +32,6 @@ public class SummaryComponent extends Component<SummaryModel, Void> {
     }
 
     public CompactSummary getCompactSummary() {
-        return new CompactSummary(props, provider);
+        return new CompactSummary(props);
     }
 }

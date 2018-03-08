@@ -29,8 +29,6 @@ public class FullSummaryRenderer extends Renderer<FullSummary> {
     @Override
     public View render(@NonNull final FullSummary component, @NonNull final Context context, final ViewGroup parent) {
         final View summaryView = inflate(R.layout.mpsdk_full_summary_component, parent);
-        final MPTextView subtotalAmountTextView = summaryView.findViewById(R.id.mpsdkReviewSummarySubtotalText);
-        final MPTextView subtotalLabel = summaryView.findViewById(R.id.subtotalLabel);
         final MPTextView totalAmountTextView = summaryView.findViewById(R.id.mpsdkReviewSummaryTotalText);
         final FrameLayout payerCostContainer = summaryView.findViewById(R.id.mpsdkReviewSummaryPayerCostContainer);
         final MPTextView cftTextView = summaryView.findViewById(R.id.mpsdkCFT);
@@ -63,11 +61,6 @@ public class FullSummaryRenderer extends Renderer<FullSummary> {
             reviewSummaryPayContainer.setVisibility(View.GONE);
             firstSeparetor.setVisibility(View.GONE);
         }
-
-        //subtotal
-        Spanned subTotal = getFormattedAmount(component.getSubtotalAmount(), component.props.currencyId);
-        setText(subtotalAmountTextView, subTotal);
-        subtotalLabel.setVisibility(subTotal == null ? View.GONE : View.VISIBLE);
 
         //total
         setText(totalAmountTextView, getFormattedAmount(component.getTotalAmount(), component.props.currencyId));

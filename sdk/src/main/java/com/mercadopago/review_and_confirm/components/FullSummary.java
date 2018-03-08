@@ -37,16 +37,6 @@ public class FullSummary extends Component<SummaryModel, Void> {
         this.provider = provider;
     }
 
-    public BigDecimal getSubtotalAmount() {
-        BigDecimal subtotal = null;
-
-        if (hasDiscount()) {
-            subtotal = getSubtotal();
-        }
-
-        return subtotal;
-    }
-
     public BigDecimal getTotalAmount() {
         BigDecimal totalAmount = null;
 
@@ -101,7 +91,7 @@ public class FullSummary extends Component<SummaryModel, Void> {
         com.mercadopago.model.Summary.Builder summaryBuilder = new com.mercadopago.model.Summary.Builder();
 
         if (reviewScreenPreference != null && isValidTotalAmount() && hasProductAmount()) {
-            summaryBuilder.addSummaryProductDetail(reviewScreenPreference.getProductAmount(), provider.getSummaryProductsTitle(), provider.getDefaultTextColor())
+            summaryBuilder.addSummaryProductDetail(reviewScreenPreference.getProductAmount(), props.title, provider.getDefaultTextColor())
                     .addSummaryShippingDetail(reviewScreenPreference.getShippingAmount(), provider.getSummaryShippingTitle(), provider.getDefaultTextColor())
                     .addSummaryArrearsDetail(reviewScreenPreference.getArrearsAmount(), provider.getSummaryArrearTitle(), provider.getDefaultTextColor())
                     .addSummaryTaxesDetail(reviewScreenPreference.getTaxesAmount(), provider.getSummaryTaxesTitle(), provider.getDefaultTextColor())
@@ -114,7 +104,7 @@ public class FullSummary extends Component<SummaryModel, Void> {
             }
 
         } else {
-            summaryBuilder.addSummaryProductDetail(props.getTotalAmount(), provider.getSummaryProductsTitle(), provider.getDefaultTextColor());
+            summaryBuilder.addSummaryProductDetail(props.getTotalAmount(), props.title, provider.getDefaultTextColor());
 
             if (isValidAmount(props.getPayerCostTotalAmount()) && getPayerCostChargesAmount().compareTo(BigDecimal.ZERO) > 0) {
                 summaryBuilder.addSummaryChargeDetail(getPayerCostChargesAmount(), provider.getSummaryChargesTitle(), provider.getDefaultTextColor());

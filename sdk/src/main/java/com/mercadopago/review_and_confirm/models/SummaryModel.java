@@ -1,6 +1,5 @@
 package com.mercadopago.review_and_confirm.models;
 
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -130,9 +129,13 @@ public class SummaryModel implements Parcelable {
     public static String resolveTitle(List<Item> items, String singularTitle, String pluralTitle) {
         String title;
 
-        if (items.size() == 1 && items.get(0).getQuantity() == 1) {
+        if (items.size() == 1) {
             if (isEmpty(items.get(0).getTitle())) {
-                title = singularTitle;
+                if (items.get(0).getQuantity() > 1) {
+                    title = pluralTitle;
+                } else {
+                    title = singularTitle;
+                }
             } else {
                 title = items.get(0).getTitle();
             }
