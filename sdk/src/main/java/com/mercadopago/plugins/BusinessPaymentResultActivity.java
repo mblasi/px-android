@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.mercadopago.R;
 import com.mercadopago.components.Action;
 import com.mercadopago.components.ActionDispatcher;
-import com.mercadopago.paymentresult.props.HeaderProps;
 import com.mercadopago.plugins.model.BusinessPayment;
 import com.mercadopago.plugins.model.ButtonAction;
 
@@ -34,17 +33,17 @@ public class BusinessPaymentResultActivity extends AppCompatActivity implements 
         setContentView(R.layout.activity_bussines_payment_result);
         BusinessPayment businessPayment = parseIntent();
 
-        final HeaderProps headerProps = new HeaderProps.Builder()
-                .setHeight(getHeaderMode())
-                .setBackground(getBackground(props.paymentResult))
-                .setStatusBarColor(getStatusBarColor(props.paymentResult))
-                .setIconImage(getIconImage(props))
-                .setIconUrl(getIconUrl(props))
-                .setBadgeImage(getBadgeImage(props))
-                .setTitle(getTitle(props))
-                .setLabel(getLabel(props))
-                .setAmountFormat(props.headerAmountFormatter)
-                .build();
+//        final HeaderProps headerProps = new HeaderProps.Builder()
+//                .setHeight(getHeaderMode())
+//                .setBackground(getBackground(props.paymentResult))
+//                .setStatusBarColor(getStatusBarColor(props.paymentResult))
+//                .setIconImage(getIconImage(props))
+//                .setIconUrl(getIconUrl(props))
+//                .setBadgeImage(getBadgeImage(props))
+//                .setTitle(getTitle(props))
+//                .setLabel(getLabel(props))
+//                .setAmountFormat(props.headerAmountFormatter)
+//                .build();
 
     }
 
