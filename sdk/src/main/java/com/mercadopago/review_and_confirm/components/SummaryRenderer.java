@@ -25,6 +25,10 @@ public class SummaryRenderer extends Renderer<SummaryComponent> {
             final Renderer fullSummaryRenderer = RendererFactory.create(context, component.getFullSummary());
             final View fullSummaryView = fullSummaryRenderer.render();
             summaryContainer.addView(fullSummaryView);
+        } else if (component.props.getCouponAmount() != null) {
+            final Renderer fullSummaryRenderer = RendererFactory.create(context, component.getFullSummary());
+            final View fullSummaryView = fullSummaryRenderer.render();
+            summaryContainer.addView(fullSummaryView);
         } else {
             final Renderer compactSummaryRenderer = RendererFactory.create(context, component.getCompactSummary());
             final View compactSummaryView = compactSummaryRenderer.render();

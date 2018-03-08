@@ -1,14 +1,19 @@
 package com.mercadopago.review_and_confirm.models;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mercadopago.model.Discount;
+import com.mercadopago.model.Item;
 import com.mercadopago.model.PayerCost;
 import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.model.Site;
 
 import java.math.BigDecimal;
+import java.util.List;
+
+import static com.mercadopago.util.TextUtils.isEmpty;
 
 /**
  * Created by mromar on 3/2/18.
@@ -27,13 +32,14 @@ public class SummaryModel implements Parcelable {
     public final boolean hasPercentOff;
     private final String installmentsRate;
     private final String installmentAmount;
-    public final String itemTitle;
+    public final String title;
 
     public SummaryModel(BigDecimal amount,
                         PaymentMethod paymentMethod,
                         Site site,
                         PayerCost payerCost,
-                        Discount discount) {
+                        Discount discount,
+                        String title) {
 
         this.amount = amount.toString();
         this.currencyId = site.getCurrencyId();
@@ -46,8 +52,7 @@ public class SummaryModel implements Parcelable {
         this.hasPercentOff = discount != null ? discount.hasPercentOff() : false;
         this.installmentsRate = payerCost != null && payerCost.getInstallmentRate() != null ? payerCost.getInstallmentRate().toString() : null;
         this.installmentAmount = payerCost != null && payerCost.getInstallmentAmount() != null ? payerCost.getInstallmentAmount().toString() : null;
-        //TODO
-        this.itemTitle = "Lala";
+        this.title = title;
     }
 
     protected SummaryModel(Parcel in) {
@@ -62,7 +67,7 @@ public class SummaryModel implements Parcelable {
         hasPercentOff = in.readByte() != 0;
         installmentsRate = in.readString();
         installmentAmount = in.readString();
-        itemTitle = in.readString();
+        title = in.readString();
     }
 
     public static final Creator<SummaryModel> CREATOR = new Creator<SummaryModel>() {
@@ -95,7 +100,7 @@ public class SummaryModel implements Parcelable {
         dest.writeByte((byte) (hasPercentOff ? 1 : 0));
         dest.writeString(installmentsRate);
         dest.writeString(installmentAmount);
-        dest.writeString(itemTitle);
+        dest.writeString(title);
     }
 
     public BigDecimal getTotalAmount() {
@@ -120,6 +125,22 @@ public class SummaryModel implements Parcelable {
 
     public Integer getInstallments() {
         return this.installments != null ? Integer.valueOf(this.installments) : null;
+    }
+
+    public static String resolveTitle(List<Item> items, String singularTitle, String pluralTitle) {
+        String title;
+
+        if (items.size() == 1 && items.get(0).getQuantity() == 1) {
+            if (isEmpty(items.get(0).getTitle())) {
+                title = singularTitle;
+            } else {
+                title = items.get(0).getTitle();
+            }
+        } else {
+            title = pluralTitle;
+        }
+
+        return title;
     }
 }
 

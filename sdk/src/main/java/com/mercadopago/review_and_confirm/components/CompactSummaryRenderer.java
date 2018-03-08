@@ -25,7 +25,7 @@ public class CompactSummaryRenderer extends Renderer<CompactSummary> {
         final MPTextView itemTitleTextView = summaryView.findViewById(R.id.mpsdkItemTitle);
 
         setText(totalAmountTextView, CurrenciesUtil.getFormattedAmount(component.props.getTotalAmount(), component.props.currencyId));
-        setText(itemTitleTextView, getItemTitle(component.props.itemTitle, context));
+        setText(itemTitleTextView, getItemTitle(component.props.title, context));
 
         return summaryView;
     }

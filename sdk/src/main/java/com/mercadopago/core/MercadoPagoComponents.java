@@ -15,6 +15,7 @@ import com.mercadopago.PayerInformationActivity;
 import com.mercadopago.PaymentMethodsActivity;
 import com.mercadopago.PaymentTypesActivity;
 import com.mercadopago.PaymentVaultActivity;
+import com.mercadopago.R;
 import com.mercadopago.ReviewPaymentMethodsActivity;
 import com.mercadopago.SecurityCodeActivity;
 import com.mercadopago.callbacks.OnConfirmPaymentCallback;
@@ -437,11 +438,12 @@ public class MercadoPagoComponents {
 //                intent.putExtra("reviewScreenPreference", JsonUtil.getInstance().toJson(reviewScreenPreference));
 //                activity.startActivityForResult(intent, MercadoPagoComponents.Activities.REVIEW_AND_CONFIRM_REQUEST_CODE);
 
+                String title = SummaryModel.resolveTitle(items, activity.getApplicationContext().getResources().getString(R.string.mpsdk_review_summary_product), activity.getApplicationContext().getResources().getString(R.string.mpsdk_review_summary_products));
+
                 //TODO remove the two trues and validate data.
                 TermsAndConditionsModel termsAndConditionsModel = new TermsAndConditionsModel(site.getId(), termsAndConditionsEnabled);
                 PaymentModel paymentModel = new PaymentModel(paymentMethod, token, issuer, hasExtraPaymentMethods);
-                SummaryModel summaryModel = new SummaryModel(amount, paymentMethod, site, payerCost, discount);
-
+                SummaryModel summaryModel = new SummaryModel(amount, paymentMethod, site, payerCost, discount, title);
                 com.mercadopago.review_and_confirm.ReviewAndConfirmActivity.start(activity, merchantPublicKey, termsAndConditionsModel, paymentModel, summaryModel);
             }
         }
