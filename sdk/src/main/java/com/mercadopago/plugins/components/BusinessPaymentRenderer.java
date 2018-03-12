@@ -103,6 +103,7 @@ public class BusinessPaymentRenderer extends Renderer<BusinessPaymentContainer> 
     private LinearLayout createMainContainer(final @NonNull Context context) {
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setBackgroundColor(context.getResources().getColor(R.color.mpsdk_white));
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         return linearLayout;
