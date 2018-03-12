@@ -46,18 +46,35 @@ public class BusinessPaymentRenderer extends Renderer<BusinessPaymentContainer> 
         return scrollView;
     }
 
-    private void addSecondaryButton(final ActionDispatcher dispatcher,
-                                    final ButtonAction secondaryAction,
-                                    final ViewGroup parent) {
+    private void addPrimaryButton(final ActionDispatcher dispatcher,
+                                  final ButtonAction primaryAction,
+                                  final ViewGroup parent) {
+        View parentView = inflate(R.layout.mpsdk_view_text_button_blue, parent);
+        TextView blueButton = parentView.findViewById(R.id.text_button_blue);
+        blueButton.setText(primaryAction.getName());
+        blueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                dispatcher.dispatch(primaryAction);
+            }
+        });
 
 
     }
 
-    private void addPrimaryButton(final ActionDispatcher dispatcher,
-                                  final ButtonAction primaryAction,
-                                  final ViewGroup parent) {
+    private void addSecondaryButton(final ActionDispatcher dispatcher,
+                                    final ButtonAction secondaryAction,
+                                    final ViewGroup parent) {
 
-
+        View parentView = inflate(R.layout.mpsdk_view_text_button, parent);
+        TextView whiteButton = parentView.findViewById(R.id.text_button_white);
+        whiteButton.setText(secondaryAction.getName());
+        whiteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                dispatcher.dispatch(secondaryAction);
+            }
+        });
     }
 
     private void addHelp(final String help, final ViewGroup parent) {
