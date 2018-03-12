@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.mercadopago.R;
 import com.mercadopago.customviews.MPTextView;
-import com.mercadopago.plugins.model.PluginInfo;
+import com.mercadopago.plugins.model.PaymentMethodInfo;
 import com.mercadopago.util.TextUtils;
 
 /**
@@ -19,7 +19,7 @@ public class PaymentMethodInfoController implements PaymentMethodSearchViewContr
 
     private static final int COMMENT_MAX_LENGTH = 75;
 
-    protected PluginInfo mItem;
+    protected PaymentMethodInfo mItem;
     protected Context mContext;
     protected View mView;
     protected MPTextView mName;
@@ -28,7 +28,7 @@ public class PaymentMethodInfoController implements PaymentMethodSearchViewContr
     protected View.OnClickListener mListener;
 
     public PaymentMethodInfoController(@NonNull final Context context,
-                                       @NonNull final PluginInfo item) {
+                                       @NonNull final PaymentMethodInfo item) {
         mContext = context;
         mItem = item;
     }

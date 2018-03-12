@@ -19,9 +19,9 @@ import com.mercadopago.exceptions.MercadoPagoError;
 import com.mercadopago.hooks.ExampleHooks;
 import com.mercadopago.model.Payment;
 import com.mercadopago.plugins.DataInitializationTask;
-import com.mercadopago.plugins.MainPaymentProcessorPlugin;
+import com.mercadopago.plugins.MainPaymentProcessor;
 import com.mercadopago.plugins.SamplePaymentMethodPlugin;
-import com.mercadopago.plugins.SamplePaymentProcessorPlugin;
+import com.mercadopago.plugins.SamplePaymentProcessor;
 import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
@@ -86,9 +86,9 @@ public class CheckoutExampleActivity extends AppCompatActivity {
                 .setCheckoutPreference(getCheckoutPreference())
                 .addPaymentMethodPlugin(
                         new SamplePaymentMethodPlugin(),
-                        new SamplePaymentProcessorPlugin()
+                        new SamplePaymentProcessor()
                 )
-                .setPaymentProcessor(new MainPaymentProcessorPlugin())
+                .setPaymentProcessor(new MainPaymentProcessor())
                 .setDataInitializationTask(new DataInitializationTask(defaultData) {
                     @Override
                     public void onLoadData(@NonNull final Map<String, Object> data) {

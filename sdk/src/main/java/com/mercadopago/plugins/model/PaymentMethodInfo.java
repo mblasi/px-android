@@ -3,8 +3,7 @@ package com.mercadopago.plugins.model;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
-public class PluginInfo {
-
+public class PaymentMethodInfo {
 
     public final String id;
     public final String name;
@@ -12,7 +11,7 @@ public class PluginInfo {
     public final @DrawableRes
     int icon;
 
-    public PluginInfo(@NonNull final String id,
+    public PaymentMethodInfo(@NonNull final String id,
                       @NonNull final String name,
                       @DrawableRes final int icon,
                       @NonNull final String description) {
@@ -22,7 +21,7 @@ public class PluginInfo {
         this.icon = icon;
     }
 
-    public PluginInfo(@NonNull final String id,
+    public PaymentMethodInfo(@NonNull final String id,
                       @NonNull final String name,
                       @DrawableRes final int icon) {
 

@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.mercadopago.examples.R;
 import com.mercadopago.plugins.components.SamplePaymentMethod;
 import com.mercadopago.plugins.components.SampleResourcesProvider;
-import com.mercadopago.plugins.model.PluginInfo;
+import com.mercadopago.plugins.model.PaymentMethodInfo;
 
 /**
  * Created by nfortuna on 12/13/17.
@@ -20,8 +20,8 @@ public class SamplePaymentMethodPlugin extends PaymentMethodPlugin {
     }
 
     @Override
-    public PluginInfo getPaymentMethodInfo(@NonNull final Context context) {
-        return new PluginInfo(
+    public PaymentMethodInfo getPaymentMethodInfo(@NonNull final Context context) {
+        return new PaymentMethodInfo(
             getId(),
             "Dinero en cuenta",
             R.drawable.mpsdk_sample,

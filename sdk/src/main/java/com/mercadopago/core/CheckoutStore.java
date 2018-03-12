@@ -10,8 +10,8 @@ import com.mercadopago.model.PaymentData;
 import com.mercadopago.model.PaymentResult;
 import com.mercadopago.plugins.DataInitializationTask;
 import com.mercadopago.plugins.PaymentMethodPlugin;
-import com.mercadopago.plugins.PaymentProcessorPlugin;
-import com.mercadopago.plugins.model.PluginInfo;
+import com.mercadopago.plugins.PaymentProcessor;
+import com.mercadopago.plugins.model.PaymentMethodInfo;
 import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.util.TextUtil;
 import com.mercadopago.preferences.PaymentResultScreenPreference;
@@ -32,7 +32,7 @@ public class CheckoutStore {
     //Config
     private DataInitializationTask dataInitializationTask;
     private List<PaymentMethodPlugin> paymentMethodPluginList = new ArrayList<>();
-    private Map<String, PaymentProcessorPlugin> paymentPlugins = new HashMap<>();
+    private Map<String, PaymentProcessor> paymentPlugins = new HashMap<>();
     private CheckoutHooks checkoutHooks;
 
     //App state
@@ -100,9 +100,9 @@ public class CheckoutStore {
         return null;
     }
 
-    public PluginInfo getPaymentMethodPluginInfoById(@NonNull final String id, @NonNull final Context context) {
+    public PaymentMethodInfo getPaymentMethodPluginInfoById(@NonNull final String id, @NonNull final Context context) {
         for (PaymentMethodPlugin plugin : paymentMethodPluginList) {
-            final PluginInfo info = plugin.getPaymentMethodInfo(context);
+            final PaymentMethodInfo info = plugin.getPaymentMethodInfo(context);
             if (info.id.equalsIgnoreCase(id)) {
                 return info;
             }
@@ -110,7 +110,7 @@ public class CheckoutStore {
         return null;
     }
 
-    public PluginInfo getSelectedPaymentMethodInfo(@NonNull final Context context) {
+    public PaymentMethodInfo getSelectedPaymentMethodInfo(@NonNull final Context context) {
         if (!TextUtil.isEmpty(selectedPaymentMethodId)) {
             return getPaymentMethodPluginInfoById(selectedPaymentMethodId, context);
         }
@@ -155,7 +155,7 @@ public class CheckoutStore {
         this.selectedPaymentMethodId = selectedPaymentMethodId;
     }
 
-    public void setPaymentPlugins(Map<String, PaymentProcessorPlugin> paymentPlugins) {
+    public void setPaymentPlugins(Map<String, PaymentProcessor> paymentPlugins) {
         this.paymentPlugins = paymentPlugins;
     }
 
@@ -179,19 +179,19 @@ public class CheckoutStore {
         return data;
     }
 
-    public PaymentProcessorPlugin getPaymentProcessor() {
-        PaymentProcessorPlugin paymentProcessorPlugin = null;
+    public PaymentProcessor getPaymentProcessor() {
+        PaymentProcessor paymentProcessor = null;
         if (!TextUtil.isEmpty(selectedPaymentMethodId)) {
-            paymentProcessorPlugin = paymentPlugins.get(MercadoPagoCheckout.PAYMENT_PROCESSOR_KEY);
-            if (paymentProcessorPlugin == null || !paymentProcessorPlugin.support(selectedPaymentMethodId, getData())) {
-                paymentProcessorPlugin = paymentPlugins.get(selectedPaymentMethodId);
+            paymentProcessor = paymentPlugins.get(MercadoPagoCheckout.PAYMENT_PROCESSOR_KEY);
+            if (paymentProcessor == null || !paymentProcessor.support(selectedPaymentMethodId, getData())) {
+                paymentProcessor = paymentPlugins.get(selectedPaymentMethodId);
             }
         }
-        return paymentProcessorPlugin;
+        return paymentProcessor;
     }
 
-    public void addPaymentPlugins(@NonNull final PaymentProcessorPlugin paymentProcessorPlugin, @NonNull final String paymentMethod) {
-        this.paymentPlugins.put(paymentMethod, paymentProcessorPlugin);
+    public void addPaymentPlugins(@NonNull final PaymentProcessor paymentProcessor, @NonNull final String paymentMethod) {
+        this.paymentPlugins.put(paymentMethod, paymentProcessor);
     }
 
     public PaymentData getPaymentData() {

@@ -40,9 +40,9 @@ public final class PaymentProcessorPluginActivity extends AppCompatActivity impl
         super.onCreate(savedInstanceState);
 
         final CheckoutStore store = CheckoutStore.getInstance();
-        final PaymentProcessorPlugin paymentProcessorPlugin = store.getPaymentProcessor();
+        final PaymentProcessor paymentProcessor = store.getPaymentProcessor();
 
-        if (paymentProcessorPlugin == null) {
+        if (paymentProcessor == null) {
             cancel();
             return;
         }
@@ -53,7 +53,7 @@ public final class PaymentProcessorPluginActivity extends AppCompatActivity impl
                 .setCheckoutPreference(store.getCheckoutPreference())
                 .build();
 
-        final PluginComponent component = paymentProcessorPlugin.createPaymentComponent(props, this);
+        final PluginComponent component = paymentProcessor.createPaymentComponent(props, this);
         final ComponentManager componentManager = new ComponentManager(this);
 
         if (component == null) {

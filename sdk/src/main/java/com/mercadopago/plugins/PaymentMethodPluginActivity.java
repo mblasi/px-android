@@ -15,7 +15,7 @@ import com.mercadopago.components.Component;
 import com.mercadopago.components.ComponentManager;
 import com.mercadopago.components.NextAction;
 import com.mercadopago.core.CheckoutStore;
-import com.mercadopago.plugins.model.PluginInfo;
+import com.mercadopago.plugins.model.PaymentMethodInfo;
 import com.mercadopago.tracker.FlowHandler;
 import com.mercadopago.tracker.MPTrackingContext;
 import com.mercadopago.tracking.model.ScreenViewEvent;
@@ -39,10 +39,10 @@ public class PaymentMethodPluginActivity extends AppCompatActivity implements Ac
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final PluginInfo pluginInfo =
+        final PaymentMethodInfo paymentMethodInfo =
                 CheckoutStore.getInstance().getSelectedPaymentMethodInfo(this);
         final PaymentMethodPlugin plugin = CheckoutStore
-                .getInstance().getPaymentMethodPluginById(pluginInfo.id);
+                .getInstance().getPaymentMethodPluginById(paymentMethodInfo.id);
 
         Intent intent = getIntent();
         mPublicKey = intent.getStringExtra(PUBLIC_KEY);

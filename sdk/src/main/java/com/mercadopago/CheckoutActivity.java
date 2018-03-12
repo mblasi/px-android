@@ -27,7 +27,7 @@ import com.mercadopago.model.Token;
 import com.mercadopago.plugins.BusinessPaymentResultActivity;
 import com.mercadopago.plugins.PaymentProcessorPluginActivity;
 import com.mercadopago.plugins.model.BusinessPayment;
-import com.mercadopago.plugins.model.PluginInfo;
+import com.mercadopago.plugins.model.PaymentMethodInfo;
 import com.mercadopago.preferences.CheckoutPreference;
 import com.mercadopago.preferences.FlowPreference;
 import com.mercadopago.preferences.PaymentPreference;
@@ -356,7 +356,7 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
         overrideTransitionIn();
 
         final CheckoutStore store = CheckoutStore.getInstance();
-        final PluginInfo pluginInfo = store.getSelectedPaymentMethodInfo(this);
+        final PaymentMethodInfo paymentMethodInfo = store.getSelectedPaymentMethodInfo(this);
 
         MercadoPagoComponents.Activities.ReviewAndConfirmBuilder builder = new MercadoPagoComponents.Activities.ReviewAndConfirmBuilder()
                 .setActivity(this)
@@ -379,9 +379,9 @@ public class CheckoutActivity extends MercadoPagoBaseActivity implements Checkou
 
         if (MercadoPagoUtil.isCard(mCheckoutPresenter.getSelectedPaymentMethod().getPaymentTypeId())) {
             builder.setToken(mCheckoutPresenter.getCreatedToken());
-        } else if (pluginInfo != null) { //Plugin payment method selected
-            builder.setPaymentMethodDescriptionInfo(pluginInfo.name);
-            builder.setPaymentMethodCommentInfo(pluginInfo.description);
+        } else if (paymentMethodInfo != null) { //Plugin payment method selected
+            builder.setPaymentMethodDescriptionInfo(paymentMethodInfo.name);
+            builder.setPaymentMethodCommentInfo(paymentMethodInfo.description);
         } else if (!PaymentTypes.ACCOUNT_MONEY.equals(mCheckoutPresenter.getSelectedPaymentMethod().getPaymentTypeId())) {
             PaymentMethodSearchItem paymentMethodSearchItem = mCheckoutPresenter.getPaymentMethodSearch().getSearchItemByPaymentMethod(mCheckoutPresenter.getSelectedPaymentMethod());
             if (paymentMethodSearchItem != null) {

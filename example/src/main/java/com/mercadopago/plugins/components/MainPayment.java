@@ -31,11 +31,6 @@ public class MainPayment extends PluginComponent<Void> {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-//                final GenericPayment result = new GenericPayment(
-//                        98723496234l,
-//                        Payment.StatusCodes.STATUS_APPROVED,
-//                        Payment.StatusDetail.STATUS_DETAIL_APPROVED_PLUGIN_PM,
-//                        props.paymentData);
 
                 BusinessPayment result = new BusinessPayment.Builder(BusinessPayment.Status.REJECTED, R.drawable.mpsdk_icon_card, "ASD")
                         .setHelp("HELP!")

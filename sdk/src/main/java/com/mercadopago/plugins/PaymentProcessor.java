@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 
 import java.util.Map;
 
-public abstract class PaymentProcessorPlugin {
+public abstract class PaymentProcessor {
 
     public boolean support(@NonNull final String paymentMethodId,
                            @NonNull final Map<String, Object> data) {

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.mercadopago.plugins.model.PluginInfo;
+import com.mercadopago.plugins.model.PaymentMethodInfo;
 
 import java.util.Map;
 
@@ -33,7 +33,7 @@ public abstract class PaymentMethodPlugin {
     }
 
     public abstract @NonNull
-    PluginInfo getPaymentMethodInfo(@NonNull final Context context);
+    PaymentMethodInfo getPaymentMethodInfo(@NonNull final Context context);
 
     public abstract @Nullable
     PluginComponent createConfigurationComponent(@NonNull final PluginComponent.Props props,
