@@ -56,6 +56,7 @@ public class BusinessPaymentResultActivity extends AppCompatActivity implements 
             Intent intent = new Intent();
             intent.putExtra(EXTRA_CLIENT_RES_CODE, resCode);
             setResult(RESULT_OK, intent);
+            finish();
         } else {
             throw new UnsupportedOperationException("this Action class can't be executed in this screen");
         }
