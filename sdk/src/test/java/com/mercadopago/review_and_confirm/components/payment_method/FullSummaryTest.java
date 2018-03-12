@@ -1,10 +1,14 @@
 package com.mercadopago.review_and_confirm.components.payment_method;
 
 import com.mercadopago.constants.PaymentTypes;
+import com.mercadopago.core.CheckoutStore;
 import com.mercadopago.model.Discount;
 import com.mercadopago.model.PayerCost;
 import com.mercadopago.model.PaymentMethod;
 import com.mercadopago.model.Site;
+import com.mercadopago.model.Summary;
+import com.mercadopago.preferences.CheckoutPreference;
+import com.mercadopago.preferences.ReviewScreenPreference;
 import com.mercadopago.review_and_confirm.SummaryProviderImpl;
 import com.mercadopago.review_and_confirm.components.FullSummary;
 import com.mercadopago.review_and_confirm.models.SummaryModel;
@@ -30,6 +34,14 @@ public class FullSummaryTest {
     private final static BigDecimal DISCOUNT_PERCENT_OFF = new BigDecimal(20);
 
     private final static BigDecimal TOTAL_AMOUNT = new BigDecimal(1000);
+    private final static BigDecimal SHIPPING_AMOUNT = new BigDecimal(100);
+    private final static BigDecimal ARREAR_AMOUNT = new BigDecimal(50);
+    private final static BigDecimal TAXES_AMOUNT = new BigDecimal(10);
+    private final static BigDecimal DISCOUNT_AMOUNT = new BigDecimal(20);
+    private final static BigDecimal CHARGES_AMOUNT = new BigDecimal(20);
+    private final static String DISCLAIMER = "No incluye intereses bancarios";
+    private final static int DISCLAIMER_COLOR = 0;
+
     private final static Site SITE = new Site("MLA", CURRENCY_ID);
 
     private final static String PAYMENT_TYPE_ID_CARD = PaymentTypes.CREDIT_CARD;
@@ -54,6 +66,40 @@ public class FullSummaryTest {
 
         Assert.assertEquals(component.getTotalAmount(), TOTAL_AMOUNT);
     }
+
+    //TODO
+    /*
+    @Test
+    public void whenReviewScreenPreferenceIsNotNullThenGetSummary() throws Exception {
+        ReviewScreenPreference reviewScreenPreference = new ReviewScreenPreference.Builder()
+                .addSummaryProductDetail(TOTAL_AMOUNT)
+                .addSummaryShippingDetail(SHIPPING_AMOUNT)
+                .addSummaryArrearsDetail(ARREAR_AMOUNT)
+                .addSummaryTaxesDetail(TAXES_AMOUNT)
+                .addSummaryDiscountDetail(DISCOUNT_AMOUNT)
+                .addSummaryChargeDetail(CHARGES_AMOUNT)
+                .setDisclaimer(DISCLAIMER)
+                .setDisclaimerTextColor("#000000")
+                .build();
+
+        BigDecimal totalAmount = new BigDecimal(0);
+        totalAmount = totalAmount.add(TOTAL_AMOUNT);
+        totalAmount = totalAmount.add(CHARGES_AMOUNT);
+        totalAmount = totalAmount.add(TAXES_AMOUNT);
+        totalAmount = totalAmount.add(SHIPPING_AMOUNT);
+        totalAmount = totalAmount.add(ARREAR_AMOUNT);
+        totalAmount = totalAmount.subtract(DISCOUNT_AMOUNT);
+
+        CheckoutStore.getInstance().setReviewScreenPreference(reviewScreenPreference);
+
+        SummaryModel model = new SummaryModel(totalAmount, getCardPaymentMethod(), SITE, getPayerCostWithInstallments(), null, null);
+
+        FullSummary component = new FullSummary(model, provider);
+
+        Assert.assertEquals(component.getSummary(), getSummary());
+    }
+    */
+
 
     private PaymentMethod getCardPaymentMethod() {
         PaymentMethod paymentMethod = new PaymentMethod();
@@ -95,5 +141,19 @@ public class FullSummaryTest {
 
     private BigDecimal getTotalAmountWithDiscount() {
         return TOTAL_AMOUNT.subtract(getDiscount().getCouponAmount());
+    }
+
+    private Summary getSummary() {
+        Summary.Builder summaryBuilder = new com.mercadopago.model.Summary.Builder();
+
+        return summaryBuilder.addSummaryProductDetail(TOTAL_AMOUNT, null, null)
+                .addSummaryShippingDetail(SHIPPING_AMOUNT, null, null)
+                .addSummaryArrearsDetail(ARREAR_AMOUNT, null, null)
+                .addSummaryTaxesDetail(TAXES_AMOUNT, null, null)
+                .addSummaryDiscountDetail(DISCOUNT_AMOUNT, null, null)
+                .addSummaryChargeDetail(CHARGES_AMOUNT, null, null)
+                .setDisclaimerText(DISCLAIMER)
+                .setDisclaimerColor(DISCLAIMER_COLOR)
+                .build();
     }
 }

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.mercadopago.components.Component;
 import com.mercadopago.components.RendererFactory;
 import com.mercadopago.core.CheckoutStore;
+import com.mercadopago.model.Summary;
 import com.mercadopago.model.SummaryDetail;
 import com.mercadopago.preferences.ReviewScreenPreference;
 import com.mercadopago.review_and_confirm.SummaryProvider;
@@ -85,9 +86,9 @@ public class FullSummary extends Component<SummaryModel, Void> {
         return amountDescriptionList;
     }
 
-    public com.mercadopago.model.Summary getSummary() {
+    public Summary getSummary() {
         ReviewScreenPreference reviewScreenPreference = CheckoutStore.getInstance().getReviewScreenPreference();
-        com.mercadopago.model.Summary.Builder summaryBuilder = new com.mercadopago.model.Summary.Builder();
+        Summary.Builder summaryBuilder = new com.mercadopago.model.Summary.Builder();
 
         if (reviewScreenPreference != null && isValidTotalAmount() && hasProductAmount()) {
             summaryBuilder.addSummaryProductDetail(reviewScreenPreference.getProductAmount(), props.title, provider.getDefaultTextColor())
