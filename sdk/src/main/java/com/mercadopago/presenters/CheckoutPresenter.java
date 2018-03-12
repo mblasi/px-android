@@ -59,7 +59,7 @@ public class CheckoutPresenter extends MvpPresenter<CheckoutView, CheckoutProvid
     private Boolean mDirectDiscountEnabled;
     private PaymentData mPaymentDataInput;
     private PaymentResult mPaymentResultInput;
-    private Integer mRequestedResult;
+    private int mRequestedResult;
 
     private PaymentMethodSearch mPaymentMethodSearch;
     private Issuer mSelectedIssuer;
