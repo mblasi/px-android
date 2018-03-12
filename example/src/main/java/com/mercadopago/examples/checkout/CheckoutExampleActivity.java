@@ -16,9 +16,9 @@ import com.mercadopago.components.SampleCustomComponent;
 import com.mercadopago.core.MercadoPagoCheckout;
 import com.mercadopago.customviews.MPButton;
 import com.mercadopago.examples.R;
+import com.mercadopago.examples.utils.ExamplesUtils;
 import com.mercadopago.exceptions.MercadoPagoError;
 import com.mercadopago.hooks.ExampleHooks;
-import com.mercadopago.model.Discount;
 import com.mercadopago.model.Payment;
 import com.mercadopago.plugins.DataInitializationTask;
 import com.mercadopago.plugins.MainPaymentProcessor;
@@ -29,7 +29,6 @@ import com.mercadopago.review_and_confirm.models.ReviewAndConfirmPreferences;
 import com.mercadopago.util.JsonUtil;
 import com.mercadopago.util.LayoutUtil;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,16 +83,9 @@ public class CheckoutExampleActivity extends AppCompatActivity {
         final Map<String, Object> defaultData = new HashMap<>();
         defaultData.put("amount", 120f);
 
-        Discount discount = new Discount();
-        discount.setCouponAmount(new BigDecimal(20));
-        discount.setCurrencyId("ARS");
-        discount.setId(77L);
-        discount.setPercentOff(new BigDecimal(20));
-
         final MercadoPagoCheckout.Builder builder = new MercadoPagoCheckout.Builder()
                 .setActivity(this)
                 .setPublicKey(mPublicKey)
-                .setDiscount(discount)
                 .setCheckoutPreference(getCheckoutPreference())
                 .addPaymentMethodPlugin(
                         new SamplePaymentMethodPlugin(),
