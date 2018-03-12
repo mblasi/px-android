@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
 import com.mercadopago.R;
-import com.mercadopago.util.TextUtil;
+import com.mercadopago.util.TextUtils;
 
 public final class BusinessPayment implements PluginPayment, Parcelable {
 
@@ -95,7 +95,7 @@ public final class BusinessPayment implements PluginPayment, Parcelable {
     }
 
     public boolean hasHelp() {
-        return TextUtil.isEmpty(help);
+        return TextUtils.isNotEmpty(help);
     }
 
     public ButtonAction getSecondaryAction() {
