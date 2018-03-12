@@ -21,8 +21,4 @@ public class CompactSummary extends Component<SummaryModel, Void> {
     public CompactSummary(@NonNull final SummaryModel props) {
         super(props);
     }
-
-    public BigDecimal getTotalAmount() {
-        return props.getTotalAmount();
-    }
 }

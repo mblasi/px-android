@@ -51,7 +51,6 @@ public class FullSummary extends Component<SummaryModel, Void> {
         } else if (hasDiscount() && !isEmptySummaryDetails()) {
             totalAmount = getSubtotal();
         }
-
         return totalAmount;
     }
 

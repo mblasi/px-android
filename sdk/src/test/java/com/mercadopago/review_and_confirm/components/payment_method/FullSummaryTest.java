@@ -31,47 +31,35 @@ public class FullSummaryTest {
 
     private final static BigDecimal TOTAL_AMOUNT = new BigDecimal(1000);
     private final static Site SITE = new Site("MLA", CURRENCY_ID);
-    private final static PayerCost PAYER_COST = new PayerCost();
 
-    private final static String PAYMENT_TYPE_ID = PaymentTypes.CREDIT_CARD;
+    private final static String PAYMENT_TYPE_ID_CARD = PaymentTypes.CREDIT_CARD;
 
     @Mock
     SummaryProviderImpl provider;
 
     @Test
-    public void whenGetTotalAmountThenGetTotalAmountWithoutDiscount() throws Exception {
-        SummaryModel model = new SummaryModel(TOTAL_AMOUNT, getPaymentMethod(), SITE, getPayerCostWithoutInstallments(), null, null);
-
-        FullSummary component = new FullSummary(model, provider);
-
-        Assert.assertEquals(component.getTotalAmount(), PAYER_COST.getTotalAmount());
-    }
-
-    @Test
-    public void whenGetTotalAmountThenGetTotalAmountWithDiscount() throws Exception {
-        SummaryModel model = new SummaryModel(TOTAL_AMOUNT, getPaymentMethod(), SITE, getPayerCostWithDiscount(), getDiscount(), null);
+    public void whenHasDiscountAndIsCardPaymentMethodThenGetTotalAmountWithDiscount() throws Exception {
+        SummaryModel model = new SummaryModel(TOTAL_AMOUNT, getCardPaymentMethod(), SITE, getPayerCostWithDiscount(), getDiscount(), null);
 
         FullSummary component = new FullSummary(model, provider);
 
         Assert.assertEquals(component.getTotalAmount(), getTotalAmountWithDiscount());
     }
 
+    @Test
+    public void whenHasInstallmentsThenGetPayerCostTotalAmount() throws Exception {
+        SummaryModel model = new SummaryModel(TOTAL_AMOUNT, getCardPaymentMethod(), SITE, getPayerCostWithInstallments(), getDiscount(), null);
 
-    private PaymentMethod getPaymentMethod() {
-        PaymentMethod paymentMethod = new PaymentMethod();
-        paymentMethod.setPaymentTypeId(PAYMENT_TYPE_ID);
+        FullSummary component = new FullSummary(model, provider);
 
-        return paymentMethod;
+        Assert.assertEquals(component.getTotalAmount(), TOTAL_AMOUNT);
     }
 
-    private PayerCost getPayerCostWithoutInstallments() {
-        PayerCost payerCost = new PayerCost();
+    private PaymentMethod getCardPaymentMethod() {
+        PaymentMethod paymentMethod = new PaymentMethod();
+        paymentMethod.setPaymentTypeId(PAYMENT_TYPE_ID_CARD);
 
-        payerCost.setTotalAmount(TOTAL_AMOUNT);
-        payerCost.setInstallments(1);
-        payerCost.setInstallmentRate(new BigDecimal(0));
-
-        return payerCost;
+        return paymentMethod;
     }
 
     private PayerCost getPayerCostWithDiscount() {
@@ -79,6 +67,16 @@ public class FullSummaryTest {
 
         payerCost.setTotalAmount(getTotalAmountWithDiscount());
         payerCost.setInstallments(1);
+        payerCost.setInstallmentRate(new BigDecimal(0));
+
+        return payerCost;
+    }
+
+    private PayerCost getPayerCostWithInstallments() {
+        PayerCost payerCost = new PayerCost();
+
+        payerCost.setTotalAmount(TOTAL_AMOUNT);
+        payerCost.setInstallments(3);
         payerCost.setInstallmentRate(new BigDecimal(0));
 
         return payerCost;
