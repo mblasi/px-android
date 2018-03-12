@@ -9,22 +9,23 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
 import com.mercadopago.R;
+import com.mercadopago.util.TextUtil;
 
 public final class BusinessPayment implements PluginPayment, Parcelable {
 
-    private final Status status;
+    private final String help;
     private final int iconId;
     private final String title;
+    private final Status status;
     private final boolean hasPaymentMethod;
     private final ButtonAction buttonActionPrimary;
     private final ButtonAction buttonActionSecondary;
-    private final String help;
 
     private BusinessPayment(Builder builder) {
+        this.help = builder.help;
         this.title = builder.title;
         this.status = builder.status;
         this.iconId = builder.iconId;
-        this.help = builder.help;
         this.hasPaymentMethod = builder.hasPaymentMethod;
         this.buttonActionPrimary = builder.buttonPrimary;
         this.buttonActionSecondary = builder.buttonSecondary;
@@ -85,6 +86,30 @@ public final class BusinessPayment implements PluginPayment, Parcelable {
         return title;
     }
 
+    public boolean hasPrimaryButton() {
+        return buttonActionPrimary != null;
+    }
+
+    public boolean hasSecondaryButton() {
+        return buttonActionSecondary != null;
+    }
+
+    public boolean hasHelp() {
+        return TextUtil.isEmpty(help);
+    }
+
+    public ButtonAction getSecondaryAction() {
+        return buttonActionSecondary;
+    }
+
+    public ButtonAction getPrimaryAction() {
+        return buttonActionPrimary;
+    }
+
+    public String getHelp() {
+        return help;
+    }
+
     public enum Status {
         APPROVED("approved", R.color.mpsdk_green_payment_result_background, R.drawable.mpsdk_badge_check, 0),
         REJECTED("rejected", R.color.mpsdk_red_payment_result_background, R.drawable.mpsdk_badge_error, R.string.mpsdk_rejection_label),
@@ -125,6 +150,7 @@ public final class BusinessPayment implements PluginPayment, Parcelable {
         private final int iconId;
         @NonNull
         private final String title;
+
         // Optional values
         private boolean hasPaymentMethod;
         private ButtonAction buttonPrimary;

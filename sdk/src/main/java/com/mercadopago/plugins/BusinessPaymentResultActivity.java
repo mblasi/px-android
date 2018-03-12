@@ -2,13 +2,13 @@ package com.mercadopago.plugins;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.mercadopago.components.Action;
 import com.mercadopago.components.ActionDispatcher;
 import com.mercadopago.components.ComponentManager;
-import com.mercadopago.paymentresult.components.Header;
-import com.mercadopago.paymentresult.props.HeaderProps;
+import com.mercadopago.plugins.components.BusinessPaymentContainer;
 import com.mercadopago.plugins.model.BusinessPayment;
 import com.mercadopago.plugins.model.ButtonAction;
 
@@ -25,31 +25,28 @@ public class BusinessPaymentResultActivity extends AppCompatActivity implements 
         activity.startActivityForResult(intent, requestCode);
     }
 
-    private BusinessPayment parseIntent() {
-        return (BusinessPayment) getIntent().getExtras().getParcelable(EXTRA_BUSINESS_PAYMENT);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_bussines_payment_result);
-
         BusinessPayment businessPayment = parseIntent();
+        if (businessPayment != null) {
+            initializeView(businessPayment);
+        } else {
+            throw new IllegalStateException("BusinessPayment can't be loaded");
+        }
+    }
 
-        BusinessPayment.Status status = businessPayment.getStatus();
-        final HeaderProps headerProps = new HeaderProps.Builder()
-                .setHeight(HeaderProps.HEADER_MODE_WRAP)
-                .setBackground(status.resColor)
-                .setStatusBarColor(status.resColor)
-                .setIconImage(businessPayment.getIcon())
-                .setBadgeImage(status.badge)
-                .setTitle(businessPayment.getTitle())
-                .setLabel(status.message == 0 ? null : getString(status.message))
-                .build();
+    @Nullable
+    private BusinessPayment parseIntent() {
+        return getIntent().getExtras() != null ? (BusinessPayment) getIntent()
+                .getExtras()
+                .getParcelable(EXTRA_BUSINESS_PAYMENT) : null;
+    }
 
-        Header header = new Header(headerProps, this);
+    private void initializeView(final BusinessPayment businessPayment) {
+        BusinessPaymentContainer businessPaymentContainer = new BusinessPaymentContainer(businessPayment, this);
         ComponentManager componentManager = new ComponentManager(this);
-        componentManager.render(header);
+        componentManager.render(businessPaymentContainer);
     }
 
     @Override
@@ -59,6 +56,8 @@ public class BusinessPaymentResultActivity extends AppCompatActivity implements 
             Intent intent = new Intent();
             intent.putExtra(EXTRA_CLIENT_RES_CODE, resCode);
             setResult(RESULT_OK, intent);
+        } else {
+            throw new UnsupportedOperationException("this Action class can't be executed in this screen");
         }
     }
 }
